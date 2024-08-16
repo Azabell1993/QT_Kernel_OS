@@ -68,7 +68,7 @@ To build this project, ensure you have Qt installed, then follow these steps:
 
 1. Clone the repository.
 2. Navigate to the project directory.
-3. Run `qmake` or open the project in Qt Creator.
+3. Run `cmake` or open the project in Qt Creator.
 4. Build the project using the appropriate build tool (e.g., `make`, `ninja`).
 
 ### Future Enhancements
@@ -148,7 +148,7 @@ QT를 사용하여 `Hanwha Vision VEDA Academy`에서 개발한 간단한 커널
 
 1. 저장소를 클론합니다.
 2. 프로젝트 디렉토리로 이동합니다.
-3. `qmake`를 실행하거나 Qt Creator에서 프로젝트를 엽니다.
+3. `cmake`를 실행하거나 Qt Creator에서 프로젝트를 엽니다.
 4. 적절한 빌드 도구(`make`, `ninja` 등)를 사용하여 프로젝트를 빌드합니다.
 
 ### 향후 개선 사항
