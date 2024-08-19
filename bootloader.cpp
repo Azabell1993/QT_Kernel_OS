@@ -1,4 +1,3 @@
-// bootloader.cpp
 #include "bootloader.h"
 #include <QKeyEvent>
 #include <QApplication>
@@ -11,8 +10,6 @@
 #include <QMessageBox>
 #include <QDebug> // qDebug()를 사용하기 위해 추가
 #include "mainwindow.h"
-
-#include "kernel_lib.h" // kernel_create_process 함수 사용
 
 QTextEdit* Bootloader::global_output_widget = nullptr;
 
@@ -72,7 +69,7 @@ void Bootloader::simulateBootProcess()
     QVBoxLayout *layout = qobject_cast<QVBoxLayout*>(this->layout());
     layout->addWidget(bootScreen);
 
-    QString progress_bar = QString("                    "); // 20단계의 진행 바
+    QString progress_bar = QString("          "); // 10단계의 진행 바
     bootScreen->append("Loading kernel... [" + progress_bar + "]");
 
     QTextCursor cursor = bootScreen->textCursor(); // 현재 커서 위치를 가져옴
@@ -80,7 +77,7 @@ void Bootloader::simulateBootProcess()
 
     for (int i = 0; i < 10; ++i) {
         QThread::msleep(1000); // 각 단계마다 1초 대기
-        progress_bar[i * 2] = '#'; // 진행 상황 표시
+        progress_bar[i * 1] = '#'; // 진행 상황 표시
 
         cursor.movePosition(QTextCursor::StartOfLine); // 현재 줄의 시작으로 이동
         cursor.select(QTextCursor::LineUnderCursor); // 현재 줄을 선택
@@ -97,6 +94,7 @@ void Bootloader::simulateBootProcess()
     bootScreen->append("Subsystems initialized.");
     bootScreen->append("\nPress Enter to continue...");
     bootScreen->moveCursor(QTextCursor::End);
+    bootScreen->close();
 }
 
 void Bootloader::startOS()
@@ -105,7 +103,6 @@ void Bootloader::startOS()
     MainWindow *mainWindow = new MainWindow();
 
     // kernel_create_process : C언어 함수
-    // kernel_create_process 함수를 호출하고, 성공 여부를 qDebug()로 출력
     const char* processName = "example_process";
     bool success = kernel_create_process(processName);
 
@@ -122,53 +119,3 @@ void Bootloader::startOS()
     mainWindow->show();
     this->close();
 }
-
-// void Bootloader::handleCommand(const QString &command) {
-//     if (command.startsWith("create printf ")) {
-//         QString message = command.mid(14);  // "create printf " 이후의 문자열
-//         az_printf("%s", message.toStdString().c_str());
-//     } else if (command.startsWith("create ")) {
-//         QString process_name = command.mid(7);  // "create " 이후의 문자열
-//         if (kernel_create_process(process_name.toStdString().c_str())) {
-//             appendToBiosScreen("Process created: " + process_name, false);
-//         } else {
-//             appendToBiosScreen("Failed to create process: " + process_name, false);
-//         }
-//     } else {
-//         appendToBiosScreen("Unknown command: " + command, false);
-//     }
-// }
-
-// void Bootloader::appendPrompt() {
-//     global_output_widget->moveCursor(QTextCursor::End);
-//     global_output_widget->insertPlainText("user@kernel $ ");
-//     global_output_widget->moveCursor(QTextCursor::End);
-//     QCoreApplication::processEvents();
-// }
-
-// void Bootloader::az_printf(const char *format, ...) {
-//     if (!global_output_widget) return;
-
-//     va_list args;
-//     va_start(args, format);
-
-//     // 가변 인자를 이용해 문자열을 생성
-//     char buffer[1024];
-//     vsnprintf(buffer, sizeof(buffer), format, args);
-
-//     // QTextEdit에 문자열을 추가
-//     appendToBiosScreen(QString(buffer), false);
-
-//     va_end(args);
-// }
-
-// void Bootloader::appendToBiosScreen(const QString &text, bool withPrompt) {
-//     if (global_output_widget) {
-//         if (withPrompt) {
-//             global_output_widget->insertPlainText("user@kernel $ ");
-//         }
-//         global_output_widget->insertPlainText(text + "\n");
-//         global_output_widget->moveCursor(QTextCursor::End);
-//         QCoreApplication::processEvents();
-//     }
-// }

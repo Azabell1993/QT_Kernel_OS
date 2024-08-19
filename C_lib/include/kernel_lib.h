@@ -11,9 +11,13 @@
 extern "C"
 {
 #endif
-
     bool kernel_create_process(const char *process_name);
+    void kernel_list_processes();
+    bool kernel_kill_process(const char *process_name);
+    void register_print_function(void (*print_function)(const char *str));
 
+    // 새로운 az_printf 함수 선언
+    void az_printf(const char *format, ...);
 #ifdef __cplusplus
 }
 #endif
