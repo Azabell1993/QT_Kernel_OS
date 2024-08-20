@@ -1,3 +1,12 @@
+// kernel_lib.h
+/*
+ * Kernel Lib
+ *
+ * Maintainer: Park Jiwoo
+ *
+ * Copyright (C) 2024 Park-Jiwoo
+ *
+ */
 #ifndef PROCESSMANAGER_H
 #define PROCESSMANAGER_H
 
@@ -18,6 +27,9 @@ extern "C"
 
     // 새로운 az_printf 함수 선언
     void az_printf(const char *format, ...);
+
+    // cmd창의 printf 함수 구현
+    int kernel_printf(const char *format, ...);
 #ifdef __cplusplus
 }
 #endif

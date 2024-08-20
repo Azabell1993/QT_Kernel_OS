@@ -3,7 +3,17 @@
     "*.page-template": "vue",
     "*.layout-template": "vue",
     "*.vue": "vue",
-    "stdio.h": "c",
-    "kernel_lib.h": "c"
+    "kernel_pr_he.h": "c",
+    "kernel_lib.h": "c",
+    "kernel_print.h": "c",
+    "print.h": "c",
+    "stdlib.h": "c",
+    "unistd.h": "c",
+    "stdarg.h": "c",
+    "wchar.h": "c",
+    "queue": "c",
+    "stack": "c",
+    "random": "c",
+    "string.h": "c"
   }
 }

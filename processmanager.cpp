@@ -1,4 +1,12 @@
 // processmanager.h
+/*
+ * ProcessManager
+ *
+ * Maintainer: Park Jiwoo
+ *
+ * Copyright (C) 2024 Park-Jiwoo
+ *
+ */
 #include "processmanager.h"
 
 #include "kernel_lib.h"

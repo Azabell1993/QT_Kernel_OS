@@ -1,3 +1,12 @@
+// kernel_lib.c
+/*
+ * Kernel Lib Basic Code
+ *
+ * Maintainer: Park Jiwoo
+ *
+ * Copyright (C) 2024 Park-Jiwoo
+ *
+ */
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>

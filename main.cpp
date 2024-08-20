@@ -1,4 +1,12 @@
 // main.cpp
+/*
+ * Main
+ *
+ * Maintainer: Park Jiwoo
+ *
+ * Copyright (C) 2024 Park-Jiwoo
+ *
+ */
 #include "bootloader.h"
 #include <QApplication>
 

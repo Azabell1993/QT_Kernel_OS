@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>booting_img.jpg</file>
+        <file>site_logo.png</file>
+        <file>start.png</file>
+        <file>cmd.png</file>
     </qresource>
 </RCC>

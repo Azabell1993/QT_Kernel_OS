@@ -1,4 +1,12 @@
 // processmanager.h
+/*
+ * Process Manager
+ *
+ * Maintainer: Park Jiwoo
+ *
+ * Copyright (C) 2024 Park-Jiwoo
+ *
+ */
 #ifndef PROCESSMANAGER_H
 #define PROCESSMANAGER_H
 

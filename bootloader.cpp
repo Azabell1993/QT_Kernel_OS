@@ -1,17 +1,22 @@
+// bootloader.cpp
+/*
+ * Boot Loader
+ *
+ * Maintainer: Park Jiwoo
+ *
+ * Copyright (C) 2024 Park-Jiwoo
+ *
+ */
 #include "bootloader.h"
+#include "mainwindow.h"
 #include <QKeyEvent>
 #include <QApplication>
 #include <QTimer>
 #include <QLabel>
-#include <QTextEdit>
 #include <QVBoxLayout>
 #include <QThread>
 #include <QSpacerItem>
-#include <QMessageBox>
-#include <QDebug> // qDebug()를 사용하기 위해 추가
-#include "mainwindow.h"
-
-QTextEdit* Bootloader::global_output_widget = nullptr;
+#include <QTextEdit>
 
 Bootloader::Bootloader(QWidget *parent)
     : QWidget(parent)
@@ -22,25 +27,21 @@ Bootloader::Bootloader(QWidget *parent)
 
     QVBoxLayout *layout = new QVBoxLayout(this);
 
-    // 위쪽과 아래쪽에 공간을 추가하여 중앙에 배치
-    QSpacerItem *topSpacer = new QSpacerItem(20, 100, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    QSpacerItem *bottomSpacer = new QSpacerItem(20, 100, QSizePolicy::Minimum, QSizePolicy::Expanding);
-
     // 이미지 로고 추가
     QLabel *logoLabel = new QLabel(this);
     QPixmap logoPixmap(":/booting_img.jpg"); // 경로를 실제 이미지 경로로 변경
     logoLabel->setPixmap(logoPixmap.scaled(400, 400, Qt::KeepAspectRatio, Qt::SmoothTransformation)); // 이미지 크기 조정
     logoLabel->setAlignment(Qt::AlignCenter); // 이미지 정중앙 정렬
 
-    // 레이아웃에 공간 및 이미지 추가
-    layout->addItem(topSpacer);
-    layout->addWidget(logoLabel);
-    layout->addItem(bottomSpacer);
-
     // 부팅 상태 메시지 추가
     QLabel *label = new QLabel("VEDA OS Booting...", this);
     label->setAlignment(Qt::AlignCenter);
+
+    // 레이아웃 구성
+    layout->addStretch();
+    layout->addWidget(logoLabel);
     layout->addWidget(label);
+    layout->addStretch();
 
     setLayout(layout);
 
@@ -94,28 +95,12 @@ void Bootloader::simulateBootProcess()
     bootScreen->append("Subsystems initialized.");
     bootScreen->append("\nPress Enter to continue...");
     bootScreen->moveCursor(QTextCursor::End);
-    bootScreen->close();
 }
 
 void Bootloader::startOS()
 {
     // 메인 윈도우로 전환
     MainWindow *mainWindow = new MainWindow();
-
-    // kernel_create_process : C언어 함수
-    const char* processName = "example_process";
-    bool success = kernel_create_process(processName);
-
-    if (success) {
-        qDebug() << "Process created successfully:" << processName;
-        QMessageBox::information(this, "Process Creation",
-                                 QString("Process created successfully: %1").arg(processName));
-    } else {
-        qDebug() << "Failed to create process:" << processName;
-        QMessageBox::critical(this, "Process Creation",
-                              QString("Failed to create process: %1").arg(processName));
-    }
-
     mainWindow->show();
     this->close();
 }

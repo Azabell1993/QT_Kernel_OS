@@ -14,9 +14,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
+
     bootloader.h
     bootloader.cpp
     resources.qrc
@@ -24,6 +22,7 @@ set(PROJECT_SOURCES
 
 # Include C library headers
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include)
+include_directories(${CMAKE_SOURCE_DIR}/C_lib/include_printf)
 
 # Add the directory where kernel_lib.a is located
 link_directories(${CMAKE_SOURCE_DIR}/C_lib)
@@ -34,6 +33,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         resources.qrc
         processmanager.h processmanager.cpp
+
+        mainwindow.h mainwindow.cpp mainwindow.ui
+
+        cmdwindow.h cmdwindow.cpp cmdwindow.ui
     )
 else()
     if(ANDROID)
@@ -49,6 +52,7 @@ endif()
 
 # Link with C library and Qt Widgets
 target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/C_lib/kernel_lib.a)
+target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/C_lib/kernel_printf.a)
 
 set_target_properties(os PROPERTIES
     ${BUNDLE_ID_OPTION}
