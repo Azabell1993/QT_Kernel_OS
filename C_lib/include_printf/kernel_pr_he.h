@@ -18,6 +18,8 @@
 extern "C"
 {
 #endif
+    void kernel_putchar(char c);
+
     void az_putoctal(int n);
     void az_putunsigned(unsigned int n);
     void *az_memalloc(size_t size);
@@ -35,7 +37,6 @@ extern "C"
     void *az_memset(void *b, int c, size_t len);
     void az_bzero(void *s, size_t n);
     void az_putchar_fd(char c, int fd);
-    void az_putchar(char c);
     void az_putstr(const char *s);
     int az_atoi(const char *s);
     int az_strcmp(const char *s1, const char *s2);

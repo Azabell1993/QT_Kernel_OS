@@ -16,7 +16,7 @@ void az_putstr(char const *s)
 	i = 0;
 	while (s[i])
 	{
-		az_putchar(s[i]);
+		kernel_putchar(s[i]);
 		i++;
 	}
 }

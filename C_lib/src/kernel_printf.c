@@ -18,7 +18,7 @@ static void az_input(char *format, va_list ap);
 void az_mod(char *format);
 void az_putstr(const char *s);
 int az_chrpos(const char *s, int c);
-void az_putchar(char c);
+void kernel_putchar(char c);
 int az_skip(char *format, int i);
 void az_fill(int fillcnt, char c);
 char az_getflag(char flag);
@@ -105,10 +105,10 @@ void az_mod(char *format)
             i++;
             if (format[i] == '%')
             {
-                az_putchar(format[i++]); // '%%'를 '%'로 변환하여 출력
+                kernel_putchar(format[i++]); // '%%'를 '%'로 변환하여 출력
             }
         }
-        az_putchar(format[i]); // 나머지 문자 출력
+        kernel_putchar(format[i]); // 나머지 문자 출력
         i++;
     }
 }
@@ -134,7 +134,7 @@ static void az_input(char *format, va_list ap)
         }
         else if (format[i] != '\0')
         {
-            az_putchar(format[i]); // 일반 문자 출력
+            kernel_putchar(format[i]); // 일반 문자 출력
         }
         i++;
     }
@@ -160,7 +160,7 @@ void az_fill(int fillcnt, char c)
     i = 0;
     while (i <= fillcnt)
     {
-        az_putchar(c); // fillcnt 횟수만큼 c 문자를 출력
+        kernel_putchar(c); // fillcnt 횟수만큼 c 문자를 출력
         i++;
     }
 }
@@ -202,18 +202,18 @@ void az_plusflag(int d, char flag, int param, char *format)
         if (width)
             az_fill(width, ' '); // 빈칸 채움
         if (d > 0)
-            az_putchar('+'); // 양수이면 '+' 출력
-        az_putnbr(d);        // 숫자 출력
+            kernel_putchar('+'); // 양수이면 '+' 출력
+        az_putnbr(d);            // 숫자 출력
     }
 
     if (flag == '+' && add_flag == '0')
     {
-        d *= -1;         // 음수로 변환
-        az_putchar('-'); // '-' 출력
+        d *= -1;             // 음수로 변환
+        kernel_putchar('-'); // '-' 출력
 
         if (add_flag_val != '1')
-            az_putchar('0'); // '0' 출력
-        az_putnbr(d);        // 숫자 출력
+            kernel_putchar('0'); // '0' 출력
+        az_putnbr(d);            // 숫자 출력
     }
 }
 
@@ -228,7 +228,7 @@ void az_minusflag(int d, char flag)
 void az_spaceflag(int d, char flag, int param)
 {
     if (flag == ' ' && (param < 0) && d > 0)
-        az_putchar(' '); // 공백 플래그가 설정되었을 때 공백 출력
+        kernel_putchar(' '); // 공백 플래그가 설정되었을 때 공백 출력
 
     if (flag == ' ' && param)
     {
@@ -242,10 +242,10 @@ void az_zeroflag(int d, char flag)
 {
     if (flag == '0' && d < 0)
     {
-        d *= -1;         // 음수로 변환
-        az_putchar('-'); // '-' 출력
-        az_putchar('0'); // '0' 출력
-        az_putnbr(d);    // 숫자 출력
+        d *= -1;             // 음수로 변환
+        kernel_putchar('-'); // '-' 출력
+        kernel_putchar('0'); // '0' 출력
+        az_putnbr(d);        // 숫자 출력
     }
 }
 
@@ -277,7 +277,7 @@ void az_o_support(int o, int param, char flag, char f_addon)
         {
             if (f_addon == '+' && param > 0)
                 az_fill(param - az_nbrlen(o), ' '); // '#' 플래그에 따른 공백 채움
-            az_putchar('0');                        // '0' 출력
+            kernel_putchar('0');                    // '0' 출력
         }
         az_putoctal(o); // 8진수 출력
         if (flag == '#' && f_addon == '-')
@@ -298,7 +298,7 @@ void az_o_support_p2(char flag, char *fmt, char f_addon)
     {
         if (az_chrpos(fmt, '#') > 0)
         {
-            az_putchar('0'); // '0' 출력
+            kernel_putchar('0'); // '0' 출력
             tmp = az_strsub(fmt, az_chrpos(fmt, '0') + 1, az_strlen(fmt));
         }
         else
@@ -318,7 +318,7 @@ void az_c_support(char c, int param, char flag, char f_addon)
 {
     if (param > 0 && !flag)
         az_fill(param - 1, ' '); // 공백 채움
-    az_putchar(c);               // 문자 출력
+    kernel_putchar(c);           // 문자 출력
     if (f_addon == '-' && flag == '+')
         az_fill(param - 1, ' '); // 공백 채움
 }
@@ -501,7 +501,7 @@ void az_i(va_list ap, char *format, char flag)
         az_fill(param - i_length, '0');
     if (flag == '+')
         if (i > 0)
-            az_putchar('+');
+            kernel_putchar('+');
     az_putnbr(i); // 정수 출력
 }
 
@@ -554,3 +554,88 @@ int kernel_printf(const char *format, ...)
 
     return (0); // 0을 반환
 }
+
+/* ************************************************************************************
+ *
+ *      test_kernel_printf method
+ *      2024.08.21
+ *      Copyright (C) 2024 Park-Jiwoo
+ *
+ * This function tests the custom kernel_printf function with various data types
+ * and format specifiers. It outputs the results to the kernel console, ensuring
+ * that the formatting works as expected across different cases.
+ *
+ * Test cases include:
+ * - Simple string output
+ * - Character and integer formatting
+ * - Addition and other arithmetic operations
+ * - Various flags and width specifiers
+ * - Unsigned integers, octal, and hexadecimal formats
+ * - Function calls and special characters
+ *
+ * The output is compared against expected results to ensure correctness (QT Console).
+ *
+ *
+ * Example Outputs:
+ * - Hello world!
+ * - A single character : T
+ * - An integer : 37
+ * - 1 + 1 = 2
+ * - +499 (with correct alignment)
+ * - Hexadecimal representation (e.g., 0xbc614e)
+ *
+ *********************************************************************************** */
+
+int function_Test(int a, int b)
+{
+    int sum = a + b;
+
+    return (sum);
+}
+
+void test_kernel_printf()
+{
+    kernel_printf("Hello world!\n");
+    kernel_printf("A single character : %c \n", 'T');
+    kernel_printf("An integer : %d \n", 37);
+    kernel_printf("An integer : %d \n", 299);
+    kernel_printf("5-4 = %d\n", 1);
+
+    int a = 1;
+    int b = 2;
+
+    kernel_printf("%d + %d = %d\n", a, b, a + b);
+    kernel_printf("%d\t\t\t String.\n", 12345678);
+    kernel_printf("-650\n");
+    kernel_printf("%+d\n", 430);
+    kernel_printf("%+1d\n", 650);
+    kernel_printf("%+10d\n", 499);
+    kernel_printf("% 3d\n", 1230);
+    kernel_printf("%08d\n", 342);
+    kernel_printf("%+03d\n", -430);
+    kernel_printf("%3d\n", -43);
+    kernel_printf("%u\n", 23919293929392);
+    kernel_printf("%+-u\n", 12345);
+    kernel_printf("%+10u\n", 12345);
+    kernel_printf("%-4s\n", "Az");
+    kernel_printf("%o\n", 333);
+    kernel_printf("%-0#+10o\n", 2048);
+    kernel_printf("%X\n", 12345678);
+    kernel_printf("%#+x\n", 12345678);
+    kernel_printf("\n\nfunction call Test\n");
+    kernel_printf("%d + %d = %d", 5, 6, function_Test(5, 6));
+    kernel_printf("\n");
+
+    /*** kernel_putchar ***/
+    kernel_putchar('H');
+    kernel_putchar('E');
+    kernel_putchar('L');
+    kernel_putchar('L');
+    kernel_putchar('O');
+    kernel_putchar('\n');
+    kernel_printf("-\n");
+    kernel_printf(".\n");
+    kernel_printf("/\n");
+    kernel_printf("'()*+,-./\n");
+}
+/* ************************************************************************************ */

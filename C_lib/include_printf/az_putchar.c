@@ -10,7 +10,7 @@
 #include "kernel_pr_he.h"
 #include <unistd.h>
 
-void az_putchar(char c)
+void kernel_putchar(char c)
 {
     write(1, &c, 1);
 }

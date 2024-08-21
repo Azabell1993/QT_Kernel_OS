@@ -48,7 +48,7 @@ int kernel_create_process(const char *process_name)
 {
     if (process_count >= MAX_PROCESSES)
     {
-        az_printf("Error: Process table is full.\n");
+        az_printf("\nError: Process table is full.");
         return 0; // false
     }
 
@@ -61,13 +61,13 @@ int kernel_create_process(const char *process_name)
     // 프로세스 테이블에 추가
     process_table[process_count++] = new_process;
 
-    az_printf("Process created: %s\n", process_name);
+    az_printf("\nProcess created: %s", process_name);
     return 1; // true
 }
 
 void kernel_list_processes()
 {
-    az_printf("Process List:\n");
+    az_printf("\nProcess List:\n");
     for (int i = 0; i < process_count; i++)
     {
         az_printf(" - %s (%s)\n", process_table[i].name, process_table[i].running ? "Running" : "Stopped");
@@ -81,10 +81,10 @@ int kernel_kill_process(const char *process_name)
         if (strcmp(process_table[i].name, process_name) == 0)
         {
             process_table[i].running = 0; // false
-            az_printf("Process killed: %s\n", process_name);
+            az_printf("\nProcess killed: %s", process_name);
             return 1; // true
         }
     }
-    az_printf("Error: Process not found: %s\n", process_name);
+    az_printf("\nError: Process not found: %s", process_name);
     return 0; // false
 }

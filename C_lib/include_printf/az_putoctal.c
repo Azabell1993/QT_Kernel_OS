@@ -13,7 +13,7 @@ void az_putoctal(int n)
 {
 	if (n < 0)
 	{
-		az_putchar('-');
+		kernel_putchar('-');
 		az_putnbr(-n);
 	}
 	else if (n > 9)
@@ -22,5 +22,5 @@ void az_putoctal(int n)
 		az_putoctal(n % 8);
 	}
 	else
-		az_putchar(n + '0');
+		kernel_putchar(n + '0');
 }

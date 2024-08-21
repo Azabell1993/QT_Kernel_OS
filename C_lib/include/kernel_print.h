@@ -24,6 +24,9 @@
 extern "C"
 {
 #endif
+    int function_Test(int a, int b);
+    void test_kernel_printf();
+
     int kernel_printf(const char *format, ...);
 
     char az_getflag(char flag);

@@ -22,7 +22,7 @@ void az_putnbr(int n)
 	if (n < 0)
 	{
 		i = n * -1;
-		az_putchar('-');
+		kernel_putchar('-');
 	}
 
 	if (i >= 10)
@@ -30,5 +30,5 @@ void az_putnbr(int n)
 		az_putnbr(i / 10);
 	}
 
-	az_putchar((i % 10) + '0');
+	kernel_putchar((i % 10) + '0');
 }

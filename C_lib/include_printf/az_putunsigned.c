@@ -17,5 +17,5 @@ void az_putunsigned(unsigned int n)
 		az_putunsigned(n % 10);
 	}
 	else
-		az_putchar(n + '0');
+		kernel_putchar(n + '0');
 }
