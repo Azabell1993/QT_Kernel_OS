@@ -18,6 +18,11 @@
 #include <QSpacerItem>
 #include <QTextEdit>
 
+/*
+ * @brief Bootloader 생성자
+ * @param parent 부모 위젯, 기본값은 nullptr
+ * @details 부트로더 UI를 초기화하고 부팅 시뮬레이션을 시작합니다.
+ */
 Bootloader::Bootloader(QWidget *parent)
     : QWidget(parent)
 {
@@ -49,10 +54,19 @@ Bootloader::Bootloader(QWidget *parent)
     QTimer::singleShot(500, this, &Bootloader::simulateBootProcess);
 }
 
+/*
+ * @brief Bootloader 소멸자
+ * @details 부트로더에서 사용한 자원을 해제합니다.
+ */
 Bootloader::~Bootloader()
 {
 }
 
+/*
+ * @brief 키 입력 이벤트 처리
+ * @param event 키보드 이벤트 객체
+ * @details Enter 키가 눌리면 OS 부팅을 시작합니다.
+ */
 void Bootloader::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
@@ -60,9 +74,13 @@ void Bootloader::keyPressEvent(QKeyEvent *event)
     }
 }
 
+/*
+ * @brief 부팅 시뮬레이션 함수
+ * @details 부팅 과정을 시뮬레이션하여 텍스트로 표시합니다.
+ */
 void Bootloader::simulateBootProcess()
 {
-    // 부팅 시뮬레이션
+    // 부팅 시뮬레이션을 위한 텍스트 창 생성
     QTextEdit *bootScreen = new QTextEdit(this);
     bootScreen->setStyleSheet("background-color: black; color: green; font-family: 'Courier'; font-size: 12px;");
     bootScreen->setReadOnly(true);
@@ -97,6 +115,10 @@ void Bootloader::simulateBootProcess()
     bootScreen->moveCursor(QTextCursor::End);
 }
 
+/*
+ * @brief OS 부팅 시작 함수
+ * @details 부팅이 완료되면 메인 윈도우를 표시하고 부트로더 창을 닫습니다.
+ */
 void Bootloader::startOS()
 {
     // 메인 윈도우로 전환

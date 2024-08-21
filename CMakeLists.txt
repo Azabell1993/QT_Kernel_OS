@@ -5,6 +5,7 @@ project(os VERSION 0.1 LANGUAGES C CXX)  # C 언어 추가
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,6 +19,18 @@ set(PROJECT_SOURCES
     bootloader.h
     bootloader.cpp
     resources.qrc
+
+    # Adding all relevant files to the project sources
+    processmanager.h
+    processmanager.cpp
+
+    mainwindow.h
+    mainwindow.cpp
+    mainwindow.ui
+
+    cmdwindow.h
+    cmdwindow.cpp
+    cmdwindow.ui
 )
 
 # Include C library headers
@@ -31,12 +44,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(os
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        resources.qrc
-        processmanager.h processmanager.cpp
-
-        mainwindow.h mainwindow.cpp mainwindow.ui
-
-        cmdwindow.h cmdwindow.cpp cmdwindow.ui
     )
 else()
     if(ANDROID)

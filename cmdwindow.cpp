@@ -1,4 +1,3 @@
-// cmdWindow.cpp
 /*
  * CMD Window
  *
@@ -14,7 +13,7 @@
 #include <QRegularExpression>
 
 #include "cmdwindow.h"
-#include "ui_cmdwindow.h"  // 여기서도 cmdWindow로 변경
+#include "ui_cmdwindow.h"
 #include "kernel_print.h"
 
 extern "C" {
@@ -25,6 +24,11 @@ extern "C" {
     void az_printf(const char *format, ...);
 }
 
+/*
+ * @brief CMD 창 생성자
+ * @param parent 부모 위젯, 기본값은 nullptr
+ * @details CMD 창을 초기화하고 스타일 및 초기 설정을 적용합니다.
+ */
 CmdWindow::CmdWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::cmdWindow)
@@ -38,18 +42,24 @@ CmdWindow::CmdWindow(QWidget *parent)
     // C 코드에서 사용할 출력 함수 등록
     register_print_function(qt_print);
 
-    // -- test kernel_printf()
-    // test_kernel_printf();
-
     // 초기 명령어 프롬프트
     ui->textEdit->append("kernel> ");
 }
 
+/*
+ * @brief CMD 창 소멸자
+ * @details CMD 창에서 사용한 자원을 해제합니다.
+ */
 CmdWindow::~CmdWindow()
 {
     delete ui;
 }
 
+/*
+ * @brief 키보드 입력 이벤트 처리
+ * @param event 키보드 이벤트 객체
+ * @details Enter 키를 누를 경우, 명령어 입력을 처리합니다.
+ */
 void CmdWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
@@ -59,7 +69,13 @@ void CmdWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
-// 커서
+/*
+ * @brief 이벤트 필터
+ * @param obj 이벤트가 발생한 객체
+ * @param event 처리할 이벤트
+ * @return bool 이벤트를 처리했는지 여부
+ * @details CMD 창에서 특정 키 입력(Enter, 화살표, Backspace)에 대한 동작을 커스터마이징합니다.
+ */
 bool CmdWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (obj == ui->textEdit && event->type() == QEvent::KeyPress) {
@@ -99,7 +115,10 @@ bool CmdWindow::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj, event); // 다른 이벤트는 기본 처리
 }
 
-
+/*
+ * @brief 명령어 제출 처리
+ * @details Enter 키가 눌렸을 때, 사용자가 입력한 명령어를 처리합니다.
+ */
 void CmdWindow::on_submitButton_clicked() {
     // 현재 텍스트를 가져옴
     QString command = ui->textEdit->toPlainText().split("\n").last().replace("kernel> ", "");
@@ -111,6 +130,11 @@ void CmdWindow::on_submitButton_clicked() {
     ui->textEdit->insertPlainText("\nkernel> ");
 }
 
+/*
+ * @brief 명령어 처리 함수
+ * @param command 사용자가 입력한 명령어
+ * @details 사용자가 입력한 명령어를 분석하고, 해당 명령어에 맞는 동작을 수행합니다.
+ */
 void CmdWindow::handleCommand(const QString &command) {
     if (command == "exit") {
         close();
@@ -134,24 +158,12 @@ void CmdWindow::handleCommand(const QString &command) {
         QRegularExpressionMatch match = re.match(command);
         if (match.hasMatch()) {
             QString message = match.captured(1);
-            az_printf("\n%s", message.toStdString().c_str());  // '\n' 제거
+            az_printf("\n%s", message.toStdString().c_str());  // 메시지 출력
             ui->textEdit->append("");  // 새로운 라인 추가
         } else {
             ui->textEdit->append("Invalid command format. Use: create printf(\"message\")");
         }
     }
-
-    // else if (command.startsWith("kernel_printf(")) {
-    //     QRegularExpression re(R"raw(kernel_printf\("(.*)"\))raw");
-    //     QRegularExpressionMatch match = re.match(command);
-    //     if (match.hasMatch()) {
-    //         QString message = match.captured(1);
-    //         kernel_printf("%s", message.toStdString().c_str());  // 메시지 출력
-    //         ui->textEdit->append("");  // 새로운 라인 추가
-    //     } else {
-    //         ui->textEdit->append("Invalid command format. Use: kernel_printf(\"message\")");
-    //     }
-    // }
 
     else if (command.startsWith("kernel_printf(")) {
         QRegularExpression re(R"raw(kernel_printf\("(.*)"\))raw");
@@ -159,13 +171,13 @@ void CmdWindow::handleCommand(const QString &command) {
         if (match.hasMatch()) {
             QString message = match.captured(1);
 
-            // Output to the Qt console (qDebug)
+            // Qt 콘솔에 출력
             QString debugMessage = message;
             debugMessage.replace("\\n\n", "\n");
             qDebug().noquote() << debugMessage;
 
-            // Display in the command window UI
-            ui->textEdit->append(message);  // Add the message to the textEdit
+            // CMD 창 UI에 표시
+            ui->textEdit->append(message);  // 메시지를 textEdit에 추가
             kernel_printf("Console Test Print :::: %s\n", message.toStdString().c_str());  // 메시지 출력
             ui->textEdit->append("");  // 새로운 라인 추가
         } else {
@@ -181,7 +193,7 @@ void CmdWindow::handleCommand(const QString &command) {
         QString process_name = command.mid(7);
         bool success = kernel_create_process(process_name.toStdString().c_str());
         if (success) {
-            //ui->textEdit->append("Created process: " + process_name);
+            // ui->textEdit->append("Created process: " + process_name);
         } else {
             ui->textEdit->append("Failed to create process: " + process_name);
         }
@@ -191,7 +203,7 @@ void CmdWindow::handleCommand(const QString &command) {
         QString process_name = command.mid(5);
         bool success = kernel_kill_process(process_name.toStdString().c_str());
         if (success) {
-            //ui->textEdit->append("Killed process: " + process_name);
+            // ui->textEdit->append("Killed process: " + process_name);
         } else {
             ui->textEdit->append("No running process found with name: " + process_name);
         }
@@ -211,6 +223,11 @@ void CmdWindow::handleCommand(const QString &command) {
     }
 }
 
+/*
+ * @brief Qt 콘솔 출력 함수
+ * @param str 출력할 문자열
+ * @details C 코드에서 호출되는 출력 함수로, CMD 창 UI에 메시지를 표시합니다.
+ */
 void CmdWindow::qt_print(const char *str)
 {
     CmdWindow *window = qobject_cast<CmdWindow *>(qApp->activeWindow());
@@ -221,4 +238,3 @@ void CmdWindow::qt_print(const char *str)
         // window->ui->textEdit->insertPlainText("\n");  // 개행 추가
     }
 }
-
