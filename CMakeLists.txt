@@ -33,6 +33,7 @@ set(PROJECT_SOURCES
     cmdwindow.ui
 )
 
+# C에서 가져올 정적 라이브러리
 # Include C library headers
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include)
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include_printf)
@@ -57,6 +58,7 @@ else()
     endif()
 endif()
 
+# .a = 정적 라이브러리
 # Link with C library and Qt Widgets
 target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/C_lib/kernel_lib.a)
 target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/C_lib/kernel_printf.a)

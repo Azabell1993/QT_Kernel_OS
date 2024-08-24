@@ -398,20 +398,20 @@ void az_f(va_list ap, char *format, char flag) {
     double f = va_arg(ap, double);   // 부동소수점 값을 받아옴
     int param_width = az_getparam(format, flag);  // 너비를 가져옴
     int param_precision = 6;  // 기본 정밀도는 6자리로 설정
-
+    
     // 정밀도 설정
     char *precision_ptr = az_strchr(format, '.');
     if (precision_ptr != NULL) {
         param_precision = atoi(precision_ptr + 1);
     }
-
+    
     // 서식 옵션에 따라 부동소수점 출력
     char format_string[20];
     sprintf(format_string, "%%%s%d.%df", (flag == '-') ? "-" : "", param_width, param_precision);
     
     char buffer[50];
     sprintf(buffer, format_string, f);
-
+    
     az_putstr(buffer);
 }
 
@@ -591,6 +591,7 @@ void az_u(va_list ap, char *format, char flag)
     az_putunsigned(u); // unsigned 정수 출력
 }
 
+// QT에서 사용할 내장함수.
 int kernel_printf(const char *format, ...)
 {
     va_list ap; // 가변 인자를 저장하기 위한 va_list 선언

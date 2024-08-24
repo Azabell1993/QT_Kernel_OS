@@ -67,6 +67,8 @@ MainWindow::MainWindow(QWidget *parent)
     recycleBinIcon->setText("Recycle Bin");
     recycleBinIcon->setToolButtonStyle(Qt::ToolButtonTextUnderIcon); // 아이콘 아래 텍스트 배치
 
+    // 여기다가 메모장이나 다른 기타 프로그램을 만들어서 이미지를 적용하고 호출 할 수 있음
+
     // "My Computer" 아이콘 클릭 시 팝업창 표시
     connect(computerIcon, &QToolButton::clicked, this, &MainWindow::showImplementationPopup);
 

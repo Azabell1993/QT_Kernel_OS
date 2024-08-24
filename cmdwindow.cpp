@@ -29,6 +29,7 @@ void kernel_list_processes();
 bool kernel_kill_process(const char *process_name);
 void register_print_function(void (*print_function)(const char *str));
 void az_printf(const char *format, ...);
+void kernel_putchar(char c);
 }
 
 
@@ -41,7 +42,7 @@ CmdWindow::CmdWindow(QWidget *parent)
     : QDialog(parent), ui(new Ui::cmdWindow)
 {
     ui->setupUi(this);
-    runTests();
+    // runTests();
 
     // CMD 스타일로 배경을 검은색, 텍스트를 녹색으로 설정
     ui->textEdit->setStyleSheet("background-color: black; color: green; font-family: 'Courier'; font-size: 12px;");
@@ -152,8 +153,8 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append("Available commands:");
         ui->textEdit->append("  create <process_name>       - Create a new process with the given name");
         ui->textEdit->append("  create printf(\"message\")  - Print a message");
-        ui->textEdit->append("  kernel_printf(\"message\")  - Print a message using kernel_printf");
-        ui->textEdit->append("  kernel_printf_test : kp_test");
+        ui->textEdit->append("  printf(\"message\")  - Print a message using kernel_printf");
+        ui->textEdit->append("  printf_test : kp_test");
         ui->textEdit->append("  kill <process_name>         - Kill the process with the given name");
         ui->textEdit->append("  list                        - List all processes");
         ui->textEdit->append("  clear                       - Clear the screen");
@@ -171,9 +172,9 @@ void CmdWindow::handleCommand(const QString &command) {
             ui->textEdit->append("Invalid command format. Use: create printf(\"message\")");
         }
     }
-    else if (command.startsWith("kernel_printf(")) {
-        QRegularExpression re1(R"raw(kernel_printf\("([^"]*)"\))raw");
-        QRegularExpression re2(R"raw(kernel_printf\("([^"]*)"\s*,\s*(.*)\))raw");
+    else if (command.startsWith("printf(")) {
+        QRegularExpression re1(R"raw(printf\("([^"]*)"\))raw");
+        QRegularExpression re2(R"raw(printf\("([^"]*)"\s*,\s*(.*)\))raw");
 
         QRegularExpressionMatch match1 = re1.match(command);
         QRegularExpressionMatch match2 = re2.match(command);
@@ -187,6 +188,63 @@ void CmdWindow::handleCommand(const QString &command) {
             ui->textEdit->append(message);
             kernel_printf("%s", message.toStdString().c_str());
             ui->textEdit->append("");
+
+            /** test **/
+            kernel_printf("\n\n******** Test kernel_printf Function ********\n");
+            kernel_printf("Hello world!\n");
+            kernel_printf("A single character : %c \n", 'T');
+            kernel_printf("An integer : %d \n", 37);
+            kernel_printf("An integer : %d \n", 299);
+            kernel_printf("5-4 = %d\n", 1);
+
+            int a = 1;
+            int b = 2;
+
+            kernel_printf("%d + %d = %d\n", a, b, a + b);
+            kernel_printf("%d\t\t\t String.\n", 12345678);
+            kernel_printf("-650\n");
+            kernel_printf("%+d\n", 430);
+            kernel_printf("%+1d\n", 650);
+            kernel_printf("%+10d\n", 499);
+            kernel_printf("% 3d\n", 1230);
+            kernel_printf("%08d\n", 342);
+            kernel_printf("%+03d\n", -430);
+            kernel_printf("%3d\n", -43);
+            kernel_printf("%u\n", 23919293929392);
+            kernel_printf("%+-u\n", 12345);
+            kernel_printf("%+10u\n", 12345);
+            kernel_printf("%-4s\n", "Az");
+            kernel_printf("%o\n", 333);
+            kernel_printf("%-0#+10o\n", 2048);
+            kernel_printf("%X\n", 12345678);
+            kernel_printf("%#+x\n", 12345678);
+            kernel_printf("\n\nfunction call Test\n");
+            kernel_printf("%d + %d = %d", 5, 6, function_Test(5, 6));
+            kernel_printf("\n");
+
+            /** 정적 라이브러리를 갖고 오는 방법은 두가지임. 위의 kernel_printf는 kernel_printf.h헤더이며 아래는 kernel_lib.h임. **/
+            /** 따라서 이 코드 파일에서 kernel_printf.h만 했기 때문에 아래도 헤더파일로 선언해야하는데 **/
+            /** 공부목적을 위해서 헤더 파일이 아닌 extern 메크로를 사용함 **/
+            /** 선언을 하니 워닝이 사라짐 **/
+            /*** kernel_putchar ***/
+            kernel_putchar('H');
+            kernel_putchar('E');
+            kernel_putchar('L');
+            kernel_putchar('L');
+            kernel_putchar('O');
+            kernel_putchar('\n');
+
+            kernel_putchar('V');
+            kernel_putchar('E');
+            kernel_putchar('D');
+            kernel_putchar('A');
+            kernel_putchar('\n');
+
+            kernel_printf("-\n");
+            kernel_printf(".\n");
+            kernel_printf("/\n");
+            kernel_printf("'()*+,-./\n");
+
         }
         else if (match2.hasMatch()) {
             // 포맷 문자열과 가변 인자 처리
@@ -284,17 +342,24 @@ void CmdWindow::executeKernelPrintf(const QString &format, const QVariantList &a
         }
         break;
     case 2:
-        kernel_printf(cFormat, args[0].toInt(), args[1].toInt());
+        if (format.contains("%f")) {
+            kernel_printf(cFormat, args[0].toDouble(), args[1].toDouble());
+        } else {
+            kernel_printf(cFormat, args[0].toInt(), args[1].toInt());
+        }
         break;
     case 3:
-        kernel_printf(cFormat, args[0].toInt(), args[1].toInt(), args[2].toInt());
+        if (format.contains("%f")) {
+            kernel_printf(cFormat, args[0].toDouble(), args[1].toDouble(), args[2].toDouble());
+        } else {
+            kernel_printf(cFormat, args[0].toInt(), args[1].toInt(), args[2].toInt());
+        }
         break;
     default:
         kernel_printf("Error: Unsupported number of arguments.\n");
         break;
     }
 }
-
 
 
 /*
