@@ -39,6 +39,7 @@ void az_x(va_list ap, char *format, char flag);
 void az_d(va_list ap, char *format, char flag);
 void az_i(va_list ap, char *format, char flag);
 void az_o(va_list ap, char *format, char flag);
+void az_f(va_list ap, char *format, char flag);
 void az_u(va_list ap, char *format, char flag);
 
 // az_default 함수는 포맷 문자열을 분석하고 그에 따라 적절한 처리를 수행합니다.
@@ -338,7 +339,13 @@ int az_getparam(char *format, char flag)
 
     tmp = az_memalloc(az_strlen(format)); // 메모리 할당
     i = 0;
-    if (format[i] == ' ' && az_isdigit(format[i + 1]))
+
+    // '.' 플래그가 존재하는 경우 처리
+    if (flag == '.')
+    {
+        i = az_chrpos(format, '.') + 1; // '.' 다음부터 숫자를 가져옴
+    }
+    else if (format[i] == ' ' && az_isdigit(format[i + 1]))
         i++;
 
     if (flag)
@@ -348,6 +355,7 @@ int az_getparam(char *format, char flag)
         i++;
     else
         i = az_chrpos(format, flag) + 1;
+    
     j = 0;
 
     while (az_isdigit(format[i]))
@@ -363,8 +371,7 @@ int az_getparam(char *format, char flag)
 /////////////////////////////////////////////////////////////////////////////////////////
 
 // az_speciftypeini 함수는 포맷 문자에 따라 적절한 출력 함수를 호출합니다.
-void az_speciftypeini(char *format, char specif, char flag, va_list ap)
-{
+void az_speciftypeini(char *format, char specif, char flag, va_list ap) {
     if (specif == 'c' || specif == 'C')
         az_c(ap, format, flag);
     else if (specif == 's' || specif == 'S')
@@ -381,7 +388,33 @@ void az_speciftypeini(char *format, char specif, char flag, va_list ap)
         az_o(ap, format, flag);
     else if (specif == 'u' || specif == 'U')
         az_u(ap, format, flag);
+    else if (specif == 'f' || specif == 'F')
+        az_f(ap, format, flag);
 }
+
+
+// az_f 함수는 'f' (소수점 있는 실수) 형식의 데이터를 처리합니다.
+void az_f(va_list ap, char *format, char flag) {
+    double f = va_arg(ap, double);   // 부동소수점 값을 받아옴
+    int param_width = az_getparam(format, flag);  // 너비를 가져옴
+    int param_precision = 6;  // 기본 정밀도는 6자리로 설정
+
+    // 정밀도 설정
+    char *precision_ptr = az_strchr(format, '.');
+    if (precision_ptr != NULL) {
+        param_precision = atoi(precision_ptr + 1);
+    }
+
+    // 서식 옵션에 따라 부동소수점 출력
+    char format_string[20];
+    sprintf(format_string, "%%%s%d.%df", (flag == '-') ? "-" : "", param_width, param_precision);
+    
+    char buffer[50];
+    sprintf(buffer, format_string, f);
+
+    az_putstr(buffer);
+}
+
 
 // az_c 함수는 'c' (문자) 형식의 데이터를 처리합니다.
 void az_c(va_list ap, char *format, char flag)
@@ -472,18 +505,32 @@ void az_d(va_list ap, char *format, char flag)
 
     param = az_getparam(format, flag) - 1;
     d = va_arg(ap, int);
-    if (param && flag == '\0')
-        az_fill(param - az_nbrlen(d), ' ');
-    if (flag)
+
+    // '-' 플래그 처리 (왼쪽 정렬)
+    if (flag == '-')
     {
-        az_plusflag(d, flag, param, format); // '+' 플래그 처리
-        az_minusflag(d, flag);               // '-' 플래그 처리
-        az_spaceflag(d, flag, param);        // ' ' 플래그 처리
-        az_zeroflag(d, flag);                // '0' 플래그 처리
+        az_putnbr(d);
+        if (param > 0)
+            az_fill(param - az_nbrlen(d), ' ');
     }
     else
-        az_putnbr(d); // 숫자 출력
+    {
+        // '+' 플래그 처리 (양수 앞에 +)
+        if (flag == '+' && d >= 0)
+            kernel_putchar('+');
+
+        // 공백 채우기
+        if (param > 0 && flag != '0')
+            az_fill(param - az_nbrlen(d), ' ');
+
+        // 0 채우기
+        if (flag == '0')
+            az_fill(param - az_nbrlen(d), '0');
+
+        az_putnbr(d);
+    }
 }
+
 
 // az_i 함수는 'i' (정수) 형식의 데이터를 처리합니다.
 void az_i(va_list ap, char *format, char flag)

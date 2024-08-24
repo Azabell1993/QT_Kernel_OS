@@ -1,20 +1,12 @@
-// cmdwindow.h
-/*
- * CMD Window
- *
- * Maintainer: Park Jiwoo
- *
- * Copyright (C) 2024 Park-Jiwoo
- *
- */
 #ifndef CMDWINDOW_H
 #define CMDWINDOW_H
 
 #include <QDialog>
+#include <QVariantList>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class cmdWindow; }
-QT_END_NAMESPACE
+namespace Ui {
+class cmdWindow;
+}
 
 class CmdWindow : public QDialog
 {
@@ -26,18 +18,26 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 private slots:
     void on_submitButton_clicked();
+    void handleCommand(const QString &command);
+    static void qt_print(const char *str);
+
+    // 함수 선언
+    QVariantList parseArguments(const QString &arguments);
+    void executeKernelPrintf(const QString &format, const QVariantList &args);
+
+    int evaluateSimpleExpression(const QString &expression);
+
+    int precedence(QChar op);
+    int applyOp(int a, int b, QChar op);
+
+    void runTests();
 
 private:
     Ui::cmdWindow *ui;
-
-    void handleCommand(const QString &command);
-    bool eventFilter(QObject *obj, QEvent *event) override;
-
-    // C 코드에서 호출할 출력 함수
-    static void qt_print(const char *str);
 };
 
 #endif // CMDWINDOW_H
