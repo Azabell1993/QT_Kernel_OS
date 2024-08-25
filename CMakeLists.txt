@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(os VERSION 0.1 LANGUAGES C CXX)  # C 언어 추가
+project(os VERSION 0.1 LANGUAGES C CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -15,32 +15,25 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
     main.cpp
-
     bootloader.h
     bootloader.cpp
     resources.qrc
-
-    # Adding all relevant files to the project sources
     processmanager.h
     processmanager.cpp
-
     mainwindow.h
     mainwindow.cpp
     mainwindow.ui
-
     cmdwindow.h
     cmdwindow.cpp
     cmdwindow.ui
 )
 
-# C에서 가져올 정적 라이브러리
-# Include C library headers
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include)
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include_printf)
 
-# Add the directory where kernel_lib.a is located
 link_directories(${CMAKE_SOURCE_DIR}/C_lib)
 
+# Common executable target
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(os
         MANUAL_FINALIZATION
@@ -58,11 +51,20 @@ else()
     endif()
 endif()
 
-# .a = 정적 라이브러리
-# Link with C library and Qt Widgets
-target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/C_lib/kernel_lib.a)
-target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets ${CMAKE_SOURCE_DIR}/C_lib/kernel_printf.a)
+# Link the common C libraries and Qt Widgets
+target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_lib.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_printf.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_1.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_2.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_3.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_4.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_5.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_6.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_7.a)
 
+
+# Set target properties
 set_target_properties(os PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
@@ -71,12 +73,14 @@ set_target_properties(os PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+# Install target
 install(TARGETS os
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+# Finalize the executable for Qt 6
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(os)
 endif()

@@ -7,8 +7,8 @@
  * Copyright (C) 2024 Park-Jiwoo
  *
  */
-#ifndef STDIO_H
-#define STDIO_H
+#ifndef KERNEL_PRINTF_H
+#define KERNEL_PRINTF_H
 
 #include "kernel_pr_he.h"
 #include <stdarg.h>

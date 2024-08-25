@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.page-template": "vue",
+    "*.layout-template": "vue",
+    "*.vue": "vue",
+    "time.h": "c",
+    "random": "c",
+    "kernel_lib.h": "c"
+  }
+}

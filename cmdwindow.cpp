@@ -30,6 +30,14 @@ bool kernel_kill_process(const char *process_name);
 void register_print_function(void (*print_function)(const char *str));
 void az_printf(const char *format, ...);
 void kernel_putchar(char c);
+
+int main_1();
+int main_2();
+int main_3();
+int main_4();
+int main_5();
+int main_6();
+int main_7();
 }
 
 
@@ -155,6 +163,7 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append("  create printf(\"message\")  - Print a message");
         ui->textEdit->append("  printf(\"message\")  - Print a message using kernel_printf");
         ui->textEdit->append("  printf_test : kp_test");
+        ui->textEdit->append("  run_asm <number>        - Run the kernel_asm_<number> function.");
         ui->textEdit->append("  kill <process_name>         - Kill the process with the given name");
         ui->textEdit->append("  list                        - List all processes");
         ui->textEdit->append("  clear                       - Clear the screen");
@@ -172,6 +181,48 @@ void CmdWindow::handleCommand(const QString &command) {
             ui->textEdit->append("Invalid command format. Use: create printf(\"message\")");
         }
     }
+
+    else if (command.startsWith("asm ")) {
+        QStringList parts = command.split(" ");
+        if (parts.size() == 2) {
+            int number = parts[1].toInt();
+            switch (number) {
+            case 1:
+                ui->textEdit->append("Executed kernel_asm_1.");
+                main_1();  // kernel_asm_1.a의 main_1 함수 호출
+                break;
+            case 2:
+                ui->textEdit->append("Executed kernel_asm_2.");
+                main_2();  // kernel_asm_2.a의 main_2 함수 호출
+                break;
+            case 3:
+                ui->textEdit->append("Executed kernel_asm_3.");
+                main_3();  // kernel_asm_3.a의 main_3 함수 호출
+                break;
+            case 4:
+                ui->textEdit->append("Executed kernel_asm_4.");
+                main_4();  // kernel_asm_4.a의 main_4 함수 호출
+                break;
+            case 5:
+                ui->textEdit->append("Executed kernel_asm_5.");
+                main_5();  // kernel_asm_5.a의 main_5 함수 호출
+                break;
+            case 6:
+                ui->textEdit->append("Executed kernel_asm_6.");
+                main_6();  // kernel_asm_6.a의 main_6 함수 호출
+                break;
+            case 7:
+                ui->textEdit->append("Executed kernel_asm_7.");
+                main_7();  // kernel_asm_7.a의 main_7 함수 호출
+                break;
+            default:
+                ui->textEdit->append("Invalid number. Please enter a number between 1 and 7.");
+            }
+        } else {
+            ui->textEdit->append("Usage: asm <number>");
+        }
+    }
+
     else if (command.startsWith("printf(")) {
         QRegularExpression re1(R"raw(printf\("([^"]*)"\))raw");
         QRegularExpression re2(R"raw(printf\("([^"]*)"\s*,\s*(.*)\))raw");
@@ -298,7 +349,6 @@ void CmdWindow::handleCommand(const QString &command) {
     }
 }
 
-
 /*
  * @brief Qt 콘솔 출력 함수
  * @param str 출력할 문자열
@@ -310,9 +360,10 @@ void CmdWindow::qt_print(const char *str)
     if (window && window->ui && window->ui->textEdit) {
         window->ui->textEdit->moveCursor(QTextCursor::End);
         window->ui->textEdit->insertPlainText(QString::fromUtf8(str));
+        // Qt 이벤트 루프를 강제로 실행하여 즉시 업데이트
+        QCoreApplication::processEvents();
     }
 }
-
 
 /*
  * @brief kernel_printf와 함께 가변 인자를 처리하는 함수

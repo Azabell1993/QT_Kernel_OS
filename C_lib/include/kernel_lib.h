@@ -7,8 +7,8 @@
  * Copyright (C) 2024 Park-Jiwoo
  *
  */
-#ifndef PROCESSMANAGER_H
-#define PROCESSMANAGER_H
+#ifndef KERNEL_LIB_H
+#define KERNEL_LIB_H
 
 #include <iostream>
 #include <vector>
