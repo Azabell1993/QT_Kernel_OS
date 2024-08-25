@@ -163,7 +163,7 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append("  create printf(\"message\")  - Print a message");
         ui->textEdit->append("  printf(\"message\")  - Print a message using kernel_printf");
         ui->textEdit->append("  printf_test : kp_test");
-        ui->textEdit->append("  run_asm <number>        - Run the kernel_asm_<number> function.");
+        ui->textEdit->append("  asm <number>        - Run the kernel_asm_<number> function.");
         ui->textEdit->append("  kill <process_name>         - Kill the process with the given name");
         ui->textEdit->append("  list                        - List all processes");
         ui->textEdit->append("  clear                       - Clear the screen");
