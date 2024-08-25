@@ -1,4 +1,7 @@
-# QT_Kernel_OS
+# QT_Kernel_OS  
+
+![image](https://github.com/user-attachments/assets/f1d69a48-f0eb-46ca-9c86-0bf5dd1bf5f7)  
+  
 A simple kernel OS prototype built using Qt at Hanwha Vision VEDA Academy.  
 Park Ji-woo, a first-term trainee of Hanwha Vision VEDA Academy.  
 A company called Hanwha Vision in Korea selected 60 students for training at the academy.  
