@@ -1,0 +1,90 @@
+@startuml
+
+' Define packages (directories)
+package "C_lib" {
+    [Makefile]
+
+    package "include" {
+        [kernel_asm.h]
+        [kernel_lib.h]
+        [kernel_print.h]
+    }
+
+    package "include_printf" {
+        [az_atoi.c]
+        [az_bzero.c]
+        [az_chrpos.c]
+        [az_isalpha.c]
+        [az_isdigit.c]
+        [az_isprint.c]
+        [az_itoa.c]
+        [az_memalloc.c]
+        [az_memset.c]
+        [az_nbrlen.c]
+        [az_putchar.c]
+        [az_putchar_fd.c]
+        [az_puthex.c]
+        [az_putnbr.c]
+        [az_putoctal.c]
+        [az_putstr.c]
+        [az_putunsigned.c]
+        [az_strchr.c]
+        [az_strcmp.c]
+        [az_strlen.c]
+        [az_strsub.c]
+        [kernel_pr_he.h]
+    }
+
+    package "src" {
+        [kernel_asm.c]
+        [kernel_lib.c]
+        [kernel_printf.c]
+    }
+
+    [memo.c]
+}
+
+' Define packages (directories) for root files
+package "root" {
+    [CMakeLists.txt]
+    [Makefile]
+    [Doxyfile]
+    [LICENSE]
+    [README.md]
+    [bootloader.cpp]
+    [bootloader.h]
+    [cmdwindow.cpp]
+    [cmdwindow.h]
+    [mainwindow.cpp]
+    [mainwindow.h]
+    [processmanager.cpp]
+    [processmanager.h]
+    [resources.qrc]
+    [libkernel_lib.a]
+    [mac_run.sh]
+    [main.cpp]
+}
+
+' Define relationships
+[kernel_asm.c] --> [kernel_asm.h]
+[kernel_lib.c] --> [kernel_lib.h]
+[kernel_printf.c] --> [kernel_print.h]
+
+[bootloader.cpp] --> [bootloader.h]
+[cmdwindow.cpp] --> [cmdwindow.h]
+[mainwindow.cpp] --> [mainwindow.h]
+[processmanager.cpp] --> [processmanager.h]
+
+' Build process relationships
+[Makefile] --> [kernel_asm.c]
+[Makefile] --> [kernel_lib.c]
+[Makefile] --> [kernel_printf.c]
+[Makefile] --> [bootloader.cpp]
+[Makefile] --> [cmdwindow.cpp]
+[Makefile] --> [mainwindow.cpp]
+[Makefile] --> [processmanager.cpp]
+
+'CMake and Makefile relationship
+[CMakeLists.txt] --> [Makefile]
+
+@enduml
