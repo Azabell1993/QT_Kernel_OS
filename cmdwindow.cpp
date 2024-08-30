@@ -21,6 +21,7 @@
 
 // C 정적 라이브러리
 #include "kernel_print.h"
+#include "kernel_asm.h"
 
 // 직접 하드코딩된 C 함수
 extern "C" {

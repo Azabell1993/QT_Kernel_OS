@@ -32,6 +32,7 @@ set(PROJECT_SOURCES
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include)
+include_directories(${CMAKE_SOURCE_DIR}/C_lib/include/kernel_asm.h)
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include_printf)
 
 link_directories(${CMAKE_SOURCE_DIR}/C_lib)
