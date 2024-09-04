@@ -4,9 +4,14 @@
 UNAME_S := $(shell uname -s)
 UNAME_M := $(shell uname -m)
 
-ifeq ($(UNAME_S), Darwin)      # macOS
+
+ifeq ($(UNAME_S), Darwin)      # macOS (both x86_64 and ARM64)
     CC = clang
-    ARCH_FLAGS = -arch $(UNAME_M)
+    ifeq ($(UNAME_M), arm64)
+        ARCH_FLAGS = -arch arm64
+    else
+        ARCH_FLAGS = -arch x86_64
+    endif
     # macOS에서는 '-Wno-format-truncation'을 지원하지 않으므로 제외
     CFLAGS = -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -Wno-unused-variable -fcommon
 else ifeq ($(UNAME_S), Linux)  # Ubuntu (Linux)

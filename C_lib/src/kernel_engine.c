@@ -136,6 +136,17 @@ void create_multi_processes(int num_processes, ...) {
     va_end(args);
 }
 
+// Network tcp function
+void create_network_tcp_process(int num_tcp_proc, ...) {
+    va_list args;
+    va_start(args, num_tcp_proc);
+    
+    // tcp를 주고 받는 정도
+    // 잘 구현되면 확장
+
+    va_end(args);
+}
+
 // Semaphore initialization function
 sem_t* init_semaphore(int value) {
     sem_t* sem = (sem_t*)malloc(sizeof(sem_t));

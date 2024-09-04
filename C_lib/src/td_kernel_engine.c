@@ -224,6 +224,7 @@ int main(int argc __attribute__((unused)), char** argv __attribute__((unused))) 
         // 단계 16: 네트워크 시뮬레이션 (스텁)
         kernel_printf("부모 프로세스에서 네트워크 작업 시뮬레이션 중\n");
         // 보통 여기서는 소켓과 네트워크 인터페이스를 포함합니다.
+        // tcp...
         kernel_printf("네트워크 작업 시뮬레이션 완료\n");
 
         // 단계 17: 시스템 호출 시뮬레이션
