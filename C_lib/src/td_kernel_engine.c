@@ -20,6 +20,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <sys/socket.h>
+#include <fcntl.h>
 
 #define NUM_THREADS 3
 #define NUM_PROCESSES 2
@@ -60,7 +61,7 @@ int main(int argc __attribute__((unused)), char** argv __attribute__((unused))) 
 
     // 단계 2: 환경 설정
     kernel_printf("커널 환경 설정 중\n");
-    kernel_semaphore = init_semaphore();
+    kernel_semaphore = init_semaphore(1);
     kernel_mutex = init_mutex();
 
     // 단계 3: IPC를 위한 소켓 페어 생성
@@ -424,7 +425,7 @@ static void* mutex_thread(void* arg) {
 static void test_synchronization() {
     safe_kernel_printf("동기화 테스트 시작\n");
 
-    sem_t* semaphore = init_semaphore();
+    sem_t* semaphore = init_semaphore(1);
     pthread_mutex_t* mutex = init_mutex();
 
     pthread_t sem_threads[2];

@@ -55,7 +55,7 @@ void create_single_process(void (*func)());
 void create_multi_processes(int num_processes, ...);
 
 // Semaphore and mutex initialization function declarations
-sem_t* init_semaphore();
+sem_t* init_semaphore(int value);
 pthread_mutex_t* init_mutex();
 
 // Error handling function declarations

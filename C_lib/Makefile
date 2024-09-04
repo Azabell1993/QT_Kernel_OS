@@ -2,17 +2,21 @@
 
 # Determine the OS and set the compiler
 UNAME_S := $(shell uname -s)
+UNAME_M := $(shell uname -m)
 
 ifeq ($(UNAME_S), Darwin)      # macOS
     CC = clang
-else ifeq ($(UNAME_S), Linux)  # Linux
+    ARCH_FLAGS = -arch $(UNAME_M)
+    # macOS에서는 '-Wno-format-truncation'을 지원하지 않으므로 제외
+    CFLAGS = -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -Wno-unused-variable -fcommon
+else ifeq ($(UNAME_S), Linux)  # Ubuntu (Linux)
     CC = gcc
+    ARCH_FLAGS =
+    # Linux에서는 '-Wno-format-truncation'을 사용
+    CFLAGS = -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -Wno-unused-variable -Wno-format-truncation -fcommon
 else
     $(error Unsupported OS: $(UNAME_S))
 endif
-
-# Compiler flags
-CFLAGS = -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -fcommon
 
 # Source directories
 STDIO_SRC_DIR = include_printf
@@ -54,20 +58,20 @@ endif
 # Compile .c files to .o files for x86_64
 $(KERNEL_SRC_DIR)/%.x86_64.o: $(KERNEL_SRC_DIR)/%.c
 	@echo "Compiling for x86_64: $<"
-	$(CC) $(CFLAGS) -arch x86_64 -c $< -o $@
+	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
 
 $(STDIO_SRC_DIR)/%.x86_64.o: $(STDIO_SRC_DIR)/%.c
 	@echo "Compiling for x86_64: $<"
-	$(CC) $(CFLAGS) -arch x86_64 -c $< -o $@
+	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
 
 # Compile .c files to .o files for arm64
 $(KERNEL_SRC_DIR)/%.arm64.o: $(KERNEL_SRC_DIR)/%.c
 	@echo "Compiling for arm64: $<"
-	$(CC) $(CFLAGS) -arch arm64 -c $< -o $@
+	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
 
 $(STDIO_SRC_DIR)/%.arm64.o: $(STDIO_SRC_DIR)/%.c
 	@echo "Compiling for arm64: $<"
-	$(CC) $(CFLAGS) -arch arm64 -c $< -o $@
+	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
 
 # Target to build and link td_kernel_engine executable
 td_kernel_engine: $(filter-out $(KERNEL_SRC_DIR)/td_kernel_engine.x86_64.o, $(KERNEL_OBJS_X86_64)) $(STDIO_LIB)

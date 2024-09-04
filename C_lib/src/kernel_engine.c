@@ -137,26 +137,33 @@ void create_multi_processes(int num_processes, ...) {
 }
 
 // Semaphore initialization function
-sem_t* init_semaphore() {
+sem_t* init_semaphore(int value) {
     sem_t* sem = (sem_t*)malloc(sizeof(sem_t));
-    
-    #ifdef ARCH_X86_64
-        if (sem_init(sem, 0, value) != 0) {
-            perror("Failed to initialize semaphore");
-            free(sem);
-            return NULL;
-        }
-    #elif defined(ARCH_ARM64)
-        // Initialization for ARM64 architecture
-        if (sem_init(sem, 0, value) != 0) {
-            perror("Failed to initialize semaphore");
+    if (sem == NULL) {
+        perror("Failed to allocate memory for semaphore");
+        exit(EXIT_FAILURE);
+    }
+
+    #ifdef __APPLE__
+        // macOS에서는 named semaphore 사용
+        char sem_name[20];
+        snprintf(sem_name, sizeof(sem_name), "/semaphore_%d", getpid());
+        sem_unlink(sem_name);  // 기존 세마포어 삭제 (중복 방지)
+        sem = sem_open(sem_name, O_CREAT, 0644, value);
+        if (sem == SEM_FAILED) {
+            perror("Failed to initialize semaphore (macOS)");
             free(sem);
             return NULL;
         }
     #else
-    // Unsupported architecture
+        // Linux에서는 unnamed semaphore 사용
+        if (sem_init(sem, 0, value) != 0) {
+            perror("Failed to initialize semaphore (Linux)");
+            free(sem);
+            return NULL;
+        }
     #endif
-    
+
     return sem;
 }
 
