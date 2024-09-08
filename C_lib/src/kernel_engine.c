@@ -137,17 +137,6 @@ void create_multi_processes(int num_processes, ...) {
     va_end(args);
 }
 
-// Network tcp function
-void create_network_tcp_process(int num_tcp_proc, ...) {
-    va_list args;
-    va_start(args, num_tcp_proc);
-    
-    // tcp를 주고 받는 정도
-    // 잘 구현되면 확장
-
-    va_end(args);
-}
-
 // Semaphore initialization function
 sem_t* init_semaphore(int value) {
     sem_t* sem = (sem_t*)malloc(sizeof(sem_t));
@@ -414,8 +403,6 @@ void run_multithreading(int num_threads, int use_semaphore, ...) {
 
     safe_kernel_printf("멀티스레드 실행 시작 (쓰레드 수: %d, 동기화 방법: %s)\n",
                        num_threads, use_semaphore ? "세마포어" : "뮤텍스");
-    // kernel_printf("멀티스레드 실행 시작 (쓰레드 수: %d, 동기화 방법: %s)\n",
-    //               num_threads, use_semaphore ? "세마포어" : "뮤텍스");
 
     pthread_t* threads = (pthread_t*)malloc(num_threads * sizeof(pthread_t));
     int* thread_ids = (int*)malloc(num_threads * sizeof(int));
@@ -434,7 +421,7 @@ void run_multithreading(int num_threads, int use_semaphore, ...) {
         kernel_printf("뮤텍스 초기화 완료\n");
     }
 
-    va_start(args, use_semaphore);  // 수정된 부분
+    va_start(args, use_semaphore);
     for (int i = 0; i < num_threads; i++) {
         thread_ids[i] = i + 1;
 
