@@ -14,10 +14,22 @@
 #include <QRegularExpression>
 #include <QMetaType>
 #include <QDebug>
-#include <QStack>       // 간단한 수식 평가를 위한 스택
-#include <QChar>        // 개별 문자를 처리하기 위한 QChar
+#include <QStack>
+#include <QChar>
+#include <QMessageBox>
+#include <QProcess>
+#include <QInputDialog>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QDialog>
 #include "cmdwindow.h"
 #include "ui_cmdwindow.h"
+
+// kernel engine
+#include "kernel_engine.h"
+
+// 전역에서 접근 가능한 QTextEdit 포인터
+QTextEdit* globalProgressLog = nullptr;
 
 // C 정적 라이브러리
 #include "kernel_print.h"
@@ -32,6 +44,13 @@ void register_print_function(void (*print_function)(const char *str));
 void az_printf(const char *format, ...);
 void kernel_putchar(char c);
 
+sem_t* init_semaphore(int value);
+pthread_mutex_t* init_mutex();
+void* thread_function(void* arg);
+void* semaphore_thread(void* arg);
+void* mutex_thread(void* arg);
+void run_multithreading(int num_threads, int use_semaphore, ...);
+
 int main_1();
 int main_2();
 int main_3();
@@ -40,7 +59,6 @@ int main_5();
 int main_6();
 int main_7();
 }
-
 
 /*
  * @brief CMD 창 생성자
@@ -148,6 +166,25 @@ void CmdWindow::on_submitButton_clicked() {
     ui->textEdit->insertPlainText("\nkernel> ");
 }
 
+// 프로세스를 생성하는 함수
+void CmdWindow::createProcessWithMessage(const QString &message) {
+    QProcess *process = new QProcess(this);
+
+    // 모달 창으로 생성한 프로세스의 진행 상황을 표시
+    QDialog *modalDialog = new QDialog(this);
+    QVBoxLayout *layout = new QVBoxLayout();
+    QLabel *label = new QLabel("Process running with message: " + message, modalDialog);
+    layout->addWidget(label);
+    modalDialog->setLayout(layout);
+    modalDialog->show();
+
+    // 예시: 외부 프로세스를 실행하는 로직 (실제로는 적절한 외부 프로그램 사용)
+    process->start("echo", QStringList() << message);
+    connect(process, &QProcess::readyReadStandardOutput, [=]() {
+        QString output = process->readAllStandardOutput();
+        label->setText("Process Output: " + output);
+    });
+}
 
 /*
  * @brief 명령어 처리 함수
@@ -163,6 +200,9 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append("  create <process_name>       - Create a new process with the given name");
         ui->textEdit->append("  create printf(\"message\")  - Print a message");
         ui->textEdit->append("  printf(\"message\")  - Print a message using kernel_printf");
+        ui->textEdit->append("  multithreading              - Run a multithreading test");
+        ui->textEdit->append("  semaphore                  - Run a semaphore test");
+        ui->textEdit->append("  mutex                      - Run a mutex test");
         ui->textEdit->append("  printf_test : kp_test");
         ui->textEdit->append("  asm <number>        - Run the kernel_asm_<number> function.");
         ui->textEdit->append("  kill <process_name>         - Kill the process with the given name");
@@ -171,13 +211,24 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append("  help                        - Show this help message");
         ui->textEdit->append("  exit                        - Exit the shell");
     }
+
+    else if (command == "multithreading") {
+        runMultithreadingTest();
+    }
+    else if (command == "semaphore") {
+        runSemaphoreTest();
+    }
+    else if (command == "mutex") {
+        runMutexTest();
+    }
     else if (command.startsWith("create printf(")) {
         QRegularExpression re(R"raw(create printf\("(.*)"\))raw");
         QRegularExpressionMatch match = re.match(command);
         if (match.hasMatch()) {
             QString message = match.captured(1);
-            az_printf("\n%s", message.toStdString().c_str());
-            ui->textEdit->append("");
+            // az_printf("\n%s", message.toStdString().c_str());
+            ui->textEdit->append("Create process with message >> "+message);
+            createProcessWithMessage(message);
         } else {
             ui->textEdit->append("Invalid command format. Use: create printf(\"message\")");
         }
@@ -355,15 +406,136 @@ void CmdWindow::handleCommand(const QString &command) {
  * @param str 출력할 문자열
  * @details C 코드에서 호출되는 출력 함수로, CMD 창 UI에 메시지를 표시합니다.
  */
-void CmdWindow::qt_print(const char *str)
-{
-    CmdWindow *window = qobject_cast<CmdWindow *>(qApp->activeWindow());
-    if (window && window->ui && window->ui->textEdit) {
-        window->ui->textEdit->moveCursor(QTextCursor::End);
-        window->ui->textEdit->insertPlainText(QString::fromUtf8(str));
-        // Qt 이벤트 루프를 강제로 실행하여 즉시 업데이트
-        QCoreApplication::processEvents();
+void CmdWindow::qt_print(const char *str) {
+    if (globalProgressLog) {
+        globalProgressLog->append(QString::fromUtf8(str));
+        QCoreApplication::processEvents();  // UI 업데이트
     }
+}
+
+// 멀티스레드 테스트 실행 + 사용자 입력
+void CmdWindow::runMultithreadingTest() {
+    bool ok;
+    int num_threads = QInputDialog::getInt(this, tr("Multithreading Test"),
+                                           tr("Enter the number of threads:"), 3, 1, 100, 1, &ok);
+    if (!ok) return;
+
+    int use_semaphore = QInputDialog::getInt(this, tr("Synchronization Method"),
+                                             tr("Use semaphore? (0: Mutex, 1: Semaphore)"), 0, 0, 1, 1, &ok);
+    if (!ok || (use_semaphore != 0 && use_semaphore != 1)) return;
+
+    QDialog *threadDialog = new QDialog(this);
+    QVBoxLayout *layout = new QVBoxLayout(threadDialog);
+    QTextEdit *progressLog = new QTextEdit(threadDialog);
+    progressLog->setStyleSheet("background-color: black; color: green; font-family: 'Courier'; font-size: 12px;");
+    progressLog->setReadOnly(true);
+    layout->addWidget(progressLog);
+    threadDialog->setLayout(layout);
+    threadDialog->show();
+
+    // 전역 출력 로그 설정
+    globalProgressLog = progressLog;
+
+    // register_print_function을 사용하여 출력 함수를 등록
+    register_print_function(qt_print);
+
+    // 진행 상황을 실시간으로 UI에 표시
+    progressLog->append("Starting multithreading test with " + QString::number(num_threads) + " threads...");
+    QCoreApplication::processEvents();
+    kernel_printf("Starting multithreading test with %d threads...\n", num_threads);
+    kernel_printf("Using %s\n", use_semaphore ? "semaphore" : "mutex");  
+    kernel_printf("\n");
+
+    // 멀티스레드 실행
+    run_multithreading(num_threads, use_semaphore);
+
+    progressLog->append("Multithreading test completed.");
+    QCoreApplication::processEvents();
+    kernel_printf("Multithreading test completed.\n");
+    kernel_printf("\n");
+
+    // 테스트가 끝난 후 전역 로그 해제
+    globalProgressLog = nullptr;
+}
+
+// 세마포어 테스트 실행 + 사용자 입력
+void CmdWindow::runSemaphoreTest() {
+    bool ok;
+    int num_threads = QInputDialog::getInt(this, tr("Semaphore Test"),
+                                           tr("Enter the number of threads:"), 3, 1, 100, 1, &ok);
+    if (!ok) return;
+
+    QDialog *semDialog = new QDialog(this);
+    QVBoxLayout *layout = new QVBoxLayout(semDialog);
+    QTextEdit *progressLog = new QTextEdit(semDialog);
+    progressLog->setStyleSheet("background-color: black; color: green; font-family: 'Courier'; font-size: 12px;");
+    progressLog->setReadOnly(true);
+    layout->addWidget(progressLog);
+    semDialog->setLayout(layout);
+    semDialog->show();
+
+    // 전역 출력 로그 설정
+    globalProgressLog = progressLog;
+
+    // register_print_function을 사용하여 출력 함수를 등록
+    register_print_function(qt_print);
+
+    // 진행 상황을 실시간으로 UI에 표시
+    progressLog->append("Starting semaphore test with " + QString::number(num_threads) + " threads...");
+    QCoreApplication::processEvents();
+    kernel_printf("Starting semaphore test with %d threads...\n", num_threads);
+    kernel_printf("\n");
+
+    // 세마포어 테스트 진행
+    run_multithreading(num_threads, 1);  // 세마포어 사용
+
+    progressLog->append("Semaphore test completed.");
+    QCoreApplication::processEvents();
+    kernel_printf("Semaphore test completed.\n");
+    kernel_printf("\n");
+
+    // 테스트가 끝난 후 전역 로그 해제
+    globalProgressLog = nullptr;
+}
+
+// 뮤텍스 테스트 실행 + 사용자 입력
+void CmdWindow::runMutexTest() {
+    bool ok;
+    int num_threads = QInputDialog::getInt(this, tr("Mutex Test"),
+                                           tr("Enter the number of threads:"), 3, 1, 100, 1, &ok);
+    if (!ok) return;
+
+    QDialog *mutexDialog = new QDialog(this);
+    QVBoxLayout *layout = new QVBoxLayout(mutexDialog);
+    QTextEdit *progressLog = new QTextEdit(mutexDialog);
+    progressLog->setStyleSheet("background-color: black; color: green; font-family: 'Courier'; font-size: 12px;");
+    progressLog->setReadOnly(true);
+    layout->addWidget(progressLog);
+    mutexDialog->setLayout(layout);
+    mutexDialog->show();
+
+    // 전역 출력 로그 설정
+    globalProgressLog = progressLog;
+
+    // register_print_function을 사용하여 출력 함수를 등록
+    register_print_function(qt_print);
+
+    // 진행 상황을 실시간으로 UI에 표시
+    progressLog->append("Starting mutex test with " + QString::number(num_threads) + " threads...");
+    QCoreApplication::processEvents();
+    kernel_printf("Starting mutex test with %d threads...\n", num_threads);
+    kernel_printf("\n");
+
+    // 뮤텍스 테스트 진행
+    run_multithreading(num_threads, 0);  // 뮤텍스 사용
+
+    progressLog->append("Mutex test completed.");
+    QCoreApplication::processEvents();
+    kernel_printf("Mutex test completed.\n");
+    kernel_printf("\n");
+
+    // 테스트가 끝난 후 전역 로그 해제
+    globalProgressLog = nullptr;
 }
 
 /*

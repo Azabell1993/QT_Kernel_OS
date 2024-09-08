@@ -36,6 +36,12 @@ private slots:
 
     void runTests();
 
+    void createProcessWithMessage(const QString &message);
+    void runSemaphoreTest();
+    void runMultithreadingTest();
+    void runMutexTest();
+
+
 private:
     Ui::cmdWindow *ui;
 };

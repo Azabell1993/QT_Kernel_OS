@@ -26,6 +26,7 @@ static int process_count = 0;
 // Qt에서 구현된 함수 포인터를 사용해 출력
 static void (*qt_print_function)(const char *str) = NULL;
 
+// 새로운 az_printf 함수 구현
 void az_printf(const char *format, ...)
 {
     if (qt_print_function)
@@ -39,11 +40,13 @@ void az_printf(const char *format, ...)
     }
 }
 
+// Qt에서 구현된 함수 포인터를 사용해 출력
 void register_print_function(void (*print_function)(const char *str))
 {
     qt_print_function = print_function;
 }
 
+// cmd창의 printf 함수 구현
 int kernel_create_process(const char *process_name)
 {
     if (process_count >= MAX_PROCESSES)
@@ -65,6 +68,7 @@ int kernel_create_process(const char *process_name)
     return 1; // true
 }
 
+// 프로세스 목록 출력
 void kernel_list_processes()
 {
     az_printf("\nProcess List:\n");
@@ -74,6 +78,7 @@ void kernel_list_processes()
     }
 }
 
+// 프로세스 종료
 int kernel_kill_process(const char *process_name)
 {
     for (int i = 0; i < process_count; i++)

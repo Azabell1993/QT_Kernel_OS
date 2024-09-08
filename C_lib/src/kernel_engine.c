@@ -26,6 +26,7 @@ void safe_kernel_printf(const char *format, ...) {
 
     pthread_mutex_lock(&print_mutex);  // 출력 뮤텍스 잠금
     vprintf(format, args);  // 커널 printf 함수 호출
+    fflush(stdout);
     pthread_mutex_unlock(&print_mutex);  // 출력 뮤텍스 해제
 
     va_end(args);
@@ -350,4 +351,130 @@ void kernel_cmdLineErr(const char *format, ...)
 
     fflush(stderr);
     exit(EXIT_FAILURE);
+}
+
+// 스레드 작업 함수
+void* thread_function(void* arg) {
+    int thread_num = *((int*)arg);
+    safe_kernel_printf("Thread %d: 시작\n", thread_num);
+
+    sleep(1);  // 작업을 모방하기 위한 대기 시간
+    
+    safe_kernel_printf("Thread %d: 종료\n", thread_num);
+    
+    return NULL;
+}
+
+// 세마포어를 사용하는 스레드 작업 함수
+void* semaphore_thread(void* arg) {
+    sem_t* semaphore = (sem_t*)arg;
+
+    safe_kernel_printf("세마포어 대기\n");
+    sem_wait(semaphore);
+    safe_kernel_printf("세마포어 획득\n");
+
+    sleep(1);  // 작업을 모방하기 위한 대기 시간
+
+    sem_post(semaphore);  // 세마포어 해제
+    if(sem_post(semaphore) == -1) {
+        kernel_errExit("Failed to release semaphore");
+    } else {
+        safe_kernel_printf("세마포어 해제\n");
+    }
+
+    return NULL;
+}
+
+// 뮤텍스를 사용하는 스레드 작업 함수
+void* mutex_thread(void* arg) {
+    pthread_mutex_t* mutex = (pthread_mutex_t*)arg;
+
+    safe_kernel_printf("뮤텍스 대기\n");
+    pthread_mutex_lock(mutex);  // 뮤텍스 잠금
+    safe_kernel_printf("뮤텍스 획득\n");
+    
+    sleep(1);  // 작업을 모방하기 위한 대기 시간
+    
+    safe_kernel_printf("뮤텍스 해제\n");
+    if(pthread_mutex_unlock(mutex) != 0) {
+        kernel_errExit("Failed to release mutex");
+    } else {
+        safe_kernel_printf("뮤텍스 해제\n");
+    }
+    
+    return NULL;
+}
+
+// 멀티스레드 실행 함수 (쓰레드 수 및 동기화 방법을 입력받음)
+void run_multithreading(int num_threads, int use_semaphore, ...) {
+    if (num_threads < 1 || num_threads > 100) {
+        safe_kernel_printf("쓰레드 수는 1 이상 100 이하의 값이어야 합니다.\n");
+        return;
+    }
+
+    safe_kernel_printf("멀티스레드 실행 시작 (쓰레드 수: %d, 동기화 방법: %s)\n",
+                       num_threads, use_semaphore ? "세마포어" : "뮤텍스");
+    // kernel_printf("멀티스레드 실행 시작 (쓰레드 수: %d, 동기화 방법: %s)\n",
+    //               num_threads, use_semaphore ? "세마포어" : "뮤텍스");
+
+    pthread_t* threads = (pthread_t*)malloc(num_threads * sizeof(pthread_t));
+    int* thread_ids = (int*)malloc(num_threads * sizeof(int));
+    va_list args;
+
+    sem_t* semaphore = NULL;
+    pthread_mutex_t* mutex = NULL;
+
+    if (use_semaphore) {
+        semaphore = init_semaphore(1);  // 세마포어 초기화
+        safe_kernel_printf("세마포어 초기화 완료\n");
+        kernel_printf("세마포어 초기화 완료\n");
+    } else {
+        mutex = init_mutex();  // 뮤텍스 초기화
+        safe_kernel_printf("뮤텍스 초기화 완료\n");
+        kernel_printf("뮤텍스 초기화 완료\n");
+    }
+
+    va_start(args, use_semaphore);  // 수정된 부분
+    for (int i = 0; i < num_threads; i++) {
+        thread_ids[i] = i + 1;
+
+        if (use_semaphore) {
+            int err = pthread_create(&threads[i], NULL, semaphore_thread, semaphore);
+            if (err != 0) {
+                kernel_errExitEN(err, "Thread %d 생성 실패", i);
+            }
+        } else {
+            int err = pthread_create(&threads[i], NULL, mutex_thread, mutex);
+            if (err != 0) {
+                kernel_errExitEN(err, "Thread %d 생성 실패", i);
+            }
+        }
+    }
+    va_end(args);
+
+    for (int i = 0; i < num_threads; i++) {
+        pthread_join(threads[i], NULL);
+    }
+
+    // 세마포어 또는 뮤텍스 해제
+    if (use_semaphore) {
+        #ifdef __APPLE__
+            sem_close(semaphore);
+            sem_unlink("/semaphore");
+            safe_kernel_printf("세마포어 해제 완료 (macOS)\n");
+        #else
+            sem_destroy(semaphore);
+            free(semaphore);
+            safe_kernel_printf("세마포어 해제 완료 (Linux)\n");
+        #endif
+    } else {
+        pthread_mutex_destroy(mutex);
+        free(mutex);
+        safe_kernel_printf("뮤텍스 해제 완료\n");
+    }
+
+    free(threads);
+    free(thread_ids);
+
+    safe_kernel_printf("멀티스레드 실행 종료\n");
 }

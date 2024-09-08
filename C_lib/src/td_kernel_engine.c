@@ -38,10 +38,12 @@ static void kernel_join_thread(pthread_t thread);
 static void kernel_socket_communication(int sock_fd, const char *message, char *response, size_t response_size);
 static void kernel_wait_for_process(pid_t pid);
 
-// Function prototypes for threads
-static void* semaphore_thread(void* arg);
-static void* mutex_thread(void* arg);
-static void* thread_function(void* arg);
+
+void run_multithreading(int num_threads, int use_semaphore, ...);
+void* semaphore_thread(void* arg);
+void* mutex_thread(void* arg);
+void* thread_function(void* arg);
+
 
 // Function prototype for process function
 static void process_function();
@@ -354,15 +356,6 @@ static void test_file_reading() {
     fclose(file);
 }
 
-// 스레드 함수 예제
-static void* thread_function(void* arg) {
-    int thread_num = *((int*)arg);
-    safe_kernel_printf("Thread %d: 시작\n", thread_num);
-    sleep(1); // 작업을 모방하기 위한 대기 시간
-    safe_kernel_printf("Thread %d: 종료\n", thread_num);
-    return NULL;
-}
-
 // 멀티스레드 테스트 함수
 static void test_multithreading() {
     safe_kernel_printf("멀티스레드 테스트 시작\n");
@@ -396,30 +389,6 @@ static void test_multiprocessing() {
     create_multi_processes(NUM_PROCESSES, process_function, process_function);
 
     safe_kernel_printf("멀티프로세스 테스트 종료\n");
-}
-
-// 세마포어 스레드 함수 예제
-static void* semaphore_thread(void* arg) {
-    sem_t* semaphore = (sem_t*)arg;
-    safe_kernel_printf("세마포어 스레드: 대기 중...\n");
-    sem_wait(semaphore);
-    safe_kernel_printf("세마포어 스레드: 세마포어 얻음!\n");
-    sleep(2); // 작업을 모방하기 위한 대기 시간
-    safe_kernel_printf("세마포어 스레드: 작업 완료\n");
-    sem_post(semaphore);
-    return NULL;
-}
-
-// 뮤텍스 스레드 함수 예제
-static void* mutex_thread(void* arg) {
-    pthread_mutex_t* mutex = (pthread_mutex_t*)arg;
-    safe_kernel_printf("뮤텍스 스레드: 대기 중...\n");
-    pthread_mutex_lock(mutex);
-    safe_kernel_printf("뮤텍스 스레드: 뮤텍스 잠금!\n");
-    sleep(2); // 작업을 모방하기 위한 대기 시간
-    safe_kernel_printf("뮤텍스 스레드: 작업 완료\n");
-    pthread_mutex_unlock(mutex);
-    return NULL;
 }
 
 // 동기화 테스트 함수

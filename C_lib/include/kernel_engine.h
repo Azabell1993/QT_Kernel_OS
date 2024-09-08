@@ -12,6 +12,10 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Global mutex
 static pthread_mutex_t print_mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -46,7 +50,7 @@ typedef struct LinkedList {
 LinkedList* create_linkedlist();
 void push(LinkedList* list, void* data);
 void* pop(LinkedList* list);
-bool is_empty(LinkedList* list);  // Declaration moved here
+bool is_empty(LinkedList* list);
 void destroy_linkedlist(LinkedList* list);
 
 // Thread and process management function declarations
@@ -65,5 +69,15 @@ void kernel_errExitEN(int errnum, const char *format, ...);
 void kernel_fatal(const char *format, ...);
 void kernel_usageErr(const char *format, ...) __attribute__ ((__noreturn__));
 void kernel_cmdLineErr(const char *format, ...) __attribute__ ((__noreturn__));
+
+// 스레드 작업 함수
+void* thread_function(void* arg);
+void* semaphore_thread(void* arg);
+void* mutex_thread(void* arg);
+void run_multithreading(int num_threads, int use_semaphore, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // ENGINE_H
