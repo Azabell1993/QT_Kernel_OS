@@ -14,6 +14,7 @@
 #include <QRegularExpression>
 #include <QMetaType>
 #include <QDebug>
+#include <QTimer>
 #include <QStack>
 #include <QChar>
 #include <QMessageBox>
@@ -24,6 +25,7 @@
 #include <QDialog>
 #include "cmdwindow.h"
 #include "ui_cmdwindow.h"
+#include "smartpointerdialog.h"
 
 // kernel engine
 #include "kernel_engine.h"
@@ -98,13 +100,10 @@ CmdWindow::~CmdWindow() {
  * @details Enter 키를 누를 경우, 명령어 입력을 처리합니다.
  */
 void CmdWindow::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
-        on_submitButton_clicked();
-    } else {
+    if (event->key() != Qt::Key_Return && event->key() != Qt::Key_Enter) {
         QWidget::keyPressEvent(event);  // 다른 키에 대한 기본 처리
     }
 }
-
 
 /*
  * @brief 이벤트 필터
@@ -166,7 +165,6 @@ void CmdWindow::on_submitButton_clicked() {
     ui->textEdit->insertPlainText("\nkernel> ");
 }
 
-// 프로세스를 생성하는 함수
 void CmdWindow::createProcessWithMessage(const QString &message) {
     QProcess *process = new QProcess(this);
 
@@ -178,13 +176,18 @@ void CmdWindow::createProcessWithMessage(const QString &message) {
     modalDialog->setLayout(layout);
     modalDialog->show();
 
-    // 예시: 외부 프로세스를 실행하는 로직 (실제로는 적절한 외부 프로그램 사용)
     process->start("echo", QStringList() << message);
     connect(process, &QProcess::readyReadStandardOutput, [=]() {
         QString output = process->readAllStandardOutput();
         label->setText("Process Output: " + output);
     });
+
+    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), [=]() {
+        modalDialog->accept();
+        process->deleteLater();  // 프로세스 종료 후 자동으로 메모리 해제
+    });
 }
+
 
 /*
  * @brief 명령어 처리 함수
@@ -192,6 +195,17 @@ void CmdWindow::createProcessWithMessage(const QString &message) {
  * @details 사용자가 입력한 명령어를 분석하고, 해당 명령어에 맞는 동작을 수행합니다.
  */
 void CmdWindow::handleCommand(const QString &command) {
+    static SmartPtr sp;  // 기존의 스마트 포인터 전역 변수
+    static SmartPointerDialog *dialog = nullptr;  // 모달 창은 한 번만 생성
+    static QMap<int*, SmartPtr> smartPointers;    // 여러 스마트 포인터를 관리하기 위한 맵
+
+    if (!dialog) {
+        // 모달 창이 없으면 생성하여 표시 (부모를 nullptr로 설정)
+        dialog = new SmartPointerDialog(nullptr);
+        dialog->setWindowFlag(Qt::Window);  // 독립된 창으로 설정
+        dialog->show();
+    }
+
     if (command == "exit") {
         close();
     }
@@ -200,16 +214,209 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append("  create <process_name>       - Create a new process with the given name");
         ui->textEdit->append("  create printf(\"message\")  - Print a message");
         ui->textEdit->append("  printf(\"message\")  - Print a message using kernel_printf");
+        ui->textEdit->append("  create_smart_ptr");
+        ui->textEdit->append("  retain_smart_ptr");
+        ui->textEdit->append("  release_smart_ptr");
+        ui->textEdit->append("  show_smart_ptr_value");
+        ui->textEdit->append("  show_ref_count");
+        ui->textEdit->append("  kill_ptr <pointer_value>    - Kill a specific smart pointer");
         ui->textEdit->append("  multithreading              - Run a multithreading test");
         ui->textEdit->append("  semaphore                  - Run a semaphore test");
         ui->textEdit->append("  mutex                      - Run a mutex test");
+        ui->textEdit->append("  help_modal                 - Show help in a new modal window");
         ui->textEdit->append("  printf_test : kp_test");
-        ui->textEdit->append("  asm <number>        - Run the kernel_asm_<number> function.");
+        ui->textEdit->append("  asm <number>               - Run the kernel_asm_<number> function.");
         ui->textEdit->append("  kill <process_name>         - Kill the process with the given name");
         ui->textEdit->append("  list                        - List all processes");
+        ui->textEdit->append("  show_memory_usage           - Show memory usage of smart pointers");
+        ui->textEdit->append("  copy_smart_ptr              - Copy a smart pointer");
+        ui->textEdit->append("  create_smart_ptr_with_timer <seconds> - Create a smart pointer with auto-release");
         ui->textEdit->append("  clear                       - Clear the screen");
-        ui->textEdit->append("  help                        - Show this help message");
         ui->textEdit->append("  exit                        - Exit the shell");
+    }
+
+
+    else if (command.startsWith("kill_ptr ")) {
+        QStringList parts = command.split(" ");
+        if (parts.size() == 2) {
+            bool ok;
+            int ptrValue = parts[1].toInt(&ok);
+            if (ok) {
+                int* foundPtr = nullptr;
+
+                // 스마트 포인터 맵에서 값을 찾기
+                for (int* ptr : smartPointers.keys()) {
+                    if (ptr == reinterpret_cast<int*>(ptrValue)) {  // 포인터 값을 직접 참조
+                        foundPtr = ptr;
+                        break;
+                    }
+                }
+
+                if (foundPtr) {
+                    SmartPtr sp = smartPointers[foundPtr];
+                    release(&sp);
+                    if (*(sp.ref_count) == 0) {
+                        dialog->removeSmartPointer(*foundPtr);  // 모달 창에서 삭제
+                        smartPointers.remove(foundPtr);         // 맵에서 삭제
+                        delete foundPtr;                        // 메모리 해제
+                        ui->textEdit->append("Smart pointer deleted.");
+                    } else {
+                        ui->textEdit->append("Pointer reference count is not zero.");
+                    }
+                } else {
+                    ui->textEdit->append("Pointer value not found.");
+                }
+            } else {
+                ui->textEdit->append("Invalid pointer value.");
+            }
+        } else {
+            ui->textEdit->append("Usage: kill_ptr <pointer_value>");
+        }
+    }
+
+
+    else if (command == "help_modal") {
+        // 새로운 모달 창을 열어 모든 명령어 표시
+        QDialog *helpDialog = new QDialog(this);
+        QVBoxLayout *layout = new QVBoxLayout(helpDialog);
+        QTextEdit *helpText = new QTextEdit(helpDialog);
+        helpText->setText("Available commands:\n"
+                          "  create <process_name>       - Create a new process with the given name\n"
+                          "  create printf(\"message\")  - Print a message\n"
+                          "  printf(\"message\")         - Print a message using kernel_printf\n"
+                          "  create_smart_ptr            - Create a smart pointer\n"
+                          "  retain_smart_ptr            - Retain a smart pointer\n"
+                          "  release_smart_ptr           - Release a smart pointer\n"
+                          "  show_smart_ptr_value        - Show the value of a smart pointer\n"
+                          "  show_ref_count              - Show reference count of a smart pointer\n"
+                          "  kill_ptr <pointer_value>    - Kill a specific smart pointer\n"
+                          "  multithreading              - Run a multithreading test\n"
+                          "  semaphore                  - Run a semaphore test\n"
+                          "  mutex                      - Run a mutex test\n"
+                          "  help_modal                 - Show help in a new modal window\n"
+                          "  printf_test : kp_test       - Test printf functionality\n"
+                          "  asm <number>               - Run the kernel_asm_<number> function\n"
+                          "  kill <process_name>         - Kill the process with the given name\n"
+                          "  list                       - List all processes\n"
+                          "  show_memory_usage           - Show memory usage of smart pointers\n"
+                          " copy_smart_ptr              - Copy a smart pointer\n"
+                          " create_smart_ptr_with_timer <seconds> - Create a smart pointer with auto-release\n"
+                          "  clear                      - Clear the screen\n"
+                          "  exit                       - Exit the shell");
+        helpText->setReadOnly(true);
+        layout->addWidget(helpText);
+        helpDialog->setLayout(layout);
+        helpDialog->setWindowTitle("Help Commands");
+        helpDialog->show();
+    }
+
+    else if (command == "show_memory_usage") {
+        // 스마트 포인터 메모리 사용량을 추적
+        int totalMemory = 0;
+        for (int* ptr : smartPointers.keys()) {
+            totalMemory += sizeof(*ptr);  // 할당된 포인터 크기를 합산
+        }
+        ui->textEdit->append("Total memory used by smart pointers: " + QString::number(totalMemory) + " bytes.");
+    }
+
+    else if (command == "copy_smart_ptr") {
+        if (!smartPointers.isEmpty()) {
+            SmartPtr originalSp = smartPointers.begin().value();
+            SmartPtr copiedSp = originalSp;  // 스마트 포인터 복사
+            ui->textEdit->append("Smart pointer copied. New reference count: " + QString::number(*(copiedSp.ref_count)));
+        }
+    }
+
+    else if (command.startsWith("create_smart_ptr_with_timer ")) {
+        QStringList parts = command.split(" ");
+        if (parts.size() == 2) {
+            bool ok;
+            int timeout = parts[1].toInt(&ok);
+            if (ok) {
+                // 타이머를 이용한 스마트 포인터 생성 및 자동 삭제
+                int* testData = new int;
+                *testData = rand() % 1000;
+                sp = create_smart_ptr(testData);
+                smartPointers[testData] = sp;
+
+                // 타이머 시작
+                QTimer::singleShot(timeout * 1000, this, [=]() {
+                    if (*(sp.ref_count) == 1) {  // 참조 카운트가 1일 때만 해제
+                        release(&sp);
+                        ui->textEdit->append("Smart pointer auto-released after " + QString::number(timeout) + " seconds.");
+                        dialog->removeSmartPointer(*testData);  // 모달에서 삭제
+                        smartPointers.remove(testData);         // 맵에서 삭제
+                        delete testData;
+                    } else {
+                        ui->textEdit->append("Smart pointer was not released due to non-zero reference count.");
+                    }
+                });
+
+                ui->textEdit->append("Smart pointer created with auto-release in " + QString::number(timeout) + " seconds.");
+            } else {
+                ui->textEdit->append("Invalid timer value.");
+            }
+        } else {
+            ui->textEdit->append("Usage: create_smart_ptr_with_timer <seconds>");
+        }
+    }
+
+
+    else if (command == "create_smart_ptr") {
+        // 포인터 생성 및 스마트 포인터 할당
+        int* testData = new int;
+        *testData = rand() % 1000;  // 0~999 사이의 랜덤 값
+        sp = create_smart_ptr(testData);
+        smartPointers[testData] = sp;  // 생성된 스마트 포인터를 맵에 추가
+
+        // CMD 창에 메시지 출력
+        ui->textEdit->append(QString("Smart pointer created with value: %1").arg(*testData));
+        kernel_printf("Smart pointer created with value: %d\n", *testData);
+
+        // 모달 창에 포인터 추가
+        dialog->addSmartPointer(*testData, *(sp.ref_count));
+    }
+
+    else if (command == "retain_smart_ptr") {
+        if (!smartPointers.isEmpty()) {
+            // 맵에서 첫 번째 포인터를 참조 카운트 증가
+            SmartPtr &sp = smartPointers.begin().value();
+            retain(&sp);
+
+            ui->textEdit->append("Smart pointer retained.");
+            dialog->addSmartPointer(*((int*)sp.ptr), *(sp.ref_count));  // 모달 창에 업데이트
+        }
+    }
+    else if (command == "release_smart_ptr") {
+        if (!smartPointers.isEmpty()) {
+            // 맵에서 첫 번째 포인터를 참조 카운트 감소 및 해제
+            int* ptr = smartPointers.begin().key();
+            SmartPtr sp = smartPointers[ptr];
+            release(&sp);
+
+            ui->textEdit->append("Smart pointer released.");
+            if (*(sp.ref_count) == 0) {
+                dialog->removeSmartPointer(*ptr);  // 참조 카운트가 0이면 삭제
+                smartPointers.remove(ptr);         // 맵에서 포인터 삭제
+                delete ptr;                        // 포인터 메모리 해제
+            } else {
+                dialog->addSmartPointer(*ptr, *(sp.ref_count));  // 참조 카운트 업데이트
+            }
+        }
+    }
+    else if (command == "show_smart_ptr_value") {
+        if (!smartPointers.isEmpty()) {
+            int* value = (int*)smartPointers.begin().key();
+            ui->textEdit->append("Smart pointer value: " + QString::number(*value));
+            kernel_printf("Smart pointer value: %d\n", *value);
+        }
+    }
+    else if (command == "show_ref_count") {
+        if (!smartPointers.isEmpty()) {
+            SmartPtr sp = smartPointers.begin().value();
+            ui->textEdit->append("Smart pointer reference count: " + QString::number(*(sp.ref_count)));
+            kernel_printf("Smart pointer reference count: %d\n", *(sp.ref_count));
+        }
     }
 
     else if (command == "multithreading") {
@@ -394,7 +601,6 @@ void CmdWindow::handleCommand(const QString &command) {
     }
     else if (command == "clear") {
         ui->textEdit->clear();
-        ui->textEdit->append("kernel> ");
     }
     else {
         ui->textEdit->append("Unknown command. Type 'help' for a list of commands.");
@@ -413,7 +619,10 @@ void CmdWindow::qt_print(const char *str) {
     }
 }
 
-// 멀티스레드 테스트 실행 + 사용자 입력
+/*
+ * @brief 멀티스레딩 테스트 실행
+ * @details 사용자로부터 스레드 수와 세마포어 사용 여부를 입력받아, 멀티스레딩 테스트를 실행합니다.
+ */
 void CmdWindow::runMultithreadingTest() {
     bool ok;
     int num_threads = QInputDialog::getInt(this, tr("Multithreading Test"),
@@ -458,7 +667,10 @@ void CmdWindow::runMultithreadingTest() {
     globalProgressLog = nullptr;
 }
 
-// 세마포어 테스트 실행 + 사용자 입력
+/*
+ * @brief 세마포어 테스트 실행
+ * @details 사용자로부터 스레드 수를 입력받아, 세마포어 테스트를 실행합니다.
+ */
 void CmdWindow::runSemaphoreTest() {
     bool ok;
     int num_threads = QInputDialog::getInt(this, tr("Semaphore Test"),
@@ -498,7 +710,10 @@ void CmdWindow::runSemaphoreTest() {
     globalProgressLog = nullptr;
 }
 
-// 뮤텍스 테스트 실행 + 사용자 입력
+/*
+ * @brief 뮤텍스 테스트 실행
+ * @details 사용자로부터 스레드 수를 입력받아, 뮤텍스 테스트를 실행합니다.
+ */
 void CmdWindow::runMutexTest() {
     bool ok;
     int num_threads = QInputDialog::getInt(this, tr("Mutex Test"),

@@ -29,6 +29,9 @@ set(PROJECT_SOURCES
     cmdwindow.h
     cmdwindow.cpp
     cmdwindow.ui
+    smartpointerdialog.h
+    smartpointerdialog.cpp
+    smartpointerdialog.ui
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include)

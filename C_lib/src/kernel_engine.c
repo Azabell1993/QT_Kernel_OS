@@ -57,6 +57,8 @@ void retain(SmartPtr *sp) {
     pthread_mutex_lock(sp->mutex);
     (*(sp->ref_count))++;
     pthread_mutex_unlock(sp->mutex);
+
+    kernel_printf("Smart pointer retained (ref_count: %d)\n", *(sp->ref_count));
 }
 
 // Smart pointer release (decrease reference count and free memory) function
@@ -65,9 +67,16 @@ void release(SmartPtr *sp) {
 
     pthread_mutex_lock(sp->mutex);
     (*(sp->ref_count))--;
+    kernel_printf("Smart pointer released (ref_count: %d)\n", *(sp->ref_count));
+
     if (*(sp->ref_count) == 0) {
         should_free = 1;
+        kernel_printf("Reference count is 0, freeing memory...\n");
+    } else {
+        // Reference count is not 0, do not free memory
+        kernel_printf("Reference count is not 0, not freeing memory\n");
     }
+
     pthread_mutex_unlock(sp->mutex);
 
     if (should_free) {
@@ -75,6 +84,12 @@ void release(SmartPtr *sp) {
         free(sp->ref_count);
         pthread_mutex_destroy(sp->mutex);
         free(sp->mutex);
+        kernel_printf("Memory must be freed\n");
+    } else {
+        // Freeing not required, just destroy the mutex
+        pthread_mutex_destroy(sp->mutex);
+        free(sp->mutex);
+        kernel_printf("Mutex destroyed\n");
     }
 }
 
