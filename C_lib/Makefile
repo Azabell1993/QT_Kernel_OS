@@ -60,13 +60,21 @@ KERNEL_ASM_LIB_UNIVERSAL = $(DTCASES:%=kernel_asm_%.a)
 # Default target
 all: $(KERNEL_ASM_LIB_UNIVERSAL) $(STDIO_LIB) $(KERNEL_LIB) $(TD_KERNEL_LIB) td_kernel_engine
 
-# Rule to build each DTCASE object file for x86_64
+# Rule to build each DTCASE object file for x86_64 (no -arch for Linux)
 kernel_asm_%.x86_64.o: $(KERNEL_ASM_SRC)
-	$(CC) $(CFLAGS) -arch x86_64 -DDTCASE=$* -c $< -o $@
+ifeq ($(UNAME_S), Darwin)
+	$(CC) $(CFLAGS) $(ARCH_FLAGS) -DDTCASE=$* -c $< -o $@
+else
+	$(CC) $(CFLAGS) -DDTCASE=$* -c $< -o $@
+endif
 
-# Rule to build each DTCASE object file for arm64
+# Rule to build each DTCASE object file for arm64 (no -arch for Linux)
 kernel_asm_%.arm64.o: $(KERNEL_ASM_SRC)
-	$(CC) $(CFLAGS) -arch arm64 -DDTCASE=$* -c $< -o $@
+ifeq ($(UNAME_S), Darwin)
+	$(CC) $(CFLAGS) $(ARCH_FLAGS) -DDTCASE=$* -c $< -o $@
+else
+	$(CC) $(CFLAGS) -DDTCASE=$* -c $< -o $@
+endif
 
 # Rule to build each DTCASE archive file for x86_64
 kernel_asm_%.x86_64.a: kernel_asm_%.x86_64.o
@@ -78,7 +86,12 @@ kernel_asm_%.arm64.a: kernel_asm_%.arm64.o
 
 # Rule to create universal DTCASE binaries combining x86_64 and arm64 versions
 kernel_asm_%.a: kernel_asm_%.x86_64.a kernel_asm_%.arm64.a
+ifeq ($(UNAME_S), Darwin)
 	@libtool -static -o $@ $^
+else
+	@ar rcs $@ $^
+endif
+
 
 # Rule to build the td_kernel_engine static library
 $(TD_KERNEL_LIB): $(KERNEL_OBJS_X86_64) $(STDIO_LIB)
@@ -92,26 +105,25 @@ endif
 # Compile .c files to .o files for x86_64
 $(KERNEL_SRC_DIR)/%.x86_64.o: $(KERNEL_SRC_DIR)/%.c
 	@echo "Compiling for x86_64: $<"
-	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(STDIO_SRC_DIR)/%.x86_64.o: $(STDIO_SRC_DIR)/%.c
 	@echo "Compiling for x86_64: $<"
-	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Compile .c files to .o files for arm64
 $(KERNEL_SRC_DIR)/%.arm64.o: $(KERNEL_SRC_DIR)/%.c
 	@echo "Compiling for arm64: $<"
-	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(STDIO_SRC_DIR)/%.arm64.o: $(STDIO_SRC_DIR)/%.c
 	@echo "Compiling for arm64: $<"
-	$(CC) $(CFLAGS) $(ARCH_FLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # Target to build and link td_kernel_engine executable
 td_kernel_engine: $(filter-out $(KERNEL_SRC_DIR)/td_kernel_engine.x86_64.o, $(KERNEL_OBJS_X86_64)) $(STDIO_LIB)
 	@echo "Building td_kernel_engine executable"
 	$(CC) $(CFLAGS) -o td_kernel_engine.exec src/td_kernel_engine.c $(filter-out $(KERNEL_SRC_DIR)/td_kernel_engine.x86_64.o, $(KERNEL_OBJS_X86_64)) $(STDIO_LIB) $(TD_KERNEL_LIB)
-
 
 # Kernel library creation
 $(KERNEL_LIB): $(KERNEL_OBJS_X86_64) $(KERNEL_OBJS_ARM64)
