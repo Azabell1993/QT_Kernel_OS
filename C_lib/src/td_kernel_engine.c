@@ -102,13 +102,13 @@ int main(int argc __attribute__((unused)), char** argv __attribute__((unused))) 
         kernel_printf("자식 프로세스 종료\n");
         exit(0);
     } else { // 부모 프로세스
-        kernel_printf("부모 프로세스 시작됨\n");
+        printf("부모 프로세스 시작됨\n");
         close(sock_fd[1]); // 사용하지 않는 소켓 닫기
 
         // 단계 6: 부모 프로세스에서 메시지 전송 및 수신
-        kernel_printf("부모 프로세스가 자식과 통신 중\n");
+        printf("부모 프로세스가 자식과 통신 중\n");
         kernel_socket_communication(sock_fd[0], buf, line, sizeof(line));
-        kernel_printf("부모 프로세스에서 받은 메시지: %s\n", line);
+        printf("부모 프로세스에서 받은 메시지: %s\n", line);
 
         kernel_wait_for_process(pid); // 자식 프로세스 대기
 

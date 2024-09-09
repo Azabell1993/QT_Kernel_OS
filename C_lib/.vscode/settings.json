@@ -14,6 +14,8 @@
     "queue": "c",
     "stack": "c",
     "random": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "wait.h": "c",
+    "socket.h": "c"
   }
 }

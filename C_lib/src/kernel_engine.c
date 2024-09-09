@@ -18,8 +18,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-#include "kernel_engine.h"
-
 void safe_kernel_printf(const char *format, ...) {
     va_list args;
     va_start(args, format);
@@ -81,15 +79,14 @@ void release(SmartPtr *sp) {
 
     if (should_free) {
         free(sp->ptr);
+        sp->ptr = NULL;  // 포인터를 NULL로 설정하여 중복 해제 방지
         free(sp->ref_count);
+        sp->ref_count = NULL;  // ref_count도 NULL로 설정
+
         pthread_mutex_destroy(sp->mutex);
         free(sp->mutex);
-        kernel_printf("Memory must be freed\n");
-    } else {
-        // Freeing not required, just destroy the mutex
-        pthread_mutex_destroy(sp->mutex);
-        free(sp->mutex);
-        kernel_printf("Mutex destroyed\n");
+        sp->mutex = NULL;  // mutex 포인터도 NULL로 설정
+        kernel_printf("Memory has been freed\n");
     }
 }
 

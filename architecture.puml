@@ -6,6 +6,7 @@ package "C_lib" {
 
     package "include" {
         [kernel_asm.h]
+        [kernel_engine.h]
         [kernel_lib.h]
         [kernel_print.h]
     }
@@ -36,7 +37,10 @@ package "C_lib" {
     }
 
     package "src" {
+        [ename.c.inc]
         [kernel_asm.c]
+        [kernel_engine.c]
+        [td_kernel_engine.c]
         [kernel_lib.c]
         [kernel_printf.c]
     }
@@ -69,6 +73,8 @@ package "root" {
 [kernel_asm.c] --> [kernel_asm.h]
 [kernel_lib.c] --> [kernel_lib.h]
 [kernel_printf.c] --> [kernel_print.h]
+[kernel_engine.c] --> [kernel_engine.h]
+[td_kernel_engine.c] --> [kernel_engine.h]
 
 [bootloader.cpp] --> [bootloader.h]
 [cmdwindow.cpp] --> [cmdwindow.h]
