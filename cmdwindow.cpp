@@ -35,7 +35,7 @@ QTextEdit* globalProgressLog = nullptr;
 
 // C 정적 라이브러리
 #include "kernel_print.h"
-#include "kernel_asm.h"
+// #include "kernel_asm.h"
 
 // 직접 하드코딩된 C 함수
 extern "C" {
@@ -53,13 +53,13 @@ void* semaphore_thread(void* arg);
 void* mutex_thread(void* arg);
 void run_multithreading(int num_threads, int use_semaphore, ...);
 
-int main_1();
-int main_2();
-int main_3();
-int main_4();
-int main_5();
-int main_6();
-int main_7();
+//int main_1();
+//int main_2();
+//int main_3();
+//int main_4();
+//int main_5();
+//int main_6();
+//int main_7();
 }
 
 /*
@@ -441,46 +441,46 @@ void CmdWindow::handleCommand(const QString &command) {
         }
     }
 
-    else if (command.startsWith("asm ")) {
-        QStringList parts = command.split(" ");
-        if (parts.size() == 2) {
-            int number = parts[1].toInt();
-            switch (number) {
-            case 1:
-                ui->textEdit->append("Executed kernel_asm_1.");
-                main_1();  // kernel_asm_1.a의 main_1 함수 호출
-                break;
-            case 2:
-                ui->textEdit->append("Executed kernel_asm_2.");
-                main_2();  // kernel_asm_2.a의 main_2 함수 호출
-                break;
-            case 3:
-                ui->textEdit->append("Executed kernel_asm_3.");
-                main_3();  // kernel_asm_3.a의 main_3 함수 호출
-                break;
-            case 4:
-                ui->textEdit->append("Executed kernel_asm_4.");
-                main_4();  // kernel_asm_4.a의 main_4 함수 호출
-                break;
-            case 5:
-                ui->textEdit->append("Executed kernel_asm_5.");
-                main_5();  // kernel_asm_5.a의 main_5 함수 호출
-                break;
-            case 6:
-                ui->textEdit->append("Executed kernel_asm_6.");
-                main_6();  // kernel_asm_6.a의 main_6 함수 호출
-                break;
-            case 7:
-                ui->textEdit->append("Executed kernel_asm_7.");
-                main_7();  // kernel_asm_7.a의 main_7 함수 호출
-                break;
-            default:
-                ui->textEdit->append("Invalid number. Please enter a number between 1 and 7.");
-            }
-        } else {
-            ui->textEdit->append("Usage: asm <number>");
-        }
-    }
+//    else if (command.startsWith("asm ")) {
+//        QStringList parts = command.split(" ");
+//        if (parts.size() == 2) {
+//            int number = parts[1].toInt();
+//            switch (number) {
+//            case 1:
+//                ui->textEdit->append("Executed kernel_asm_1.");
+//                main_1();  // kernel_asm_1.a의 main_1 함수 호출
+//                break;
+//            case 2:
+//                ui->textEdit->append("Executed kernel_asm_2.");
+//                main_2();  // kernel_asm_2.a의 main_2 함수 호출
+//                break;
+//            case 3:
+//                ui->textEdit->append("Executed kernel_asm_3.");
+//                main_3();  // kernel_asm_3.a의 main_3 함수 호출
+//                break;
+//            case 4:
+//                ui->textEdit->append("Executed kernel_asm_4.");
+//                main_4();  // kernel_asm_4.a의 main_4 함수 호출
+//                break;
+//            case 5:
+//                ui->textEdit->append("Executed kernel_asm_5.");
+//                main_5();  // kernel_asm_5.a의 main_5 함수 호출
+//                break;
+//            case 6:
+//                ui->textEdit->append("Executed kernel_asm_6.");
+//                main_6();  // kernel_asm_6.a의 main_6 함수 호출
+//                break;
+//            case 7:
+//                ui->textEdit->append("Executed kernel_asm_7.");
+//                main_7();  // kernel_asm_7.a의 main_7 함수 호출
+//                break;
+//            default:
+//                ui->textEdit->append("Invalid number. Please enter a number between 1 and 7.");
+//            }
+//        } else {
+//            ui->textEdit->append("Usage: asm <number>");
+//        }
+//    }
 
     else if (command.startsWith("printf(")) {
         QRegularExpression re1(R"raw(printf\("([^"]*)"\))raw");

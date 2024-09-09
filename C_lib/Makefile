@@ -79,10 +79,12 @@ endif
 # Rule to build each DTCASE archive file for x86_64
 kernel_asm_%.x86_64.a: kernel_asm_%.x86_64.o
 	$(AR) rcs $@ $<
+	ranlib $@   # Add ranlib to generate an index
 
 # Rule to build each DTCASE archive file for arm64
 kernel_asm_%.arm64.a: kernel_asm_%.arm64.o
 	$(AR) rcs $@ $<
+	ranlib $@   # Add ranlib to generate an index
 
 # Rule to create universal DTCASE binaries combining x86_64 and arm64 versions
 kernel_asm_%.a: kernel_asm_%.x86_64.a kernel_asm_%.arm64.a
@@ -90,6 +92,7 @@ ifeq ($(UNAME_S), Darwin)
 	@libtool -static -o $@ $^
 else
 	@ar rcs $@ $^
+	ranlib $@   # Add ranlib to generate an index
 endif
 
 
@@ -100,6 +103,7 @@ ifeq ($(UNAME_S), Darwin)
 	@libtool -static -o $@ $^
 else
 	@ar rcs $@ $^
+	ranlib $@   # Add ranlib to generate an index
 endif
 
 # Compile .c files to .o files for x86_64
@@ -132,6 +136,7 @@ ifeq ($(UNAME_S), Darwin)
 	@libtool -static -o $@ $^
 else
 	@ar rcs $@ $^
+	ranlib $@   # Add ranlib to generate an index
 endif
 
 # Stdio library creation
@@ -141,6 +146,7 @@ ifeq ($(UNAME_S), Darwin)
 	@libtool -static -o $@ $^
 else
 	@ar rcs $@ $^
+	ranlib $@   # Add ranlib to generate an index
 endif
 
 # Clean up (excluding specific files)
