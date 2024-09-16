@@ -9,8 +9,6 @@
  *             mechanisms, and data structures.
  */
 
-#include "kernel_engine.h"
-#include "kernel_print.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -22,8 +20,14 @@
 #include <sys/socket.h>
 #include <fcntl.h>
 
+#include "kernel_engine.h"
+#include "kernel_print.h"
+#include "kernel_smartptr.h"
+#include "kernel_chat.h"
+
 #define NUM_THREADS 3
 #define NUM_PROCESSES 2
+#define DEFAULT_TCP_PORT 5100
 
 // Forward declarations of test functions
 static void test_smart_pointer();
@@ -128,7 +132,7 @@ int main(int argc __attribute__((unused)), char** argv __attribute__((unused))) 
 
         // 단계 8: 스마트 포인터 연산 테스트
         kernel_printf("부모 프로세스에서 스마트 포인터 연산 테스트 중\n");
-        SmartPtr sp = create_smart_ptr(malloc(256));  // 유효한 포인터 전달
+        SmartPtr sp = create_smart_ptr(256);
         retain(&sp);
         release(&sp);
         release(&sp);
@@ -226,7 +230,7 @@ int main(int argc __attribute__((unused)), char** argv __attribute__((unused))) 
         // 단계 16: 네트워크 시뮬레이션 (스텁)
         kernel_printf("부모 프로세스에서 네트워크 작업 시뮬레이션 중\n");
         // 보통 여기서는 소켓과 네트워크 인터페이스를 포함합니다.
-        // tcp...
+        kernel_chat(2, "127.0.0.1", DEFAULT_TCP_PORT);
         kernel_printf("네트워크 작업 시뮬레이션 완료\n");
 
         // 단계 17: 시스템 호출 시뮬레이션
@@ -289,7 +293,10 @@ static void kernel_create_thread(pthread_t *thread, void *(*start_routine)(void 
 static void kernel_join_thread(pthread_t thread) {
     int err = pthread_join(thread, NULL);
     if (err != 0) {
-        kernel_printf("Failed to join thread");
+        safe_kernel_printf("Failed to join thread");
+        kernel_errExit("Failed to join thread");
+    } else {
+        safe_kernel_printf("Thread joined successfully\n");
     }
 }
 
@@ -308,7 +315,10 @@ static void kernel_socket_communication(int sock_fd, const char *message, char *
 static void kernel_wait_for_process(pid_t pid) {
     int status;
     if (waitpid(pid, &status, 0) < 0) {
-        kernel_printf("Failed to wait for process");
+        safe_kernel_printf("Failed to wait for process");
+        kernel_errExit("Failed to wait for process");
+    } else {
+        safe_kernel_printf("Child process exited with status %d\n", status);
     }
 }
 
@@ -320,7 +330,7 @@ static void test_smart_pointer() {
     safe_kernel_printf("스마트 포인터 테스트 시작\n");
 
     // 스마트 포인터 생성
-    SmartPtr sp = create_smart_ptr(malloc(100));
+    SmartPtr sp = create_smart_ptr(100);
     safe_kernel_printf("스마트 포인터 생성, 참조 카운트: 1\n");
 
     // 참조 카운트 증가

@@ -7,6 +7,7 @@
  * Copyright (C) 2024 Park-Jiwoo
  *
  */
+#pragma once
 #ifndef KERNEL_LIB_H
 #define KERNEL_LIB_H
 

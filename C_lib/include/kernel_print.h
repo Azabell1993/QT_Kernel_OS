@@ -7,6 +7,8 @@
  * Copyright (C) 2024 Park-Jiwoo
  *
  */
+
+#pragma once
 #ifndef KERNEL_PRINTF_H
 #define KERNEL_PRINTF_H
 

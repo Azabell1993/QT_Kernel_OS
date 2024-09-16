@@ -18,6 +18,17 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
+// 고급 오류 처리 함수 구현
+#include "ename.c.inc"
+
+#define BUF_SIZE 500
+
+/**
+ * @brief 스레드 안전한 출력 함수
+ * 
+ * @param format 포맷 문자열
+ * @param ... 가변 인자 리스트
+ */
 void safe_kernel_printf(const char *format, ...) {
     va_list args;
     va_start(args, format);
@@ -30,68 +41,12 @@ void safe_kernel_printf(const char *format, ...) {
     va_end(args);
 }
 
-// Smart pointer creation function
-SmartPtr create_smart_ptr(void *ptr) {
-    SmartPtr sp;
-    sp.ptr = ptr;
-    sp.ref_count = (int *)malloc(sizeof(int));
-    if (sp.ref_count == NULL) {
-        perror("Failed to allocate memory for ref_count");
-        exit(EXIT_FAILURE);
-    }
-    *(sp.ref_count) = 1;
-    sp.mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-    if (sp.mutex == NULL) {
-        perror("Failed to allocate memory for mutex");
-        free(sp.ref_count);
-        exit(EXIT_FAILURE);
-    }
-    pthread_mutex_init(sp.mutex, NULL);
-    return sp;
-}
-
-// Smart pointer retain (increase reference count) function
-void retain(SmartPtr *sp) {
-    pthread_mutex_lock(sp->mutex);
-    (*(sp->ref_count))++;
-    pthread_mutex_unlock(sp->mutex);
-
-    kernel_printf("Smart pointer retained (ref_count: %d)\n", *(sp->ref_count));
-}
-
-// Smart pointer release (decrease reference count and free memory) function
-void release(SmartPtr *sp) {
-    int should_free = 0;
-
-    pthread_mutex_lock(sp->mutex);
-    (*(sp->ref_count))--;
-    kernel_printf("Smart pointer released (ref_count: %d)\n", *(sp->ref_count));
-
-    if (*(sp->ref_count) == 0) {
-        should_free = 1;
-        kernel_printf("Reference count is 0, freeing memory...\n");
-    } else {
-        // Reference count is not 0, do not free memory
-        kernel_printf("Reference count is not 0, not freeing memory\n");
-    }
-
-    pthread_mutex_unlock(sp->mutex);
-
-    if (should_free) {
-        free(sp->ptr);
-        sp->ptr = NULL;  // 포인터를 NULL로 설정하여 중복 해제 방지
-        free(sp->ref_count);
-        sp->ref_count = NULL;  // ref_count도 NULL로 설정
-
-        pthread_mutex_destroy(sp->mutex);
-        free(sp->mutex);
-        sp->mutex = NULL;  // mutex 포인터도 NULL로 설정
-        kernel_printf("Memory has been freed\n");
-    }
-}
-
-
-// Thread creation function
+/**
+ * @brief 스레드 생성 함수
+ * 
+ * @param num_threads 생성할 스레드 수
+ * @param ... 스레드 함수 포인터
+ */
 void create_threads(int num_threads, ...) {
     pthread_t* threads = (pthread_t*)malloc(num_threads * sizeof(pthread_t));
     va_list args;
@@ -101,7 +56,7 @@ void create_threads(int num_threads, ...) {
         void* (*thread_func)(void*) = va_arg(args, void* (*)(void*));
         int err = pthread_create(&threads[i], NULL, thread_func, NULL);
         if (err != 0) {
-            kernel_errExitEN(err, "Failed to create thread %d", i);
+            kernel_errExitEN(err, "스레드 %d 생성 실패", i);
         }
     }
 
@@ -113,11 +68,15 @@ void create_threads(int num_threads, ...) {
     free(threads);
 }
 
-// Single process creation function
+/**
+ * @brief 단일 프로세스 생성 함수
+ * 
+ * @param func 실행할 함수 포인터
+ */
 void create_single_process(void (*func)()) {
     pid_t pid = fork();
     if (pid < 0) {
-        kernel_errExit("Failed to fork process");
+        kernel_errExit("프로세스 생성 실패");
     } else if (pid == 0) {
         func();
         exit(EXIT_SUCCESS);
@@ -126,7 +85,12 @@ void create_single_process(void (*func)()) {
     }
 }
 
-// Multi-process creation function
+/**
+ * @brief 다중 프로세스 생성 함수
+ * 
+ * @param num_processes 생성할 프로세스 수
+ * @param ... 프로세스 함수 포인터
+ */
 void create_multi_processes(int num_processes, ...) {
     va_list args;
     va_start(args, num_processes);
@@ -134,7 +98,7 @@ void create_multi_processes(int num_processes, ...) {
     for (int i = 0; i < num_processes; i++) {
         pid_t pid = fork();
         if (pid < 0) {
-            kernel_errExit("Failed to fork process %d", i);
+            kernel_errExit("프로세스 %d 생성 실패", i);
         } else if (pid == 0) {
             void (*process_func)() = va_arg(args, void (*)());
             process_func();
@@ -149,47 +113,60 @@ void create_multi_processes(int num_processes, ...) {
     va_end(args);
 }
 
-// Semaphore initialization function
+/**
+ * @brief 세마포어 초기화 함수
+ * 
+ * @param value 초기화할 값
+ * @return 세마포어 포인터
+ */
 sem_t* init_semaphore(int value) {
     sem_t* sem = (sem_t*)malloc(sizeof(sem_t));
     if (sem == NULL) {
-        perror("Failed to allocate memory for semaphore");
+        perror("세마포어 메모리 할당 실패");
         exit(EXIT_FAILURE);
     }
 
-    #ifdef __APPLE__
-        // macOS에서는 named semaphore 사용
-        char sem_name[20];
-        snprintf(sem_name, sizeof(sem_name), "/semaphore_%d", getpid());
-        sem_unlink(sem_name);  // 기존 세마포어 삭제 (중복 방지)
-        sem = sem_open(sem_name, O_CREAT, 0644, value);
-        if (sem == SEM_FAILED) {
-            perror("Failed to initialize semaphore (macOS)");
-            free(sem);
-            return NULL;
-        }
-    #else
-        // Linux에서는 unnamed semaphore 사용
-        if (sem_init(sem, 0, value) != 0) {
-            perror("Failed to initialize semaphore (Linux)");
-            free(sem);
-            return NULL;
-        }
-    #endif
+#ifdef __APPLE__
+    // macOS에서 named semaphore 사용
+    char sem_name[20];
+    snprintf(sem_name, sizeof(sem_name), "/semaphore_%d", getpid());
+    sem_unlink(sem_name);  // 기존 세마포어 삭제 (중복 방지)
+    sem = sem_open(sem_name, O_CREAT, 0644, value);
+    if (sem == SEM_FAILED) {
+        perror("세마포어 초기화 실패 (macOS)");
+        free(sem);
+        return NULL;
+    }
+#else
+    // Linux에서는 unnamed semaphore 사용
+    if (sem_init(sem, 0, value) != 0) {
+        perror("세마포어 초기화 실패 (Linux)");
+        free(sem);
+        return NULL;
+    }
+#endif
 
     return sem;
 }
 
-// Mutex initialization function
+/**
+ * @brief 뮤텍스 초기화 함수
+ * 
+ * @return 뮤텍스 포인터
+ */
 pthread_mutex_t* init_mutex() {
     pthread_mutex_t* mutex = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
     if (pthread_mutex_init(mutex, NULL) != 0) {
-        kernel_errExit("Failed to initialize mutex");
+        kernel_errExit("뮤텍스 초기화 실패");
     }
     return mutex;
 }
 
-// Linked list creation function
+/**
+ * @brief 연결 리스트 생성 함수
+ * 
+ * @return LinkedList 포인터
+ */
 LinkedList* create_linkedlist() {
     LinkedList* list = (LinkedList*)malloc(sizeof(LinkedList));
     list->head = list->tail = NULL;
@@ -197,7 +174,12 @@ LinkedList* create_linkedlist() {
     return list;
 }
 
-// Linked list element addition function
+/**
+ * @brief 연결 리스트에 요소 추가 함수
+ * 
+ * @param list LinkedList 포인터
+ * @param data 추가할 데이터
+ */
 void push(LinkedList* list, void* data) {
     Node* new_node = (Node*)malloc(sizeof(Node));
     new_node->data = data;
@@ -212,10 +194,15 @@ void push(LinkedList* list, void* data) {
     list->size++;
 }
 
-// Linked list element removal function
+/**
+ * @brief 연결 리스트에서 요소 제거 함수
+ * 
+ * @param list LinkedList 포인터
+ * @return 제거된 데이터
+ */
 void* pop(LinkedList* list) {
     if (is_empty(list)) {
-        kernel_errMsg("Attempt to pop from an empty list");
+        kernel_errMsg("빈 리스트에서 pop 시도");
         return NULL;
     }
 
@@ -232,12 +219,22 @@ void* pop(LinkedList* list) {
     return data;
 }
 
-// Linked list empty check function
+/**
+ * @brief 연결 리스트가 비었는지 확인하는 함수
+ * 
+ * @param list LinkedList 포인터
+ * @return true 리스트가 비었을 경우
+ * @return false 리스트에 요소가 있을 경우
+ */
 bool is_empty(LinkedList* list) {
     return list->size == 0;
 }
 
-// Linked list destruction function
+/**
+ * @brief 연결 리스트 삭제 함수
+ * 
+ * @param list LinkedList 포인터
+ */
 void destroy_linkedlist(LinkedList* list) {
     while (!is_empty(list)) {
         pop(list);
@@ -245,11 +242,12 @@ void destroy_linkedlist(LinkedList* list) {
     free(list);
 }
 
-// 고급 오류 처리 함수 구현
-#include "ename.c.inc"
-
-static void terminate(bool useExit3)
-{
+/**
+ * @brief 프로세스 종료 처리 함수
+ * 
+ * @param useExit3 exit 함수 사용 여부
+ */
+static void terminate(bool useExit3) {
     char *s = getenv("EF_DUMPCORE");
 
     if (s != NULL && *s != '\0')
@@ -260,9 +258,16 @@ static void terminate(bool useExit3)
         _exit(EXIT_FAILURE);
 }
 
-static void outputError(bool useErr, int err, bool flushStdout, const char *format, va_list ap)
-{
-    #define BUF_SIZE 500
+/**
+ * @brief 오류 메시지 출력 함수
+ * 
+ * @param useErr 오류 번호 사용 여부
+ * @param err 오류 번호
+ * @param flushStdout stdout 플러시 여부
+ * @param format 포맷 문자열
+ * @param ap 가변 인자 리스트
+ */
+static void outputError(bool useErr, int err, bool flushStdout, const char *format, va_list ap) {
     char buf[BUF_SIZE], userMsg[BUF_SIZE], errText[BUF_SIZE];
 
     vsnprintf(userMsg, BUF_SIZE, format, ap);
@@ -282,8 +287,13 @@ static void outputError(bool useErr, int err, bool flushStdout, const char *form
     fflush(stderr);
 }
 
-void kernel_errMsg(const char *format, ...)
-{
+/**
+ * @brief 커널 오류 메시지 출력 함수
+ * 
+ * @param format 포맷 문자열
+ * @param ... 가변 인자 리스트
+ */
+void kernel_errMsg(const char *format, ...) {
     va_list argList;
     int savedErrno = errno;
 
@@ -294,6 +304,12 @@ void kernel_errMsg(const char *format, ...)
     errno = savedErrno;
 }
 
+/**
+ * @brief 커널 오류 종료 함수
+ * 
+ * @param format 포맷 문자열
+ * @param ... 가변 인자 리스트
+ */
 void kernel_errExit(const char *format, ...) {
     va_list argList;
 
@@ -301,9 +317,16 @@ void kernel_errExit(const char *format, ...) {
     outputError(true, errno, true, format, argList);
     va_end(argList);
 
-    terminate(true);  // Ensure the program terminates properly
+    terminate(true);  // 프로그램이 올바르게 종료되도록 보장
 }
 
+/**
+ * @brief 커널 오류 종료 함수 (오류 번호 사용)
+ * 
+ * @param errnum 오류 번호
+ * @param format 포맷 문자열
+ * @param ... 가변 인자 리스트
+ */
 void kernel_errExitEN(int errnum, const char *format, ...) {
     va_list argList;
 
@@ -311,9 +334,15 @@ void kernel_errExitEN(int errnum, const char *format, ...) {
     outputError(true, errnum, true, format, argList);
     va_end(argList);
 
-    terminate(true);  // Ensure the program terminates properly
+    terminate(true);  // 프로그램이 올바르게 종료되도록 보장
 }
 
+/**
+ * @brief 커널 치명적 오류 함수
+ * 
+ * @param format 포맷 문자열
+ * @param ... 가변 인자 리스트
+ */
 void kernel_fatal(const char *format, ...) {
     va_list argList;
 
@@ -321,11 +350,16 @@ void kernel_fatal(const char *format, ...) {
     outputError(false, 0, true, format, argList);
     va_end(argList);
 
-    terminate(true);  // Ensure the program terminates properly
+    terminate(true);  // 프로그램이 올바르게 종료되도록 보장
 }
 
-void kernel_usageErr(const char *format, ...)
-{
+/**
+ * @brief 커널 사용법 오류 함수
+ * 
+ * @param format 포맷 문자열
+ * @param ... 가변 인자 리스트
+ */
+void kernel_usageErr(const char *format, ...) {
     va_list argList;
 
     fflush(stdout);
@@ -339,8 +373,13 @@ void kernel_usageErr(const char *format, ...)
     exit(EXIT_FAILURE);
 }
 
-void kernel_cmdLineErr(const char *format, ...)
-{
+/**
+ * @brief 커맨드 라인 오류 처리 함수
+ * 
+ * @param format 포맷 문자열
+ * @param ... 가변 인자 리스트
+ */
+void kernel_cmdLineErr(const char *format, ...) {
     va_list argList;
 
     fflush(stdout);
@@ -354,19 +393,12 @@ void kernel_cmdLineErr(const char *format, ...)
     exit(EXIT_FAILURE);
 }
 
-// 스레드 작업 함수
-void* thread_function(void* arg) {
-    int thread_num = *((int*)arg);
-    safe_kernel_printf("Thread %d: 시작\n", thread_num);
-
-    sleep(1);  // 작업을 모방하기 위한 대기 시간
-    
-    safe_kernel_printf("Thread %d: 종료\n", thread_num);
-    
-    return NULL;
-}
-
-// 세마포어를 사용하는 스레드 작업 함수
+/**
+ * @brief 세마포어를 사용하는 스레드 작업 함수
+ * 
+ * @param arg 세마포어 포인터
+ * @return NULL
+ */
 void* semaphore_thread(void* arg) {
     sem_t* semaphore = (sem_t*)arg;
 
@@ -378,7 +410,7 @@ void* semaphore_thread(void* arg) {
 
     sem_post(semaphore);  // 세마포어 해제
     if(sem_post(semaphore) == -1) {
-        kernel_errExit("Failed to release semaphore");
+        kernel_errExit("세마포어 해제 실패");
     } else {
         safe_kernel_printf("세마포어 해제\n");
     }
@@ -386,7 +418,12 @@ void* semaphore_thread(void* arg) {
     return NULL;
 }
 
-// 뮤텍스를 사용하는 스레드 작업 함수
+/**
+ * @brief 뮤텍스를 사용하는 스레드 작업 함수
+ * 
+ * @param arg 뮤텍스 포인터
+ * @return NULL
+ */
 void* mutex_thread(void* arg) {
     pthread_mutex_t* mutex = (pthread_mutex_t*)arg;
 
@@ -398,7 +435,7 @@ void* mutex_thread(void* arg) {
     
     safe_kernel_printf("뮤텍스 해제\n");
     if(pthread_mutex_unlock(mutex) != 0) {
-        kernel_errExit("Failed to release mutex");
+        kernel_errExit("뮤텍스 해제 실패");
     } else {
         safe_kernel_printf("뮤텍스 해제\n");
     }
@@ -406,7 +443,13 @@ void* mutex_thread(void* arg) {
     return NULL;
 }
 
-// 멀티스레드 실행 함수 (쓰레드 수 및 동기화 방법을 입력받음)
+/**
+ * @brief 멀티스레드 실행 함수 (쓰레드 수 및 동기화 방법을 입력받음)
+ * 
+ * @param num_threads 생성할 스레드 수
+ * @param use_semaphore 세마포어 사용 여부
+ * @param ... 동기화 방법 (세마포어 또는 뮤텍스)
+ */
 void run_multithreading(int num_threads, int use_semaphore, ...) {
     if (num_threads < 1 || num_threads > 100) {
         safe_kernel_printf("쓰레드 수는 1 이상 100 이하의 값이어야 합니다.\n");
@@ -440,12 +483,12 @@ void run_multithreading(int num_threads, int use_semaphore, ...) {
         if (use_semaphore) {
             int err = pthread_create(&threads[i], NULL, semaphore_thread, semaphore);
             if (err != 0) {
-                kernel_errExitEN(err, "Thread %d 생성 실패", i);
+                kernel_errExitEN(err, "스레드 %d 생성 실패", i);
             }
         } else {
             int err = pthread_create(&threads[i], NULL, mutex_thread, mutex);
             if (err != 0) {
-                kernel_errExitEN(err, "Thread %d 생성 실패", i);
+                kernel_errExitEN(err, "스레드 %d 생성 실패", i);
             }
         }
     }
@@ -457,15 +500,15 @@ void run_multithreading(int num_threads, int use_semaphore, ...) {
 
     // 세마포어 또는 뮤텍스 해제
     if (use_semaphore) {
-        #ifdef __APPLE__
-            sem_close(semaphore);
-            sem_unlink("/semaphore");
-            safe_kernel_printf("세마포어 해제 완료 (macOS)\n");
-        #else
-            sem_destroy(semaphore);
-            free(semaphore);
-            safe_kernel_printf("세마포어 해제 완료 (Linux)\n");
-        #endif
+#ifdef __APPLE__
+        sem_close(semaphore);
+        sem_unlink("/semaphore");
+        safe_kernel_printf("세마포어 해제 완료 (macOS)\n");
+#else
+        sem_destroy(semaphore);
+        free(semaphore);
+        safe_kernel_printf("세마포어 해제 완료 (Linux)\n");
+#endif
     } else {
         pthread_mutex_destroy(mutex);
         free(mutex);

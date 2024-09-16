@@ -1,3 +1,6 @@
+#ifndef ENAME_C_INC
+#define ENAME_C_INC
+
  static char *ename[] = {
      /*   0 */ "",
      /*   1 */ "EPERM", "ENOENT", "ESRCH", "EINTR", "EIO", "ENXIO",
@@ -32,4 +35,6 @@
      /* 130 */ "EOWNERDEAD", "ENOTRECOVERABLE", "ERFKILL", "EHWPOISON"
  };
 
- #define MAX_ENAME 133
+#define MAX_ENAME 133
+
+#endif  // ENAME_C_INC
