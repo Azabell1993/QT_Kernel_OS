@@ -270,6 +270,9 @@ int main(int argc __attribute__((unused)), char** argv __attribute__((unused))) 
 
     // 단계 21: 커널 종료
     kernel_printf("커널 메인 함수 종료\n");
+    kernel_printf("*************************************************\n");
+    kernel_printf("**** log file end *******************************\n");
+    kernel_printf("\n\n");
     return 0;
 }
 

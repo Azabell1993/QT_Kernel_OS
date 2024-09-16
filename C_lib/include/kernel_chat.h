@@ -735,10 +735,26 @@ void kernel_chat(int num_args, ...) {
 
     // 소켓 바인딩
     if (bind(network_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-        perror("bind() 실패");
+        perror("bind() 실패: 포트가 사용 중일 수 있습니다.");
+        kernel_printf("bind() 실패: 포트가 사용 중일 수 있습니다.\n");
         close(network_fd);
         exit(EXIT_FAILURE);
     }
+    
+    int enable = 1;
+    if (setsockopt(network_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0) {
+        perror("setsockopt(SO_REUSEADDR) 실패");
+        kernel_printf("setsockopt(SO_REUSEADDR) 실패\n");
+        close(network_fd);
+        exit(EXIT_FAILURE);
+    }
+
+    kernel_printf("포트 %d에서 대기 중입니다. 포트 상태를 확인합니다...\n", port);
+    system("netstat -an | grep 5100");
+
+    int fd = open("/var/log/chat_server.log", O_RDWR | O_CREAT | O_APPEND, 0600);
+    dup2(fd, STDOUT_FILENO);
+    dup2(fd, STDERR_FILENO);
 
     // 소켓 리스닝
     if (listen(network_fd, MAX_CLIENTS) < 0) {

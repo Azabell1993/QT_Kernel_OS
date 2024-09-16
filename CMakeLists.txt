@@ -36,6 +36,7 @@ set(PROJECT_SOURCES
 
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include)
 # include_directories(${CMAKE_SOURCE_DIR}/C_lib/include/kernel_asm.h)
+include_directories(${CMAKE_SOURCE_DIR}/C_lib/include/kernel_smartptr.h)
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include/td_kernel_lib.h)
 include_directories(${CMAKE_SOURCE_DIR}/C_lib/include_printf)
 
@@ -62,8 +63,9 @@ endif()
 # Link the common C libraries and Qt Widgets
 target_link_libraries(os PRIVATE Qt${QT_VERSION_MAJOR}::Widgets
                       ${CMAKE_SOURCE_DIR}/C_lib/kernel_lib.a
-                      ${CMAKE_SOURCE_DIR}/C_lib/td_kernel_lib.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/td_kernel_engine.a
                       ${CMAKE_SOURCE_DIR}/C_lib/kernel_printf.a
+                      ${CMAKE_SOURCE_DIR}/C_lib/kernel_chat.a
                     #   ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_1.a
                     #   ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_2.a
                     #   ${CMAKE_SOURCE_DIR}/C_lib/kernel_asm_3.a

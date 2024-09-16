@@ -746,18 +746,18 @@ void kernel_chat(int num_args, ...) {
         close(network_fd);
         exit(EXIT_FAILURE);
     }
-    printf("서버가 포트 %d에서 대기 중입니다...\n", port);
+    kernel_printf("서버가 포트 %d에서 대기 중입니다...\n", port);
 
     // 소켓 포트 정보 조회
-    printf("현재 포트 %d 상태를 확인합니다.\n", port);
-    printf("**************************************************\n");
+    kernel_printf("현재 포트 %d 상태를 확인합니다.\n", port);
+    kernel_printf("**************************************************\n");
     if (system("lsof -i :5100") != 0) {
         perror("lsof 명령 실행 실패");
         kernel_printf("lsof 명령 실행 실패\n");
         close(network_fd);
         exit(EXIT_FAILURE);
     }
-    printf("**************************************************\n");
+    kernel_printf("**************************************************\n");
 
     // 불필요한 변수들을 주석 처리하거나 삭제
     // while (1) {
@@ -779,5 +779,5 @@ void kernel_chat(int num_args, ...) {
     //     close(client_fd);
     // }
 
-    close(network_fd);  // 네트워크 소켓 닫기
+    // close(network_fd);  // 네트워크 소켓 닫기
 }

@@ -29,6 +29,7 @@
 
 // kernel engine
 #include "kernel_engine.h"
+#include "kernel_smartptr.h"
 
 // 전역에서 접근 가능한 QTextEdit 포인터
 QTextEdit* globalProgressLog = nullptr;
@@ -52,6 +53,7 @@ void* thread_function(void* arg);
 void* semaphore_thread(void* arg);
 void* mutex_thread(void* arg);
 void run_multithreading(int num_threads, int use_semaphore, ...);
+void kernel_chat(int num_args, ...);
 
 //int main_1();
 //int main_2();
@@ -61,6 +63,8 @@ void run_multithreading(int num_threads, int use_semaphore, ...);
 //int main_6();
 //int main_7();
 }
+
+#define DEFAULT_TCP_PORT 5100
 
 /*
  * @brief CMD 창 생성자
@@ -72,6 +76,7 @@ CmdWindow::CmdWindow(QWidget *parent)
 {
     ui->setupUi(this);
     // runTests();
+    kernel_chat(2, "127.0.0.1", DEFAULT_TCP_PORT);
 
     // CMD 스타일로 배경을 검은색, 텍스트를 녹색으로 설정
     ui->textEdit->setStyleSheet("background-color: black; color: green; font-family: 'Courier'; font-size: 12px;");
@@ -336,7 +341,7 @@ void CmdWindow::handleCommand(const QString &command) {
                 // 타이머를 이용한 스마트 포인터 생성 및 자동 삭제
                 int* testData = new int;
                 *testData = rand() % 1000;
-                sp = create_smart_ptr(testData);
+                sp = create_smart_ptr(*testData, 1, nullptr);
                 smartPointers[testData] = sp;
 
                 // 타이머 시작
@@ -366,7 +371,7 @@ void CmdWindow::handleCommand(const QString &command) {
         // 포인터 생성 및 스마트 포인터 할당
         int* testData = new int;
         *testData = rand() % 1000;  // 0~999 사이의 랜덤 값
-        sp = create_smart_ptr(testData);
+        sp = create_smart_ptr(*testData, 1, nullptr);
         smartPointers[testData] = sp;  // 생성된 스마트 포인터를 맵에 추가
 
         // CMD 창에 메시지 출력

@@ -6,9 +6,12 @@ package "C_lib" {
 
     package "include" {
         [kernel_asm.h]
+        [kernel_chat.h]
         [kernel_engine.h]
         [kernel_lib.h]
         [kernel_print.h]
+        [kernel_smartptr.h]
+        [kernel_uniqueptr.h]
     }
 
     package "include_printf" {
@@ -39,6 +42,7 @@ package "C_lib" {
     package "src" {
         [ename.c.inc]
         [kernel_asm.c]
+        [kernel_chat.c]
         [kernel_engine.c]
         [td_kernel_engine.c]
         [kernel_lib.c]
@@ -51,7 +55,10 @@ package "C_lib" {
 ' Define packages (directories) for root files
 package "root" {
     [CMakeLists.txt]
-    [Makefile]
+    [CMakeLists.txt.user]
+    [CMakeLists.txt.user.0f0aaec]
+    [CMakeLists.txt.user.1df1f4f]
+    [CMakeLists.txt.user.2ba5d43]
     [Doxyfile]
     [LICENSE]
     [README.md]
@@ -64,7 +71,6 @@ package "root" {
     [processmanager.cpp]
     [processmanager.h]
     [resources.qrc]
-    [libkernel_lib.a]
     [mac_run.sh]
     [main.cpp]
 }
@@ -73,6 +79,7 @@ package "root" {
 [kernel_asm.c] --> [kernel_asm.h]
 [kernel_lib.c] --> [kernel_lib.h]
 [kernel_printf.c] --> [kernel_print.h]
+[kernel_chat.c] --> [kernel_chat.h]
 [kernel_engine.c] --> [kernel_engine.h]
 [td_kernel_engine.c] --> [kernel_engine.h]
 
@@ -85,6 +92,9 @@ package "root" {
 [Makefile] --> [kernel_asm.c]
 [Makefile] --> [kernel_lib.c]
 [Makefile] --> [kernel_printf.c]
+[Makefile] --> [kernel_chat.c]
+[Makefile] --> [kernel_engine.c]
+[Makefile] --> [td_kernel_engine.c]
 [Makefile] --> [bootloader.cpp]
 [Makefile] --> [cmdwindow.cpp]
 [Makefile] --> [mainwindow.cpp]
