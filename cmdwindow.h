@@ -41,7 +41,7 @@ private slots:
     void runMultithreadingTest();
     void runMutexTest();
 
-
+    void runUnifiedProcess(const QStringList &args);
 private:
     Ui::cmdWindow *ui;
 };

@@ -23,6 +23,12 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QDialog>
+#include <cstdarg>
+#include <QFile>
+#include <QDir>
+#include <QVariant>
+#include <QFileInfo>
+
 #include "cmdwindow.h"
 #include "ui_cmdwindow.h"
 #include "smartpointerdialog.h"
@@ -199,252 +205,252 @@ void CmdWindow::createProcessWithMessage(const QString &message) {
  * @param command 사용자가 입력한 명령어
  * @details 사용자가 입력한 명령어를 분석하고, 해당 명령어에 맞는 동작을 수행합니다.
  */
-void CmdWindow::handleCommand(const QString &command) {
-    static SmartPtr sp;  // 기존의 스마트 포인터 전역 변수
-    static SmartPointerDialog *dialog = nullptr;  // 모달 창은 한 번만 생성
-    static QMap<int*, SmartPtr> smartPointers;    // 여러 스마트 포인터를 관리하기 위한 맵
+// void CmdWindow::handleCommand(const QString &command) {
+    // static SmartPtr sp;  // 기존의 스마트 포인터 전역 변수
+    // static SmartPointerDialog *dialog = nullptr;  // 모달 창은 한 번만 생성
+    // static QMap<int*, SmartPtr> smartPointers;    // 여러 스마트 포인터를 관리하기 위한 맵
 
-    if (!dialog) {
-        // 모달 창이 없으면 생성하여 표시 (부모를 nullptr로 설정)
-        dialog = new SmartPointerDialog(nullptr);
-        dialog->setWindowFlag(Qt::Window);  // 독립된 창으로 설정
-        dialog->show();
-    }
+    // if (!dialog) {
+    //     // 모달 창이 없으면 생성하여 표시 (부모를 nullptr로 설정)
+    //     dialog = new SmartPointerDialog(nullptr);
+    //     dialog->setWindowFlag(Qt::Window);  // 독립된 창으로 설정
+    //     dialog->show();
+    // }
 
-    if (command == "exit") {
-        close();
-    }
-    else if (command == "help") {
-        ui->textEdit->append("Available commands:");
-        ui->textEdit->append("  create <process_name>       - Create a new process with the given name");
-        ui->textEdit->append("  create printf(\"message\")  - Print a message");
-        ui->textEdit->append("  printf(\"message\")  - Print a message using kernel_printf");
-        ui->textEdit->append("  create_smart_ptr");
-        ui->textEdit->append("  retain_smart_ptr");
-        ui->textEdit->append("  release_smart_ptr");
-        ui->textEdit->append("  show_smart_ptr_value");
-        ui->textEdit->append("  show_ref_count");
-        ui->textEdit->append("  kill_ptr <pointer_value>    - Kill a specific smart pointer");
-        ui->textEdit->append("  multithreading              - Run a multithreading test");
-        ui->textEdit->append("  semaphore                  - Run a semaphore test");
-        ui->textEdit->append("  mutex                      - Run a mutex test");
-        ui->textEdit->append("  help_modal                 - Show help in a new modal window");
-        ui->textEdit->append("  printf_test : kp_test");
-        ui->textEdit->append("  asm <number>               - Run the kernel_asm_<number> function.");
-        ui->textEdit->append("  kill <process_name>         - Kill the process with the given name");
-        ui->textEdit->append("  list                        - List all processes");
-        ui->textEdit->append("  show_memory_usage           - Show memory usage of smart pointers");
-        ui->textEdit->append("  copy_smart_ptr              - Copy a smart pointer");
-        ui->textEdit->append("  create_smart_ptr_with_timer <seconds> - Create a smart pointer with auto-release");
-        ui->textEdit->append("  clear                       - Clear the screen");
-        ui->textEdit->append("  exit                        - Exit the shell");
-    }
-
-
-    else if (command.startsWith("kill_ptr ")) {
-        QStringList parts = command.split(" ");
-        if (parts.size() == 2) {
-            bool ok;
-            int ptrValue = parts[1].toInt(&ok);
-            if (ok) {
-                int* foundPtr = nullptr;
-
-                // 스마트 포인터 맵에서 값을 찾기
-                for (int* ptr : smartPointers.keys()) {
-                    if (ptr == reinterpret_cast<int*>(ptrValue)) {  // 포인터 값을 직접 참조
-                        foundPtr = ptr;
-                        break;
-                    }
-                }
-
-                if (foundPtr) {
-                    SmartPtr sp = smartPointers[foundPtr];
-                    release(&sp);
-                    if (*(sp.ref_count) == 0) {
-                        dialog->removeSmartPointer(*foundPtr);  // 모달 창에서 삭제
-                        smartPointers.remove(foundPtr);         // 맵에서 삭제
-                        delete foundPtr;                        // 메모리 해제
-                        ui->textEdit->append("Smart pointer deleted.");
-                    } else {
-                        ui->textEdit->append("Pointer reference count is not zero.");
-                    }
-                } else {
-                    ui->textEdit->append("Pointer value not found.");
-                }
-            } else {
-                ui->textEdit->append("Invalid pointer value.");
-            }
-        } else {
-            ui->textEdit->append("Usage: kill_ptr <pointer_value>");
-        }
-    }
+    // if (command == "exit") {
+    //     close();
+    // }
+    // else if (command == "help") {
+        // ui->textEdit->append("Available commands:");
+        // ui->textEdit->append("  create <process_name>       - Create a new process with the given name");
+        // ui->textEdit->append("  create printf(\"message\")  - Print a message");
+        // ui->textEdit->append("  printf(\"message\")  - Print a message using kernel_printf");
+        // ui->textEdit->append("  create_smart_ptr");
+        // ui->textEdit->append("  retain_smart_ptr");
+        // ui->textEdit->append("  release_smart_ptr");
+        // ui->textEdit->append("  show_smart_ptr_value");
+        // ui->textEdit->append("  show_ref_count");
+        // ui->textEdit->append("  kill_ptr <pointer_value>    - Kill a specific smart pointer");
+        // ui->textEdit->append("  multithreading              - Run a multithreading test");
+        // ui->textEdit->append("  semaphore                  - Run a semaphore test");
+        // ui->textEdit->append("  mutex                      - Run a mutex test");
+        // ui->textEdit->append("  help_modal                 - Show help in a new modal window");
+        // ui->textEdit->append("  printf_test : kp_test");
+        // ui->textEdit->append("  asm <number>               - Run the kernel_asm_<number> function.");
+        // ui->textEdit->append("  kill <process_name>         - Kill the process with the given name");
+        // ui->textEdit->append("  list                        - List all processes");
+        // ui->textEdit->append("  show_memory_usage           - Show memory usage of smart pointers");
+        // ui->textEdit->append("  copy_smart_ptr              - Copy a smart pointer");
+        // ui->textEdit->append("  create_smart_ptr_with_timer <seconds> - Create a smart pointer with auto-release");
+        // ui->textEdit->append("  clear                       - Clear the screen");
+        // ui->textEdit->append("  exit                        - Exit the shell");
+    // }
 
 
-    else if (command == "help_modal") {
-        // 새로운 모달 창을 열어 모든 명령어 표시
-        QDialog *helpDialog = new QDialog(this);
-        QVBoxLayout *layout = new QVBoxLayout(helpDialog);
-        QTextEdit *helpText = new QTextEdit(helpDialog);
-        helpText->setText("Available commands:\n"
-                          "  create <process_name>       - Create a new process with the given name\n"
-                          "  create printf(\"message\")  - Print a message\n"
-                          "  printf(\"message\")         - Print a message using kernel_printf\n"
-                          "  create_smart_ptr            - Create a smart pointer\n"
-                          "  retain_smart_ptr            - Retain a smart pointer\n"
-                          "  release_smart_ptr           - Release a smart pointer\n"
-                          "  show_smart_ptr_value        - Show the value of a smart pointer\n"
-                          "  show_ref_count              - Show reference count of a smart pointer\n"
-                          "  kill_ptr <pointer_value>    - Kill a specific smart pointer\n"
-                          "  multithreading              - Run a multithreading test\n"
-                          "  semaphore                  - Run a semaphore test\n"
-                          "  mutex                      - Run a mutex test\n"
-                          "  help_modal                 - Show help in a new modal window\n"
-                          "  printf_test : kp_test       - Test printf functionality\n"
-                          "  asm <number>               - Run the kernel_asm_<number> function\n"
-                          "  kill <process_name>         - Kill the process with the given name\n"
-                          "  list                       - List all processes\n"
-                          "  show_memory_usage           - Show memory usage of smart pointers\n"
-                          " copy_smart_ptr              - Copy a smart pointer\n"
-                          " create_smart_ptr_with_timer <seconds> - Create a smart pointer with auto-release\n"
-                          "  clear                      - Clear the screen\n"
-                          "  exit                       - Exit the shell");
-        helpText->setReadOnly(true);
-        layout->addWidget(helpText);
-        helpDialog->setLayout(layout);
-        helpDialog->setWindowTitle("Help Commands");
-        helpDialog->show();
-    }
+    // else if (command.startsWith("kill_ptr ")) {
+    //     QStringList parts = command.split(" ");
+    //     if (parts.size() == 2) {
+    //         bool ok;
+    //         int ptrValue = parts[1].toInt(&ok);
+    //         if (ok) {
+    //             int* foundPtr = nullptr;
 
-    else if (command == "show_memory_usage") {
-        // 스마트 포인터 메모리 사용량을 추적
-        int totalMemory = 0;
-        for (int* ptr : smartPointers.keys()) {
-            totalMemory += sizeof(*ptr);  // 할당된 포인터 크기를 합산
-        }
-        ui->textEdit->append("Total memory used by smart pointers: " + QString::number(totalMemory) + " bytes.");
-    }
+    //             // 스마트 포인터 맵에서 값을 찾기
+    //             for (int* ptr : smartPointers.keys()) {
+    //                 if (ptr == reinterpret_cast<int*>(ptrValue)) {  // 포인터 값을 직접 참조
+    //                     foundPtr = ptr;
+    //                     break;
+    //                 }
+    //             }
 
-    else if (command == "copy_smart_ptr") {
-        if (!smartPointers.isEmpty()) {
-            SmartPtr originalSp = smartPointers.begin().value();
-            SmartPtr copiedSp = originalSp;  // 스마트 포인터 복사
-            ui->textEdit->append("Smart pointer copied. New reference count: " + QString::number(*(copiedSp.ref_count)));
-        }
-    }
-
-    else if (command.startsWith("create_smart_ptr_with_timer ")) {
-        QStringList parts = command.split(" ");
-        if (parts.size() == 2) {
-            bool ok;
-            int timeout = parts[1].toInt(&ok);
-            if (ok) {
-                // 타이머를 이용한 스마트 포인터 생성 및 자동 삭제
-                int* testData = new int;
-                *testData = rand() % 1000;
-                sp = create_smart_ptr(*testData, 1, nullptr);
-                smartPointers[testData] = sp;
-
-                // 타이머 시작
-                QTimer::singleShot(timeout * 1000, this, [=]() {
-                    if (*(sp.ref_count) == 1) {  // 참조 카운트가 1일 때만 해제
-                        release(&sp);
-                        ui->textEdit->append("Smart pointer auto-released after " + QString::number(timeout) + " seconds.");
-                        dialog->removeSmartPointer(*testData);  // 모달에서 삭제
-                        smartPointers.remove(testData);         // 맵에서 삭제
-                        delete testData;
-                    } else {
-                        ui->textEdit->append("Smart pointer was not released due to non-zero reference count.");
-                    }
-                });
-
-                ui->textEdit->append("Smart pointer created with auto-release in " + QString::number(timeout) + " seconds.");
-            } else {
-                ui->textEdit->append("Invalid timer value.");
-            }
-        } else {
-            ui->textEdit->append("Usage: create_smart_ptr_with_timer <seconds>");
-        }
-    }
+    //             if (foundPtr) {
+    //                 SmartPtr sp = smartPointers[foundPtr];
+    //                 release(&sp);
+    //                 if (*(sp.ref_count) == 0) {
+    //                     dialog->removeSmartPointer(*foundPtr);  // 모달 창에서 삭제
+    //                     smartPointers.remove(foundPtr);         // 맵에서 삭제
+    //                     delete foundPtr;                        // 메모리 해제
+    //                     ui->textEdit->append("Smart pointer deleted.");
+    //                 } else {
+    //                     ui->textEdit->append("Pointer reference count is not zero.");
+    //                 }
+    //             } else {
+    //                 ui->textEdit->append("Pointer value not found.");
+    //             }
+    //         } else {
+    //             ui->textEdit->append("Invalid pointer value.");
+    //         }
+    //     } else {
+    //         ui->textEdit->append("Usage: kill_ptr <pointer_value>");
+    //     }
+    // }
 
 
-    else if (command == "create_smart_ptr") {
-        // 포인터 생성 및 스마트 포인터 할당
-        int* testData = new int;
-        *testData = rand() % 1000;  // 0~999 사이의 랜덤 값
-        sp = create_smart_ptr(*testData, 1, nullptr);
-        smartPointers[testData] = sp;  // 생성된 스마트 포인터를 맵에 추가
+    // else if (command == "help_modal") {
+    //     // 새로운 모달 창을 열어 모든 명령어 표시
+    //     QDialog *helpDialog = new QDialog(this);
+    //     QVBoxLayout *layout = new QVBoxLayout(helpDialog);
+    //     QTextEdit *helpText = new QTextEdit(helpDialog);
+    //     helpText->setText("Available commands:\n"
+    //                       "  create <process_name>       - Create a new process with the given name\n"
+    //                       "  create printf(\"message\")  - Print a message\n"
+    //                       "  printf(\"message\")         - Print a message using kernel_printf\n"
+    //                       "  create_smart_ptr            - Create a smart pointer\n"
+    //                       "  retain_smart_ptr            - Retain a smart pointer\n"
+    //                       "  release_smart_ptr           - Release a smart pointer\n"
+    //                       "  show_smart_ptr_value        - Show the value of a smart pointer\n"
+    //                       "  show_ref_count              - Show reference count of a smart pointer\n"
+    //                       "  kill_ptr <pointer_value>    - Kill a specific smart pointer\n"
+    //                       "  multithreading              - Run a multithreading test\n"
+    //                       "  semaphore                  - Run a semaphore test\n"
+    //                       "  mutex                      - Run a mutex test\n"
+    //                       "  help_modal                 - Show help in a new modal window\n"
+    //                       "  printf_test : kp_test       - Test printf functionality\n"
+    //                       "  asm <number>               - Run the kernel_asm_<number> function\n"
+    //                       "  kill <process_name>         - Kill the process with the given name\n"
+    //                       "  list                       - List all processes\n"
+    //                       "  show_memory_usage           - Show memory usage of smart pointers\n"
+    //                       " copy_smart_ptr              - Copy a smart pointer\n"
+    //                       " create_smart_ptr_with_timer <seconds> - Create a smart pointer with auto-release\n"
+    //                       "  clear                      - Clear the screen\n"
+    //                       "  exit                       - Exit the shell");
+    //     helpText->setReadOnly(true);
+    //     layout->addWidget(helpText);
+    //     helpDialog->setLayout(layout);
+    //     helpDialog->setWindowTitle("Help Commands");
+    //     helpDialog->show();
+    // }
 
-        // CMD 창에 메시지 출력
-        ui->textEdit->append(QString("Smart pointer created with value: %1").arg(*testData));
-        kernel_printf("Smart pointer created with value: %d\n", *testData);
+    // else if (command == "show_memory_usage") {
+    //     // 스마트 포인터 메모리 사용량을 추적
+    //     int totalMemory = 0;
+    //     for (int* ptr : smartPointers.keys()) {
+    //         totalMemory += sizeof(*ptr);  // 할당된 포인터 크기를 합산
+    //     }
+    //     ui->textEdit->append("Total memory used by smart pointers: " + QString::number(totalMemory) + " bytes.");
+    // }
 
-        // 모달 창에 포인터 추가
-        dialog->addSmartPointer(*testData, *(sp.ref_count));
-    }
+    // else if (command == "copy_smart_ptr") {
+    //     if (!smartPointers.isEmpty()) {
+    //         SmartPtr originalSp = smartPointers.begin().value();
+    //         SmartPtr copiedSp = originalSp;  // 스마트 포인터 복사
+    //         ui->textEdit->append("Smart pointer copied. New reference count: " + QString::number(*(copiedSp.ref_count)));
+    //     }
+    // }
 
-    else if (command == "retain_smart_ptr") {
-        if (!smartPointers.isEmpty()) {
-            // 맵에서 첫 번째 포인터를 참조 카운트 증가
-            SmartPtr &sp = smartPointers.begin().value();
-            retain(&sp);
+    // else if (command.startsWith("create_smart_ptr_with_timer ")) {
+    //     QStringList parts = command.split(" ");
+    //     if (parts.size() == 2) {
+    //         bool ok;
+    //         int timeout = parts[1].toInt(&ok);
+    //         if (ok) {
+    //             // 타이머를 이용한 스마트 포인터 생성 및 자동 삭제
+    //             int* testData = new int;
+    //             *testData = rand() % 1000;
+    //             sp = create_smart_ptr(*testData, 1, nullptr);
+    //             smartPointers[testData] = sp;
 
-            ui->textEdit->append("Smart pointer retained.");
-            dialog->addSmartPointer(*((int*)sp.ptr), *(sp.ref_count));  // 모달 창에 업데이트
-        }
-    }
-    else if (command == "release_smart_ptr") {
-        if (!smartPointers.isEmpty()) {
-            // 맵에서 첫 번째 포인터를 참조 카운트 감소 및 해제
-            int* ptr = smartPointers.begin().key();
-            SmartPtr sp = smartPointers[ptr];
-            release(&sp);
+    //             // 타이머 시작
+    //             QTimer::singleShot(timeout * 1000, this, [=]() {
+    //                 if (*(sp.ref_count) == 1) {  // 참조 카운트가 1일 때만 해제
+    //                     release(&sp);
+    //                     ui->textEdit->append("Smart pointer auto-released after " + QString::number(timeout) + " seconds.");
+    //                     dialog->removeSmartPointer(*testData);  // 모달에서 삭제
+    //                     smartPointers.remove(testData);         // 맵에서 삭제
+    //                     delete testData;
+    //                 } else {
+    //                     ui->textEdit->append("Smart pointer was not released due to non-zero reference count.");
+    //                 }
+    //             });
 
-            ui->textEdit->append("Smart pointer released.");
-            if (*(sp.ref_count) == 0) {
-                dialog->removeSmartPointer(*ptr);  // 참조 카운트가 0이면 삭제
-                smartPointers.remove(ptr);         // 맵에서 포인터 삭제
-                delete ptr;                        // 포인터 메모리 해제
-            } else {
-                dialog->addSmartPointer(*ptr, *(sp.ref_count));  // 참조 카운트 업데이트
-            }
-        }
-    }
-    else if (command == "show_smart_ptr_value") {
-        if (!smartPointers.isEmpty()) {
-            int* value = (int*)smartPointers.begin().key();
-            ui->textEdit->append("Smart pointer value: " + QString::number(*value));
-            kernel_printf("Smart pointer value: %d\n", *value);
-        }
-    }
-    else if (command == "show_ref_count") {
-        if (!smartPointers.isEmpty()) {
-            SmartPtr sp = smartPointers.begin().value();
-            ui->textEdit->append("Smart pointer reference count: " + QString::number(*(sp.ref_count)));
-            kernel_printf("Smart pointer reference count: %d\n", *(sp.ref_count));
-        }
-    }
+    //             ui->textEdit->append("Smart pointer created with auto-release in " + QString::number(timeout) + " seconds.");
+    //         } else {
+    //             ui->textEdit->append("Invalid timer value.");
+    //         }
+    //     } else {
+    //         ui->textEdit->append("Usage: create_smart_ptr_with_timer <seconds>");
+    //     }
+    // }
 
-    else if (command == "multithreading") {
-        runMultithreadingTest();
-    }
-    else if (command == "semaphore") {
-        runSemaphoreTest();
-    }
-    else if (command == "mutex") {
-        runMutexTest();
-    }
-    else if (command.startsWith("create printf(")) {
-        QRegularExpression re(R"raw(create printf\("(.*)"\))raw");
-        QRegularExpressionMatch match = re.match(command);
-        if (match.hasMatch()) {
-            QString message = match.captured(1);
-            // az_printf("\n%s", message.toStdString().c_str());
-            ui->textEdit->append("Create process with message >> "+message);
-            createProcessWithMessage(message);
-        } else {
-            ui->textEdit->append("Invalid command format. Use: create printf(\"message\")");
-        }
-    }
+
+    // else if (command == "create_smart_ptr") {
+    //     // 포인터 생성 및 스마트 포인터 할당
+    //     int* testData = new int;
+    //     *testData = rand() % 1000;  // 0~999 사이의 랜덤 값
+    //     sp = create_smart_ptr(*testData, 1, nullptr);
+    //     smartPointers[testData] = sp;  // 생성된 스마트 포인터를 맵에 추가
+
+    //     // CMD 창에 메시지 출력
+    //     ui->textEdit->append(QString("Smart pointer created with value: %1").arg(*testData));
+    //     kernel_printf("Smart pointer created with value: %d\n", *testData);
+
+    //     // 모달 창에 포인터 추가
+    //     dialog->addSmartPointer(*testData, *(sp.ref_count));
+    // }
+
+    // else if (command == "retain_smart_ptr") {
+    //     if (!smartPointers.isEmpty()) {
+    //         // 맵에서 첫 번째 포인터를 참조 카운트 증가
+    //         SmartPtr &sp = smartPointers.begin().value();
+    //         retain(&sp);
+
+    //         ui->textEdit->append("Smart pointer retained.");
+    //         dialog->addSmartPointer(*((int*)sp.ptr), *(sp.ref_count));  // 모달 창에 업데이트
+    //     }
+    // }
+    // else if (command == "release_smart_ptr") {
+    //     if (!smartPointers.isEmpty()) {
+    //         // 맵에서 첫 번째 포인터를 참조 카운트 감소 및 해제
+    //         int* ptr = smartPointers.begin().key();
+    //         SmartPtr sp = smartPointers[ptr];
+    //         release(&sp);
+
+    //         ui->textEdit->append("Smart pointer released.");
+    //         if (*(sp.ref_count) == 0) {
+    //             dialog->removeSmartPointer(*ptr);  // 참조 카운트가 0이면 삭제
+    //             smartPointers.remove(ptr);         // 맵에서 포인터 삭제
+    //             delete ptr;                        // 포인터 메모리 해제
+    //         } else {
+    //             dialog->addSmartPointer(*ptr, *(sp.ref_count));  // 참조 카운트 업데이트
+    //         }
+    //     }
+    // }
+    // else if (command == "show_smart_ptr_value") {
+    //     if (!smartPointers.isEmpty()) {
+    //         int* value = (int*)smartPointers.begin().key();
+    //         ui->textEdit->append("Smart pointer value: " + QString::number(*value));
+    //         kernel_printf("Smart pointer value: %d\n", *value);
+    //     }
+    // }
+    // else if (command == "show_ref_count") {
+    //     if (!smartPointers.isEmpty()) {
+    //         SmartPtr sp = smartPointers.begin().value();
+    //         ui->textEdit->append("Smart pointer reference count: " + QString::number(*(sp.ref_count)));
+    //         kernel_printf("Smart pointer reference count: %d\n", *(sp.ref_count));
+    //     }
+    // }
+
+    // else if (command == "multithreading") {
+    //     runMultithreadingTest();
+    // }
+    // else if (command == "semaphore") {
+    //     runSemaphoreTest();
+    // }
+    // else if (command == "mutex") {
+    //     runMutexTest();
+    // }
+    // else if (command.startsWith("create printf(")) {
+    //     QRegularExpression re(R"raw(create printf\("(.*)"\))raw");
+    //     QRegularExpressionMatch match = re.match(command);
+    //     if (match.hasMatch()) {
+    //         QString message = match.captured(1);
+    //         // az_printf("\n%s", message.toStdString().c_str());
+    //         ui->textEdit->append("Create process with message >> "+message);
+    //         createProcessWithMessage(message);
+    //     } else {
+    //         ui->textEdit->append("Invalid command format. Use: create printf(\"message\")");
+    //     }
+    // }
 
 //    else if (command.startsWith("asm ")) {
 //        QStringList parts = command.split(" ");
@@ -487,129 +493,273 @@ void CmdWindow::handleCommand(const QString &command) {
 //        }
 //    }
 
-    else if (command.startsWith("printf(")) {
-        QRegularExpression re1(R"raw(printf\("([^"]*)"\))raw");
-        QRegularExpression re2(R"raw(printf\("([^"]*)"\s*,\s*(.*)\))raw");
+    // else if (command.startsWith("printf(")) {
+    //     QRegularExpression re1(R"raw(printf\("([^"]*)"\))raw");
+    //     QRegularExpression re2(R"raw(printf\("([^"]*)"\s*,\s*(.*)\))raw");
 
-        QRegularExpressionMatch match1 = re1.match(command);
-        QRegularExpressionMatch match2 = re2.match(command);
+    //     QRegularExpressionMatch match1 = re1.match(command);
+    //     QRegularExpressionMatch match2 = re2.match(command);
 
-        if (match1.hasMatch()) {
-            // 단순 메시지 출력
-            QString message = match1.captured(1);
-            QString debugMessage = message;
-            debugMessage.replace("\\n", "\n");
-            qDebug().noquote() << debugMessage;
-            ui->textEdit->append(message);
-            kernel_printf("%s", message.toStdString().c_str());
-            ui->textEdit->append("");
+    //     if (match1.hasMatch()) {
+    //         // 단순 메시지 출력
+    //         QString message = match1.captured(1);
+    //         QString debugMessage = message;
+    //         debugMessage.replace("\\n", "\n");
+    //         qDebug().noquote() << debugMessage;
+    //         ui->textEdit->append(message);
+    //         kernel_printf("%s", message.toStdString().c_str());
+    //         ui->textEdit->append("");
 
-            /** test **/
-            kernel_printf("\n\n******** Test kernel_printf Function ********\n");
-            kernel_printf("Hello world!\n");
-            kernel_printf("A single character : %c \n", 'T');
-            kernel_printf("An integer : %d \n", 37);
-            kernel_printf("An integer : %d \n", 299);
-            kernel_printf("5-4 = %d\n", 1);
+            // /** test **/
+            // kernel_printf("\n\n******** Test kernel_printf Function ********\n");
+            // kernel_printf("Hello world!\n");
+            // kernel_printf("A single character : %c \n", 'T');
+            // kernel_printf("An integer : %d \n", 37);
+            // kernel_printf("An integer : %d \n", 299);
+            // kernel_printf("5-4 = %d\n", 1);
 
-            int a = 1;
-            int b = 2;
+            // int a = 1;
+            // int b = 2;
 
-            kernel_printf("%d + %d = %d\n", a, b, a + b);
-            kernel_printf("%d\t\t\t String.\n", 12345678);
-            kernel_printf("-650\n");
-            kernel_printf("%+d\n", 430);
-            kernel_printf("%+1d\n", 650);
-            kernel_printf("%+10d\n", 499);
-            kernel_printf("% 3d\n", 1230);
-            kernel_printf("%08d\n", 342);
-            kernel_printf("%+03d\n", -430);
-            kernel_printf("%3d\n", -43);
-            kernel_printf("%u\n", 23919293929392);
-            kernel_printf("%+-u\n", 12345);
-            kernel_printf("%+10u\n", 12345);
-            kernel_printf("%-4s\n", "Az");
-            kernel_printf("%o\n", 333);
-            kernel_printf("%-0#+10o\n", 2048);
-            kernel_printf("%X\n", 12345678);
-            kernel_printf("%#+x\n", 12345678);
-            kernel_printf("\n\nfunction call Test\n");
-            kernel_printf("%d + %d = %d", 5, 6, function_Test(5, 6));
-            kernel_printf("\n");
+            // kernel_printf("%d + %d = %d\n", a, b, a + b);
+            // kernel_printf("%d\t\t\t String.\n", 12345678);
+            // kernel_printf("-650\n");
+            // kernel_printf("%+d\n", 430);
+            // kernel_printf("%+1d\n", 650);
+            // kernel_printf("%+10d\n", 499);
+            // kernel_printf("% 3d\n", 1230);
+            // kernel_printf("%08d\n", 342);
+            // kernel_printf("%+03d\n", -430);
+            // kernel_printf("%3d\n", -43);
+            // kernel_printf("%u\n", 23919293929392);
+            // kernel_printf("%+-u\n", 12345);
+            // kernel_printf("%+10u\n", 12345);
+            // kernel_printf("%-4s\n", "Az");
+            // kernel_printf("%o\n", 333);
+            // kernel_printf("%-0#+10o\n", 2048);
+            // kernel_printf("%X\n", 12345678);
+            // kernel_printf("%#+x\n", 12345678);
+            // kernel_printf("\n\nfunction call Test\n");
+            // kernel_printf("%d + %d = %d", 5, 6, function_Test(5, 6));
+            // kernel_printf("\n");
 
-            /** 정적 라이브러리를 갖고 오는 방법은 두가지임. 위의 kernel_printf는 kernel_printf.h헤더이며 아래는 kernel_lib.h임. **/
-            /** 따라서 이 코드 파일에서 kernel_printf.h만 했기 때문에 아래도 헤더파일로 선언해야하는데 **/
-            /** 공부목적을 위해서 헤더 파일이 아닌 extern 메크로를 사용함 **/
-            /** 선언을 하니 워닝이 사라짐 **/
-            /*** kernel_putchar ***/
-            kernel_putchar('H');
-            kernel_putchar('E');
-            kernel_putchar('L');
-            kernel_putchar('L');
-            kernel_putchar('O');
-            kernel_putchar('\n');
+            // /** 정적 라이브러리를 갖고 오는 방법은 두가지임. 위의 kernel_printf는 kernel_printf.h헤더이며 아래는 kernel_lib.h임. **/
+            // /** 따라서 이 코드 파일에서 kernel_printf.h만 했기 때문에 아래도 헤더파일로 선언해야하는데 **/
+            // /** 공부목적을 위해서 헤더 파일이 아닌 extern 메크로를 사용함 **/
+            // /** 선언을 하니 워닝이 사라짐 **/
+            // /*** kernel_putchar ***/
+            // kernel_putchar('H');
+            // kernel_putchar('E');
+            // kernel_putchar('L');
+            // kernel_putchar('L');
+            // kernel_putchar('O');
+            // kernel_putchar('\n');
 
-            kernel_putchar('V');
-            kernel_putchar('E');
-            kernel_putchar('D');
-            kernel_putchar('A');
-            kernel_putchar('\n');
+            // kernel_putchar('V');
+            // kernel_putchar('E');
+            // kernel_putchar('D');
+            // kernel_putchar('A');
+            // kernel_putchar('\n');
 
-            kernel_printf("-\n");
-            kernel_printf(".\n");
-            kernel_printf("/\n");
-            kernel_printf("'()*+,-./\n");
+            // kernel_printf("-\n");
+            // kernel_printf(".\n");
+            // kernel_printf("/\n");
+            // kernel_printf("'()*+,-./\n");
 
+    //     }
+    //     else if (match2.hasMatch()) {
+    //         // 포맷 문자열과 가변 인자 처리
+    //         QString format = match2.captured(1);
+    //         QString arguments = match2.captured(2).trimmed();
+
+    //         qDebug() << "\nFormat:" << format;
+    //         qDebug() << "Arguments:" << arguments;
+
+    //         ui->textEdit->append(format);
+
+    //         if (!arguments.isEmpty()) {
+    //             QVariantList args = parseArguments(arguments);
+    //             executeKernelPrintf(format, args);
+    //         } else {
+    //             kernel_printf(format.toStdString().c_str());
+    //         }
+
+    //         ui->textEdit->append("");
+    //     }
+    //     else {
+    //         ui->textEdit->append("Invalid command format. Use: kernel_printf(\"message\") or kernel_printf(\"format\", values)");
+    //     }
+    // }
+    // else if (command == "kp_test") {
+    //     test_kernel_printf();
+    // }
+    // else if (command.startsWith("create ")) {
+    //     QString process_name = command.mid(7);
+    //     bool success = kernel_create_process(process_name.toStdString().c_str());
+    //     if (!success) {
+    //         ui->textEdit->append("Failed to create process: " + process_name);
+    //     }
+    // }
+    // else if (command.startsWith("kill ")) {
+    //     QString process_name = command.mid(5);
+    //     bool success = kernel_kill_process(process_name.toStdString().c_str());
+    //     if (!success) {
+    //         ui->textEdit->append("No running process found with name: " + process_name);
+    //     }
+    // }
+    // else if (command == "list") {
+    //     kernel_list_processes();
+    // }
+    // else if (command == "clear") {
+    //     ui->textEdit->clear();
+    // }
+    // else {
+    //     ui->textEdit->append("Unknown command. Type 'help' for a list of commands.");
+    // }
+// }
+
+/*
+ * @brief 명령어 처리 함수
+ * @param command 사용자가 입력한 명령어
+ */
+void CmdWindow::handleCommand(const QString &command) {
+    if (command == "exit") {
+        close();
+    } else if (command == "help") {
+        ui->textEdit->append("Available commands:");
+        ui->textEdit->append("  cp <source> <destination>   - Copy a file");
+        ui->textEdit->append("  mv <source> <destination>   - Move a file");
+        ui->textEdit->append("  df -h                      - Show disk usage");
+        ui->textEdit->append("  du <directory>             - Show directory size");
+        ui->textEdit->append("  exit                       - Exit the shell");
+    } else if (command.startsWith("cp ")) {
+        QStringList parts = command.split(" ");
+        if (parts.size() == 3) {
+            QStringList args;
+            args << parts[0] << parts[1] << parts[2];  // QList<QVariant> -> QStringList
+            runUnifiedProcess(args);
+        } else {
+            ui->textEdit->append("Usage: cp <source> <destination>");
         }
-        else if (match2.hasMatch()) {
-            // 포맷 문자열과 가변 인자 처리
-            QString format = match2.captured(1);
-            QString arguments = match2.captured(2).trimmed();
-
-            qDebug() << "\nFormat:" << format;
-            qDebug() << "Arguments:" << arguments;
-
-            ui->textEdit->append(format);
-
-            if (!arguments.isEmpty()) {
-                QVariantList args = parseArguments(arguments);
-                executeKernelPrintf(format, args);
-            } else {
-                kernel_printf(format.toStdString().c_str());
-            }
-
-            ui->textEdit->append("");
+    } else if (command.startsWith("mv ")) {
+        QStringList parts = command.split(" ");
+        if (parts.size() == 3) {
+            QStringList args;
+            args << parts[0] << parts[1] << parts[2];  // QList<QVariant> -> QStringList
+            runUnifiedProcess(args);
+        } else {
+            ui->textEdit->append("Usage: mv <source> <destination>");
         }
-        else {
-            ui->textEdit->append("Invalid command format. Use: kernel_printf(\"message\") or kernel_printf(\"format\", values)");
+    } else if (command == "df -h") {
+        runUnifiedProcess(QStringList() << "df -h");  // QList<QVariant> -> QStringList
+    } else if (command.startsWith("du ")) {
+        QStringList parts = command.split(" ");
+        if (parts.size() == 2) {
+            runUnifiedProcess(QStringList() << "du" << parts[1]);  // QList<QVariant> -> QStringList
+        } else {
+            ui->textEdit->append("Usage: du <directory>");
         }
+    } else {
+        ui->textEdit->append("Unknown command: " + command);
     }
-    else if (command == "kp_test") {
-        test_kernel_printf();
+}
+
+/*
+ * @brief 가변 인자 대신 QList<QVariant>를 사용하여 명령어를 처리하는 함수
+ * @param args 명령어와 인자를 QList<QVariant>로 전달
+ */
+/*
+ * @brief 가변 인자 대신 QStringList를 사용하여 명령어를 처리하는 함수
+ *        프로세스 생성 시 스마트 포인터를 사용하여 메모리를 관리합니다.
+ * @param args 명령어와 인자를 QStringList로 전달
+ */
+void CmdWindow::runUnifiedProcess(const QStringList &args) {
+    if (args.isEmpty()) {
+        kernel_printf("No command provided.\n");
+        return;
     }
-    else if (command.startsWith("create ")) {
-        QString process_name = command.mid(7);
-        bool success = kernel_create_process(process_name.toStdString().c_str());
-        if (!success) {
-            ui->textEdit->append("Failed to create process: " + process_name);
+
+    QString command = args[0];
+    kernel_printf("Unified process started with command: %s\n", command.toStdString().c_str());
+
+    // 스마트 포인터로 프로세스 데이터를 관리
+    auto processData = std::make_shared<int>(rand() % 1000);
+    kernel_printf("Smart pointer created with value: %d\n", *processData);
+
+    // 프로세스 실행
+    bool processCreated = kernel_create_process(command.toStdString().c_str());
+    if (!processCreated) {
+        kernel_printf("Error: Failed to create process.\n");
+        return;
+    }
+
+    // 명령어 처리
+    if (command == "cp" && args.size() == 3) {
+        QString src = args[1];
+        QString dst = args[2];
+
+        // 소스 파일 확인
+        if (!QFile::exists(src)) {
+            kernel_printf("Error: Source file does not exist: %s\n", src.toStdString().c_str());
+            return;
         }
-    }
-    else if (command.startsWith("kill ")) {
-        QString process_name = command.mid(5);
-        bool success = kernel_kill_process(process_name.toStdString().c_str());
-        if (!success) {
-            ui->textEdit->append("No running process found with name: " + process_name);
+
+        // 목적지 파일 경로 유효성 확인 (목적지 폴더가 존재하는지)
+        QFileInfo dstInfo(dst);
+        if (!dstInfo.dir().exists()) {
+            kernel_printf("Error: Destination directory does not exist: %s\n", dstInfo.dir().absolutePath().toStdString().c_str());
+            return;
         }
+
+        // 파일 복사
+        if (QFile::copy(src, dst)) {
+            kernel_printf("File copied from %s to %s\n", src.toStdString().c_str(), dst.toStdString().c_str());
+        } else {
+            kernel_printf("Error: Failed to copy file. Please check permissions or if the file already exists.\n");
+        }
+    } else if (command == "mv" && args.size() == 3) {
+        QString src = args[1];
+        QString dst = args[2];
+
+        if (!QFile::exists(src)) {
+            kernel_printf("Error: Source file does not exist: %s\n", src.toStdString().c_str());
+            return;
+        }
+
+        if (!QFile::rename(src, dst)) {
+            kernel_printf("Error: Failed to move file.\n");
+        } else {
+            kernel_printf("File moved from %s to %s\n", src.toStdString().c_str(), dst.toStdString().c_str());
+        }
+    } else if (command == "df -h") {
+        QProcess process;
+        process.start("df", QStringList() << "-h");
+        process.waitForFinished();
+        QString output = process.readAllStandardOutput();
+        kernel_printf("%s", output.toStdString().c_str());
+    } else if (command == "du" && args.size() == 2) {
+        QString dir = args[1];
+        QProcess process;
+        process.start("du", QStringList() << "-sh" << dir);
+        process.waitForFinished();
+        QString output = process.readAllStandardOutput();
+        kernel_printf("%s", output.toStdString().c_str());
+    } else {
+        kernel_printf("Unknown command: %s\n", command.toStdString().c_str());
     }
-    else if (command == "list") {
-        kernel_list_processes();
+
+    // 프로세스 종료 후 스마트 포인터 참조 카운트 체크
+    kernel_printf("Smart pointer reference count: %ld\n", processData.use_count());
+
+    // 프로세스 종료
+    if (!kernel_kill_process(command.toStdString().c_str())) {
+        kernel_printf("Error: Failed to kill process.\n");
+    } else {
+        kernel_printf("Process for %s terminated successfully.\n", command.toStdString().c_str());
     }
-    else if (command == "clear") {
-        ui->textEdit->clear();
-    }
-    else {
-        ui->textEdit->append("Unknown command. Type 'help' for a list of commands.");
-    }
+
+    // 스마트 포인터 자동 해제
+    kernel_printf("Smart pointer will be automatically released when out of scope.\n");
 }
 
 /*
