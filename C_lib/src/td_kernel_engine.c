@@ -20,10 +20,11 @@
 #include <sys/socket.h>
 #include <fcntl.h>
 
+// td_kernel_engine.c 파일에 정의된 함수를 사용하기 위해 헤더 파일을 포함합니다.(정적 라이브러리와 무관)
+#include "kernel_chat.h"
 #include "kernel_engine.h"
 #include "kernel_print.h"
 #include "kernel_smartptr.h"
-#include "kernel_chat.h"
 
 #define NUM_THREADS 3
 #define NUM_PROCESSES 2

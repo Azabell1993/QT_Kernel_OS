@@ -1,5 +1,3 @@
-# Makefile for building both kernel_printf.a, kernel_lib.a, DTCASE, and td_kernel_engine specific targets
-
 # Determine the OS and set the compiler
 UNAME_S := $(shell uname -s)
 UNAME_M := $(shell uname -m)
@@ -26,17 +24,11 @@ endif
 STDIO_SRC_DIR = include_printf
 KERNEL_SRC_DIR = src
 
-# DTCASE values
-DTCASES = 1 2 3 4 5 6 7
-
-# Source files for kernel_asm.c and td_kernel_engine.c
-KERNEL_ASM_SRC = $(KERNEL_SRC_DIR)/kernel_asm.c
-TD_KERNEL_SRC = $(KERNEL_SRC_DIR)/td_kernel_engine.c
-
 # Libraries
 STDIO_LIB = kernel_printf.a
 KERNEL_LIB = kernel_lib.a
-TD_KERNEL_LIB = td_kernel_lib.a
+KERNEL_ENGINE_LIB = kernel_engine.a
+KERNEL_CHAT_LIB = kernel_chat.a  # 추가된 라이브러리
 
 # Object files for different architectures (template)
 STDIO_SRCS = $(wildcard $(STDIO_SRC_DIR)/*.c)
@@ -46,65 +38,32 @@ STDIO_OBJS_X86_64 = $(STDIO_SRCS:$(STDIO_SRC_DIR)/%.c=$(STDIO_SRC_DIR)/%.x86_64.
 KERNEL_OBJS_ARM64 = $(KERNEL_SRCS:$(KERNEL_SRC_DIR)/%.c=$(KERNEL_SRC_DIR)/%.arm64.o)
 STDIO_OBJS_ARM64 = $(STDIO_SRCS:$(STDIO_SRC_DIR)/%.c=$(STDIO_SRC_DIR)/%.arm64.o)
 
-# Object files for DTCASE-specific builds
-KERNEL_ASM_OBJS_X86_64 = $(DTCASES:%=kernel_asm_%.x86_64.o)
-KERNEL_ASM_OBJS_ARM64 = $(DTCASES:%=kernel_asm_%.arm64.o)
-
-# Archive files for DTCASE builds
-KERNEL_ASM_LIB_X86_64 = $(DTCASES:%=kernel_asm_%.x86_64.a)
-KERNEL_ASM_LIB_ARM64 = $(DTCASES:%=kernel_asm_%.arm64.a)
-
-# Universal DTCASE binaries
-KERNEL_ASM_LIB_UNIVERSAL = $(DTCASES:%=kernel_asm_%.a)
-
 # Default target
-all: $(KERNEL_ASM_LIB_UNIVERSAL) $(STDIO_LIB) $(KERNEL_LIB) $(TD_KERNEL_LIB) td_kernel_engine
+all: $(STDIO_LIB) $(KERNEL_LIB) $(KERNEL_ENGINE_LIB) $(KERNEL_CHAT_LIB) td_kernel_engine
 
-# Rule to build each DTCASE object file for x86_64 (no -arch for Linux)
-kernel_asm_%.x86_64.o: $(KERNEL_ASM_SRC)
-ifeq ($(UNAME_S), Darwin)
-	$(CC) $(CFLAGS) $(ARCH_FLAGS) -DDTCASE=$* -c $< -o $@
-else
-	$(CC) $(CFLAGS) -DDTCASE=$* -c $< -o $@
-endif
-
-# Rule to build each DTCASE object file for arm64 (no -arch for Linux)
-kernel_asm_%.arm64.o: $(KERNEL_ASM_SRC)
-ifeq ($(UNAME_S), Darwin)
-	$(CC) $(CFLAGS) $(ARCH_FLAGS) -DDTCASE=$* -c $< -o $@
-else
-	$(CC) $(CFLAGS) -DDTCASE=$* -c $< -o $@
-endif
-
-# Rule to build each DTCASE archive file for x86_64
-kernel_asm_%.x86_64.a: kernel_asm_%.x86_64.o
-	$(AR) rcs $@ $<
-	ranlib $@   # Add ranlib to generate an index
-
-# Rule to build each DTCASE archive file for arm64
-kernel_asm_%.arm64.a: kernel_asm_%.arm64.o
-	$(AR) rcs $@ $<
-	ranlib $@   # Add ranlib to generate an index
-
-# Rule to create universal DTCASE binaries combining x86_64 and arm64 versions
-kernel_asm_%.a: kernel_asm_%.x86_64.a kernel_asm_%.arm64.a
-ifeq ($(UNAME_S), Darwin)
+# Rule to create kernel_printf.a
+$(STDIO_LIB): $(STDIO_OBJS_X86_64) $(STDIO_OBJS_ARM64)
+	@echo "Creating universal static library $(STDIO_LIB)"
 	@libtool -static -o $@ $^
-else
-	@ar rcs $@ $^
-	ranlib $@   # Add ranlib to generate an index
-endif
+	ranlib $@
 
-
-# Rule to build the td_kernel_engine static library
-$(TD_KERNEL_LIB): $(KERNEL_OBJS_X86_64) $(STDIO_LIB)
-	@echo "Creating td_kernel_lib.a static library"
-ifeq ($(UNAME_S), Darwin)
+# Rule to create kernel_lib.a
+$(KERNEL_LIB): $(KERNEL_OBJS_X86_64) $(KERNEL_OBJS_ARM64)
+	@echo "Creating universal static library $(KERNEL_LIB)"
 	@libtool -static -o $@ $^
-else
-	@ar rcs $@ $^
-	ranlib $@   # Add ranlib to generate an index
-endif
+	ranlib $@
+
+# Rule to create kernel_engine.a
+$(KERNEL_ENGINE_LIB): $(KERNEL_SRC_DIR)/kernel_engine.x86_64.o
+	@echo "Creating kernel_engine.a static library"
+	@libtool -static -o $@ $^
+	ranlib $@
+
+# Rule to create kernel_chat.a
+$(KERNEL_CHAT_LIB): $(KERNEL_SRC_DIR)/kernel_chat.x86_64.o
+	@echo "Creating kernel_chat.a static library"
+	@libtool -static -o $@ $^
+	ranlib $@
 
 # Compile .c files to .o files for x86_64
 $(KERNEL_SRC_DIR)/%.x86_64.o: $(KERNEL_SRC_DIR)/%.c
@@ -125,34 +84,14 @@ $(STDIO_SRC_DIR)/%.arm64.o: $(STDIO_SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Target to build and link td_kernel_engine executable
-td_kernel_engine: $(filter-out $(KERNEL_SRC_DIR)/td_kernel_engine.x86_64.o, $(KERNEL_OBJS_X86_64)) $(STDIO_LIB)
+td_kernel_engine: $(filter-out $(KERNEL_SRC_DIR)/td_kernel_engine.x86_64.o, $(KERNEL_OBJS_X86_64)) $(STDIO_LIB) $(KERNEL_LIB) $(KERNEL_ENGINE_LIB) $(KERNEL_CHAT_LIB)
 	@echo "Building td_kernel_engine executable"
-	$(CC) $(CFLAGS) -o td_kernel_engine.exec src/td_kernel_engine.c $(filter-out $(KERNEL_SRC_DIR)/td_kernel_engine.x86_64.o, $(KERNEL_OBJS_X86_64)) $(STDIO_LIB) $(TD_KERNEL_LIB)
-
-# Kernel library creation
-$(KERNEL_LIB): $(KERNEL_OBJS_X86_64) $(KERNEL_OBJS_ARM64)
-	@echo "Creating universal static library $(KERNEL_LIB)"
-ifeq ($(UNAME_S), Darwin)
-	@libtool -static -o $@ $^
-else
-	@ar rcs $@ $^
-	ranlib $@   # Add ranlib to generate an index
-endif
-
-# Stdio library creation
-$(STDIO_LIB): $(STDIO_OBJS_X86_64) $(STDIO_OBJS_ARM64)
-	@echo "Creating universal static library $(STDIO_LIB)"
-ifeq ($(UNAME_S), Darwin)
-	@libtool -static -o $@ $^
-else
-	@ar rcs $@ $^
-	ranlib $@   # Add ranlib to generate an index
-endif
-
-# Clean up (excluding specific files)
+	$(CC) $(CFLAGS) -o td_kernel_engine.exec src/td_kernel_engine.c $(KERNEL_LIB) $(KERNEL_ENGINE_LIB) $(STDIO_LIB) $(KERNEL_CHAT_LIB)
+	
+# Clean up
 clean:
 	@echo "Cleaning up..."
-	@rm -f $(STDIO_LIB) $(KERNEL_LIB) $(KERNEL_ASM_LIB_UNIVERSAL) $(TD_KERNEL_LIB) td_kernel_engine.exec
+	@rm -f $(STDIO_LIB) $(KERNEL_LIB) $(KERNEL_ENGINE_LIB) $(KERNEL_CHAT_LIB) td_kernel_engine.exec
 	@find . -name "*.o" -delete
 
 .PHONY: all clean td_kernel_engine
