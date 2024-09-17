@@ -6,5 +6,6 @@
         <file>cmd.png</file>
         <file>mypc.png</file>
         <file>trashcan.png</file>
+        <file>exit.png</file>
     </qresource>
 </RCC>

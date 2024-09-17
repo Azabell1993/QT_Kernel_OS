@@ -20,6 +20,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QInputDialog>
+#include <QScrollBar>
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QDialog>
@@ -96,20 +97,6 @@ CmdWindow::CmdWindow(QWidget *parent)
     ui->textEdit->append("\nkernel> ");
 }
 
-
-/**
- * @brief 하얀색 텍스트를 추가하는 함수
- * @param text 추가할 텍스트
- */
-void CmdWindow::appendWithWhiteText(const QString &text) {
-    QTextCharFormat format;
-    format.setForeground(QBrush(QColor("white")));  // 텍스트 색을 하얀색으로 설정
-    QTextCursor cursor = ui->textEdit->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    ui->textEdit->setTextCursor(cursor);
-    ui->textEdit->setCurrentCharFormat(format);
-    ui->textEdit->insertPlainText(text);
-}
 
 /*
  * @brief CMD 창 소멸자
@@ -190,6 +177,15 @@ void CmdWindow::on_submitButton_clicked() {
     ui->textEdit->moveCursor(QTextCursor::End);
     ui->textEdit->insertPlainText("\nkernel> ");
     ui->textEdit->ensureCursorVisible();
+
+    // 항상 커서를 마지막으로 이동
+    QTextCursor cursor = ui->textEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->textEdit->setTextCursor(cursor);
+
+    // 스크롤을 끝까지 내림
+    QScrollBar *scrollBar = ui->textEdit->verticalScrollBar();
+    scrollBar->setValue(scrollBar->maximum());
 }
 
 void CmdWindow::createProcessWithMessage(const QString &message) {
@@ -664,8 +660,6 @@ void CmdWindow::handleCommand(const QString &command) {
     }
 
     if (command == "help_modal") {
-        static SmartPointerDialog *dialog = nullptr;
-
         // 새로운 모달 창을 열어 모든 명령어 표시
         QDialog *helpDialog = new QDialog(this);
         QVBoxLayout *layout = new QVBoxLayout(helpDialog);

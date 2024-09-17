@@ -96,11 +96,23 @@ MainWindow::MainWindow(QWidget *parent)
     // Start 메뉴 설정
     QMenu *startMenu = new QMenu(this);
     QAction *cmdAction = new QAction(QIcon(":/cmd.png"), "cmd", this);
+    QAction *exitAction = new QAction(QIcon(":/exit.png"), "Exit", this);
+
     startMenu->addAction(cmdAction);
+    startMenu->addAction(exitAction);
+
     startButton->setMenu(startMenu);
     startButton->setPopupMode(QToolButton::InstantPopup);
 
     connect(cmdAction, &QAction::triggered, this, &MainWindow::openCmdWindow);
+    connect(exitAction, &QAction::triggered, this, &QApplication::quit);
+
+    // 시작 버튼 클릭 시 메뉴가 위로 열리도록 설정
+    connect(startButton, &QToolButton::clicked, [this, startButton, startMenu]() {
+        QRect buttonGeometry = startButton->geometry();
+        QPoint menuPos = startButton->mapToGlobal(buttonGeometry.topLeft());
+        startMenu->popup(menuPos - QPoint(0, startMenu->sizeHint().height())); // 위로 펼쳐지도록 위치 조정
+    });
 
     // 작업 표시줄 오른쪽에 시계 표시
     QLabel *timeLabel = new QLabel(taskBar);
