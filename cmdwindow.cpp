@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QVariant>
 #include <QFileInfo>
+#include <QList>
 
 #include "cmdwindow.h"
 #include "ui_cmdwindow.h"
@@ -84,8 +85,7 @@ CmdWindow::CmdWindow(QWidget *parent)
     // runTests();
     kernel_chat(2, "127.0.0.1", DEFAULT_TCP_PORT);
 
-    // CMD 스타일로 배경을 검은색, 텍스트를 녹색으로 설정
-    ui->textEdit->setStyleSheet("background-color: black; color: green; font-family: 'Courier'; font-size: 12px;");
+    ui->textEdit->setStyleSheet("background-color: black; color: yellow; font-family: 'Courier'; font-size: 12px;");
     ui->textEdit->installEventFilter(this); // 이벤트 필터 설치
 
     // C 코드에서 사용할 출력 함수 등록
@@ -95,6 +95,20 @@ CmdWindow::CmdWindow(QWidget *parent)
     ui->textEdit->append("kernel> ");
 }
 
+
+/**
+ * @brief 하얀색 텍스트를 추가하는 함수
+ * @param text 추가할 텍스트
+ */
+void CmdWindow::appendWithWhiteText(const QString &text) {
+    QTextCharFormat format;
+    format.setForeground(QBrush(QColor("white")));  // 텍스트 색을 하얀색으로 설정
+    QTextCursor cursor = ui->textEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->textEdit->setTextCursor(cursor);
+    ui->textEdit->setCurrentCharFormat(format);
+    ui->textEdit->insertPlainText(text);
+}
 
 /*
  * @brief CMD 창 소멸자
@@ -623,14 +637,22 @@ void CmdWindow::createProcessWithMessage(const QString &message) {
  * @param command 사용자가 입력한 명령어
  */
 void CmdWindow::handleCommand(const QString &command) {
+
     if (command == "exit") {
         close();
     } else if (command == "help") {
         ui->textEdit->append("Available commands:");
+        ui->textEdit->append("  pwd                        - Print working directory");
+        ui->textEdit->append("  ls                         - List files and directories");
+        ui->textEdit->append("  cd <directory>             - Change directory");
         ui->textEdit->append("  cp <source> <destination>   - Copy a file");
         ui->textEdit->append("  mv <source> <destination>   - Move a file");
         ui->textEdit->append("  df -h                      - Show disk usage");
         ui->textEdit->append("  du <directory>             - Show directory size");
+        ui->textEdit->append("  history                    - Show command history");
+        ui->textEdit->append("  mkdir <directory>          - Create a directory");
+        ui->textEdit->append("  rmdir <directory>          - Remove a directory");
+        ui->textEdit->append("  clear                      - Clear the screen");
         ui->textEdit->append("  exit                       - Exit the shell");
     } else if (command.startsWith("cp ")) {
         QStringList parts = command.split(" ");
@@ -650,8 +672,43 @@ void CmdWindow::handleCommand(const QString &command) {
         } else {
             ui->textEdit->append("Usage: mv <source> <destination>");
         }
+    } else if (command == "clear") {
+        ui->textEdit->clear();
+        on_submitButton_clicked();
+    }
+    else if (command == "pwd") {
+        runUnifiedProcess(QStringList() << "pwd");
+    } else if (command == "ls") {
+        runUnifiedProcess(QStringList() << "ls" << "-alc");
+    } else if (command.startsWith("cd ")) {
+        QString directory = command.mid(3);
+        QDir::setCurrent(directory);
+        ui->textEdit->append("Changed directory to: " + directory);
+    } else if (command == "history") {
+        for (const QString &cmd : commandHistory) {
+            ui->textEdit->append(cmd);
+        }
+    } else if (command.startsWith("mkdir ")) {
+        QString directory = command.mid(6);
+        QDir().mkdir(directory);
+        ui->textEdit->append("Directory created: " + directory);
+    } else if (command.startsWith("rmdir ")) {
+        QString directory = command.mid(6);
+        QDir().rmdir(directory);
+        ui->textEdit->append("Directory removed: " + directory);
     } else if (command == "df -h") {
-        runUnifiedProcess(QStringList() << "df -h");  // QList<QVariant> -> QStringList
+        // QProcess를 이용해 시스템 명령어 실행
+        QProcess process;
+        process.start("df", QStringList() << "-h");
+
+        // 프로세스가 완료될 때까지 기다림
+        process.waitForFinished();
+
+        // 프로세스의 출력 결과를 읽음
+        QString output = process.readAllStandardOutput();
+
+        // 출력 결과를 ui->textEdit에 추가 (노란색으로 표시됨)
+        ui->textEdit->append(output);
     } else if (command.startsWith("du ")) {
         QStringList parts = command.split(" ");
         if (parts.size() == 2) {
@@ -662,6 +719,8 @@ void CmdWindow::handleCommand(const QString &command) {
     } else {
         ui->textEdit->append("Unknown command: " + command);
     }
+
+    commandHistory.append(command);
 }
 
 /*
@@ -680,27 +739,84 @@ void CmdWindow::runUnifiedProcess(const QStringList &args) {
     }
 
     QString command = args[0];
-    kernel_printf("Unified process started with command: %s\n", command.toStdString().c_str());
+    commandHistory.append(command);  // 명령어를 히스토리에 추가
+
+    kernel_printf("Executing command: %s\n", command.toStdString().c_str());
+    ui->textEdit->append("Executing command: " + command);
 
     // 스마트 포인터로 프로세스 데이터를 관리
     auto processData = std::make_shared<int>(rand() % 1000);
     kernel_printf("Smart pointer created with value: %d\n", *processData);
+    ui->textEdit->append("Smart pointer created with value: " + QString::number(*processData));
 
-    // 프로세스 실행
-    bool processCreated = kernel_create_process(command.toStdString().c_str());
-    if (!processCreated) {
-        kernel_printf("Error: Failed to create process.\n");
-        return;
+    QProcess process;
+    QString output;
+
+    if (command == "help_modal") {
+        // 새로운 모달 창을 열어 모든 명령어 표시
+        QDialog *helpDialog = new QDialog(this);
+        QVBoxLayout *layout = new QVBoxLayout(helpDialog);
+        QTextEdit *helpText = new QTextEdit(helpDialog);
+        helpText->setText("Available commands:\n"
+                          "  pwd                        - Print working directory\n"
+                          "  ls                         - List files and directories\n"
+                          "  cd <directory>             - Change directory\n"
+                          "  cp <source> <destination>   - Copy a file\n"
+                          "  mv <source> <destination>   - Move a file\n"
+                          "  df -h                      - Show disk usage\n"
+                          "  du <directory>             - Show directory size\n"
+                          "  history                    - Show command history\n"
+                          "  mkdir <directory>          - Create a directory\n"
+                          "  rmdir <directory>          - Remove a directory\n"
+                          "  clear                      - Clear the screen\n"
+                          "  exit                       - Exit the shell");
+        helpText->setReadOnly(true);
+        layout->addWidget(helpText);
+        helpDialog->setLayout(layout);
+        helpDialog->setWindowTitle("Help Commands");
+        helpDialog->show();
     }
 
     // 명령어 처리
-    if (command == "cp" && args.size() == 3) {
+    // 파일 및 디렉토리 명령어
+    if (command == "pwd") {
+        process.start("pwd");
+    } else if (command == "cd" && args.size() == 2) {
+        QDir::setCurrent(args[1]);
+        kernel_printf("Directory changed to: %s\n", args[1].toStdString().c_str());
+        ui->textEdit->append("Directory changed to: " + args[1]);
+        return;
+    } else if (command == "ls") {
+        process.start("ls", QStringList() << "-alc");
+    } 
+
+    // history
+    else if(args[0] == "history") {
+        kernel_printf("Command history:\n");
+        ui->textEdit->append("Command history:");
+        for(int i=0; i<commandHistory.size(); i++) {
+            QString historyEntry = QString::number(i+1) + ": " + commandHistory[i];
+            kernel_printf("%s\n", historyEntry.toStdString().c_str());
+            ui->textEdit->append(historyEntry);
+        }
+    }
+
+    else if (command == "mkdir" && args.size() == 2) {
+        QDir().mkdir(args[1]);
+        kernel_printf("Directory %s created\n", args[1].toStdString().c_str());
+        return;
+    } else if (command == "rmdir" && args.size() == 2) {
+        QDir().rmdir(args[1]);
+        kernel_printf("Directory %s removed\n", args[1].toStdString().c_str());
+        return;
+    } else if (command == "cp" && args.size() == 3) {
         QString src = args[1];
         QString dst = args[2];
 
         // 소스 파일 확인
         if (!QFile::exists(src)) {
             kernel_printf("Error: Source file does not exist: %s\n", src.toStdString().c_str());
+            ui->textEdit->append("Error: Source file does not exist: " + src);
             return;
         }
 
@@ -708,14 +824,17 @@ void CmdWindow::runUnifiedProcess(const QStringList &args) {
         QFileInfo dstInfo(dst);
         if (!dstInfo.dir().exists()) {
             kernel_printf("Error: Destination directory does not exist: %s\n", dstInfo.dir().absolutePath().toStdString().c_str());
+            ui->textEdit->append("Error: Destination directory does not exist: " + dstInfo.dir().absolutePath());
             return;
         }
 
         // 파일 복사
         if (QFile::copy(src, dst)) {
             kernel_printf("File copied from %s to %s\n", src.toStdString().c_str(), dst.toStdString().c_str());
+            ui->textEdit->append("File copied from " + src + " to " + dst);
         } else {
             kernel_printf("Error: Failed to copy file. Please check permissions or if the file already exists.\n");
+            ui->textEdit->append("Error: Failed to copy file. Please check permissions or if the file already exists.");
         }
     } else if (command == "mv" && args.size() == 3) {
         QString src = args[1];
@@ -723,20 +842,50 @@ void CmdWindow::runUnifiedProcess(const QStringList &args) {
 
         if (!QFile::exists(src)) {
             kernel_printf("Error: Source file does not exist: %s\n", src.toStdString().c_str());
+            ui->textEdit->append("Error: Source file does not exist: " + src);
             return;
         }
 
         if (!QFile::rename(src, dst)) {
             kernel_printf("Error: Failed to move file.\n");
+            ui->textEdit->append("Error: Failed to move file.");
         } else {
             kernel_printf("File moved from %s to %s\n", src.toStdString().c_str(), dst.toStdString().c_str());
+            ui->textEdit->append("File moved from " + src + " to " + dst);
         }
-    } else if (command == "df -h") {
+    } else if (command == "rm" && args.size() == 2) {
+        QFile::remove(args[1]);
+        kernel_printf("File %s removed\n", args[1].toStdString().c_str());
+        return;
+    } else if (command == "cat" && args.size() == 2) {
+        QFile file(args[1]);
+        if (file.open(QIODevice::ReadOnly)) {
+            QByteArray content = file.readAll();
+            kernel_printf("File content:\n%s", content.data());
+            file.close();
+        } else {
+            kernel_printf("Unable to open file: %s\n", args[1].toStdString().c_str());
+        }
+        return;
+    } else if (command == "touch" && args.size() == 2) {
+        QFile file(args[1]);
+        if (file.open(QIODevice::WriteOnly)) {
+            kernel_printf("File %s created\n", args[1].toStdString().c_str());
+            file.close();
+        } else {
+            kernel_printf("Failed to create file: %s\n", args[1].toStdString().c_str());
+        }
+        return;
+    }
+
+    // 디스크 정보 및 로그 관리
+    if (command == "df" && args[1] == "-h") {
         QProcess process;
         process.start("df", QStringList() << "-h");
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
         kernel_printf("%s", output.toStdString().c_str());
+        ui->textEdit->append(output);
     } else if (command == "du" && args.size() == 2) {
         QString dir = args[1];
         QProcess process;
@@ -744,22 +893,56 @@ void CmdWindow::runUnifiedProcess(const QStringList &args) {
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
         kernel_printf("%s", output.toStdString().c_str());
-    } else {
+        ui->textEdit->append(output);
+    } else if (command.startsWith("tail") && args.size() == 2) {
+        process.start("tail", QStringList() << "-f" << args[1]);
+    }
+
+    // 시스템 정보 및 프로세스 관리
+    if (command == "ps" && args[1] == "-ef") {
+        process.start("ps", QStringList() << "-ef");
+    } else if (command == "grep" && args.size() == 2) {
+        process.start("ps", QStringList() << "-ef");
+    } else if (command == "top") {
+        process.start("top", QStringList() << "-b" << "-n" << "1");
+    } else if (command == "uptime") {
+        process.start("uptime");
+    } else if (command == "free" && args[1] == "-h") {
+        process.start("free", QStringList() << "-h");
+    }
+
+    // 네트워크 명령어
+    if (command == "ifconfig") {
+        process.start("ifconfig");
+    } else if (command == "ping" && args.size() == 2) {
+        process.start("ping", QStringList() << "-c" << "4" << args[1]);
+    } else if (command == "netstat" && args[1] == "-tuln") {
+        process.start("netstat", QStringList() << "-tuln");
+    }
+
+    // 시스템 종료 및 재부팅
+    if (command == "shutdown" && args[1] == "-h") {
+        process.start("shutdown", QStringList() << "-h" << "now");
+    } else if (command == "reboot") {
+        process.start("reboot");
+    }
+    
+    else {
         kernel_printf("Unknown command: %s\n", command.toStdString().c_str());
     }
 
-    // 프로세스 종료 후 스마트 포인터 참조 카운트 체크
+
+    process.waitForFinished();
+    output = process.readAllStandardOutput();
+    kernel_printf("%s", output.toStdString().c_str());
+    ui->textEdit->append(output);  // 명령어 결과를 GUI에 출력
+
+    // 스마트 포인터 참조 카운트 체크 후 자동 해제
     kernel_printf("Smart pointer reference count: %ld\n", processData.use_count());
+    ui->textEdit->append("Smart pointer reference count: " + QString::number(processData.use_count()));
 
-    // 프로세스 종료
-    if (!kernel_kill_process(command.toStdString().c_str())) {
-        kernel_printf("Error: Failed to kill process.\n");
-    } else {
-        kernel_printf("Process for %s terminated successfully.\n", command.toStdString().c_str());
-    }
-
-    // 스마트 포인터 자동 해제
     kernel_printf("Smart pointer will be automatically released when out of scope.\n");
+    ui->textEdit->append("Smart pointer will be automatically released when out of scope.");
 }
 
 /*
