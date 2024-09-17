@@ -43,6 +43,7 @@ private:  // 슬롯이 아닌 일반 함수는 여기로 이동
     void runMutexTest();
     void runUnifiedProcess(const QStringList &args);
 
+    void resetSmartPointer();
     QList<QString> commandHistory;  // 명령어 기록을 저장하는 리스트
 
 private:

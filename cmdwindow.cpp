@@ -660,7 +660,7 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append("  netstat                    - Show network connections");
         ui->textEdit->append("  help_modal                 - Show help in a new modal window");
         ui->textEdit->append("  exit                       - Exit the shell");
-        ui->textEdit->append("  shutdown                   - Shutdown the system");
+        ui->textEdit->append("  shutdown || poweroff       - Shutdown the system");
     }
 
     if (command == "help_modal") {
@@ -689,7 +689,7 @@ void CmdWindow::handleCommand(const QString &command) {
                           "  netstat                    - Show network connections\n"
                           "  help_modal                 - Show help in a new modal window\n"
                           "  exit                       - Exit the shell\n"
-                          "  shutdown                   - Shutdown the system\n");
+                          "  shutdown  || poweroff      - Shutdown the system\n");
 
         // 텍스트 편집기를 읽기 전용으로 설정
         helpText->setReadOnly(true);
@@ -861,7 +861,7 @@ void CmdWindow::handleCommand(const QString &command) {
         ui->textEdit->append(output);  // 결과를 UI에 출력
     }
 
-    else if (command == "shutdown") {
+    else if (command == "shutdown" || command == "poweroff") {
         ui->textEdit->append("Shutting down...");
         QApplication::quit();  // 애플리케이션 종료
     }
@@ -1043,21 +1043,7 @@ void CmdWindow::runUnifiedProcess(const QStringList &args) {
     }
 
     if (command == "kill smartptr") {
-        // 스마트 포인터 해제
-        if (!smartPointers.isEmpty()) {
-            // 맵에서 첫 번째 포인터를 참조 카운트 감소 및 해제
-            int* ptr = smartPointers.begin().key();
-            SmartPtr sp = smartPointers[ptr];
-            release(&sp);
-
-            ui->textEdit->append("Smart pointer released.");
-            if (*(sp.ref_count) == 0) { // 카운트가 0이면 삭제
-                smartPointers.remove(ptr);         // 맵에서 포인터 삭제
-                ui->textEdit->append("Smart pointer memory usage reset.");
-                kernel_printf("Smart pointer memory usage reset.\n");
-                delete ptr;                        // 포인터 메모리 해제
-            }
-        }
+        resetSmartPointer();
     }
 
     else {
@@ -1095,6 +1081,34 @@ void CmdWindow::qt_print(const char *str) {
     if (globalProgressLog) {
         globalProgressLog->append(QString::fromUtf8(str));
         QCoreApplication::processEvents();  // UI 업데이트
+    }
+}
+
+/*
+ * @brief 스마트 포인터를 해제하는 함수
+ */
+void CmdWindow::resetSmartPointer() {
+    static QMap<int*, SmartPtr> smartPointers;
+    ui->textEdit->append("Releasing smart pointer...");
+
+    if (!smartPointers.isEmpty()) {
+        int* ptr = smartPointers.begin().key();
+        SmartPtr sp = smartPointers[ptr];
+        release(&sp);
+
+        ui->textEdit->append("Smart pointer reference count after release: " + QString::number(*(sp.ref_count)));
+
+        // 참조 카운트가 0이면 메모리 해제
+        if (*(sp.ref_count) == 0) {
+            smartPointers.remove(ptr);  // 스마트 포인터 맵에서 제거
+            delete ptr;                 // 실제 포인터 메모리 해제
+            ui->textEdit->append("Smart pointer memory released and pointer deleted.");
+            kernel_printf("Smart pointer memory released and pointer deleted.\n");
+        } else {
+            ui->textEdit->append("Smart pointer not deleted because reference count is not zero.");
+        }
+    } else {
+        ui->textEdit->append("No smart pointers to release.");
     }
 }
 
