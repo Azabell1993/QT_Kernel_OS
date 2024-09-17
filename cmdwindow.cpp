@@ -92,7 +92,8 @@ CmdWindow::CmdWindow(QWidget *parent)
     register_print_function(qt_print);
 
     // 초기 명령어 프롬프트
-    ui->textEdit->append("kernel> ");
+    ui->textEdit->append("QT Kernel OS Version 1.0");
+    ui->textEdit->append("\nkernel> ");
 }
 
 
@@ -188,6 +189,7 @@ void CmdWindow::on_submitButton_clicked() {
     // 새로운 명령어를 위한 프롬프트 추가 (한 줄 개행만)
     ui->textEdit->moveCursor(QTextCursor::End);
     ui->textEdit->insertPlainText("\nkernel> ");
+    ui->textEdit->ensureCursorVisible();
 }
 
 void CmdWindow::createProcessWithMessage(const QString &message) {
@@ -674,7 +676,8 @@ void CmdWindow::handleCommand(const QString &command) {
         }
     } else if (command == "clear") {
         ui->textEdit->clear();
-        on_submitButton_clicked();
+        //on_submitButton_clicked();
+        //ui->textEdit->append("kernel> ");
     }
     else if (command == "pwd") {
         runUnifiedProcess(QStringList() << "pwd");
@@ -717,7 +720,7 @@ void CmdWindow::handleCommand(const QString &command) {
             ui->textEdit->append("Usage: du <directory>");
         }
     } else {
-        ui->textEdit->append("Unknown command: " + command);
+        ui->textEdit->append("");
     }
 
     commandHistory.append(command);
