@@ -725,7 +725,7 @@ void kernel_chat(int num_args, ...) {
         exit(EXIT_FAILURE);
     } else {
         kernel_printf("socket() 생성 성공\n");
-
+        kernel_printf("만약 어플리케이션 작동을 시도하였다면 [lsof -i :5100]으로 확인후 [kill -9 1234]후에 다시 시작하시오.\n");
     }
 
     memset(&server_addr, 0, sizeof(server_addr));
