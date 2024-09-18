@@ -1,0 +1,60 @@
+\doxysection{az\+\_\+itoa.\+c}
+\hypertarget{az__itoa_8c_source}{}\label{az__itoa_8c_source}\index{C\_lib/include\_printf/az\_itoa.c@{C\_lib/include\_printf/az\_itoa.c}}
+\mbox{\hyperlink{az__itoa_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00001}00001\ \textcolor{comment}{//\ kernel\_lib\_printf\_functions}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00002}00002\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00003}00003\ \textcolor{comment}{\ *\ Kernel\ Lib\ Printf\ Functions}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00005}00005\ \textcolor{comment}{\ *\ Maintainer:\ Park\ Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00006}00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00007}00007\ \textcolor{comment}{\ *\ Copyright\ (C)\ 2024\ Park-\/Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00008}00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00009}00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{kernel__pr__he_8h}{kernel\_pr\_he.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00012}00012\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ az\_pow(\textcolor{keywordtype}{int}\ nb,\ \textcolor{keywordtype}{int}\ pow)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00013}00013\ \{}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00014}00014\ \ \ \ \ \textcolor{keywordflow}{if}\ (pow\ ==\ 0)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00015}00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (1);}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00016}00016\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00017}00017\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (nb\ *\ az\_pow(nb,\ pow\ -\/\ 1));}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00018}00018\ \}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00020}\mbox{\hyperlink{az__itoa_8c_a7b5c23afc89a6477425d3303b057fca9}{00020}}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{az__itoa_8c_a7b5c23afc89a6477425d3303b057fca9}{az\_itoa}}(\textcolor{keywordtype}{int}\ value,\ \textcolor{keywordtype}{int}\ base)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00021}00021\ \{}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00022}00022\ \ \ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00023}00023\ \ \ \ \ \textcolor{keywordtype}{char}\ *nbr;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00024}00024\ \ \ \ \ \textcolor{keywordtype}{int}\ neg;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00026}00026\ \ \ \ \ \textcolor{comment}{//\ 10진수}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00027}00027\ \ \ \ \ \textcolor{comment}{//\ base\ =\ 10..}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00029}00029\ \ \ \ \ i\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00030}00030\ \ \ \ \ neg\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00031}00031\ \ \ \ \ \textcolor{keywordflow}{if}\ (value\ <\ 0)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00032}00032\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00033}00033\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (base\ ==\ 10)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ neg\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00035}00035\ \ \ \ \ \ \ \ \ value\ *=\ -\/1;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00036}00036\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00038}00038\ \ \ \ \ \textcolor{keywordflow}{while}\ (az\_pow(base,\ i)\ -\/\ 1\ <\ value)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00039}00039\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00041}00041\ \ \ \ \ nbr\ =\ (\textcolor{keywordtype}{char}\ *)malloc(\textcolor{keyword}{sizeof}(nbr)\ *\ i);}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00043}00043\ \ \ \ \ nbr[i\ +\ neg]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00045}00045\ \ \ \ \ \textcolor{keywordflow}{while}\ (i-\/-\/\ >\ 0)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00046}00046\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00047}00047\ \ \ \ \ \ \ \ \ nbr[i\ +\ neg]\ =\ (value\ \%\ base)\ +\ (value\ \%\ base\ >\ 9\ ?\ \textcolor{charliteral}{'A'}\ -\/\ 10\ :\ \textcolor{charliteral}{'0'});}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ value\ =\ value\ /\ base;}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00049}00049\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (neg)}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ nbr[0]\ =\ \textcolor{charliteral}{'-\/'};}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00053}00053\ \ \ \ \ \textcolor{keywordflow}{return}\ (nbr);}
+\DoxyCodeLine{\Hypertarget{az__itoa_8c_source_l00054}00054\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,94 @@
+\doxysection{C\+\_\+lib/src/kernel\+\_\+lib.c File Reference}
+\hypertarget{kernel__lib_8c}{}\label{kernel__lib_8c}\index{C\_lib/src/kernel\_lib.c@{C\_lib/src/kernel\_lib.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_process}{Process}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{kernel__lib_8c_a92fd8bb5807bf6abb640686f51e5df3e}{MAX\+\_\+\+PROCESSES}}~10
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\+\_\+printf}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\item 
+void \mbox{\hyperlink{kernel__lib_8c_a2750af7c6a66f4e06d4c281cb1323b1a}{register\+\_\+print\+\_\+function}} (void(\texorpdfstring{$\ast$}{*}print\+\_\+function)(const char \texorpdfstring{$\ast$}{*}str))
+\item 
+int \mbox{\hyperlink{kernel__lib_8c_a36f08e2b8fd7a3daac26538eca0bb1be}{kernel\+\_\+create\+\_\+process}} (const char \texorpdfstring{$\ast$}{*}process\+\_\+name)
+\item 
+void \mbox{\hyperlink{kernel__lib_8c_aecd973eb9c2e22f46bcc65de738391e6}{kernel\+\_\+list\+\_\+processes}} ()
+\item 
+int \mbox{\hyperlink{kernel__lib_8c_abaffa08d3c62a100a4c4dc35d3c18662}{kernel\+\_\+kill\+\_\+process}} (const char \texorpdfstring{$\ast$}{*}process\+\_\+name)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{kernel__lib_8c_a92fd8bb5807bf6abb640686f51e5df3e}\index{kernel\_lib.c@{kernel\_lib.c}!MAX\_PROCESSES@{MAX\_PROCESSES}}
+\index{MAX\_PROCESSES@{MAX\_PROCESSES}!kernel\_lib.c@{kernel\_lib.c}}
+\doxysubsubsection{\texorpdfstring{MAX\_PROCESSES}{MAX\_PROCESSES}}
+{\footnotesize\ttfamily \label{kernel__lib_8c_a92fd8bb5807bf6abb640686f51e5df3e} 
+\#define MAX\+\_\+\+PROCESSES~10}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__lib_8c_source_l00015}{15}} of file \mbox{\hyperlink{kernel__lib_8c_source}{kernel\+\_\+lib.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}\index{kernel\_lib.c@{kernel\_lib.c}!az\_printf@{az\_printf}}
+\index{az\_printf@{az\_printf}!kernel\_lib.c@{kernel\_lib.c}}
+\doxysubsubsection{\texorpdfstring{az\_printf()}{az\_printf()}}
+{\footnotesize\ttfamily \label{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2} 
+void az\+\_\+printf (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__lib_8c_source_l00030}{30}} of file \mbox{\hyperlink{kernel__lib_8c_source}{kernel\+\_\+lib.\+c}}.
+
+\Hypertarget{kernel__lib_8c_a36f08e2b8fd7a3daac26538eca0bb1be}\index{kernel\_lib.c@{kernel\_lib.c}!kernel\_create\_process@{kernel\_create\_process}}
+\index{kernel\_create\_process@{kernel\_create\_process}!kernel\_lib.c@{kernel\_lib.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_create\_process()}{kernel\_create\_process()}}
+{\footnotesize\ttfamily \label{kernel__lib_8c_a36f08e2b8fd7a3daac26538eca0bb1be} 
+int kernel\+\_\+create\+\_\+process (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{process\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__lib_8c_source_l00050}{50}} of file \mbox{\hyperlink{kernel__lib_8c_source}{kernel\+\_\+lib.\+c}}.
+
+\Hypertarget{kernel__lib_8c_abaffa08d3c62a100a4c4dc35d3c18662}\index{kernel\_lib.c@{kernel\_lib.c}!kernel\_kill\_process@{kernel\_kill\_process}}
+\index{kernel\_kill\_process@{kernel\_kill\_process}!kernel\_lib.c@{kernel\_lib.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_kill\_process()}{kernel\_kill\_process()}}
+{\footnotesize\ttfamily \label{kernel__lib_8c_abaffa08d3c62a100a4c4dc35d3c18662} 
+int kernel\+\_\+kill\+\_\+process (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{process\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__lib_8c_source_l00082}{82}} of file \mbox{\hyperlink{kernel__lib_8c_source}{kernel\+\_\+lib.\+c}}.
+
+\Hypertarget{kernel__lib_8c_aecd973eb9c2e22f46bcc65de738391e6}\index{kernel\_lib.c@{kernel\_lib.c}!kernel\_list\_processes@{kernel\_list\_processes}}
+\index{kernel\_list\_processes@{kernel\_list\_processes}!kernel\_lib.c@{kernel\_lib.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_list\_processes()}{kernel\_list\_processes()}}
+{\footnotesize\ttfamily \label{kernel__lib_8c_aecd973eb9c2e22f46bcc65de738391e6} 
+void kernel\+\_\+list\+\_\+processes (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__lib_8c_source_l00072}{72}} of file \mbox{\hyperlink{kernel__lib_8c_source}{kernel\+\_\+lib.\+c}}.
+
+\Hypertarget{kernel__lib_8c_a2750af7c6a66f4e06d4c281cb1323b1a}\index{kernel\_lib.c@{kernel\_lib.c}!register\_print\_function@{register\_print\_function}}
+\index{register\_print\_function@{register\_print\_function}!kernel\_lib.c@{kernel\_lib.c}}
+\doxysubsubsection{\texorpdfstring{register\_print\_function()}{register\_print\_function()}}
+{\footnotesize\ttfamily \label{kernel__lib_8c_a2750af7c6a66f4e06d4c281cb1323b1a} 
+void register\+\_\+print\+\_\+function (\begin{DoxyParamCaption}\item[{void(\texorpdfstring{$\ast$}{*}}]{print\+\_\+function~}{)(const char \texorpdfstring{$\ast$}{*}str)}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__lib_8c_source_l00044}{44}} of file \mbox{\hyperlink{kernel__lib_8c_source}{kernel\+\_\+lib.\+c}}.
+

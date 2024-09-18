@@ -1,7 +1,7 @@
 #ifndef ENAME_C_INC
 #define ENAME_C_INC
 
- static char *ename[] = {
+static const char *ename[] = {
      /*   0 */ "",
      /*   1 */ "EPERM", "ENOENT", "ESRCH", "EINTR", "EIO", "ENXIO",
      /*   7 */ "E2BIG", "ENOEXEC", "EBADF", "ECHILD",

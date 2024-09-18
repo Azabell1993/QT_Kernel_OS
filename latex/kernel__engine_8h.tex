@@ -1,0 +1,703 @@
+\doxysection{C\+\_\+lib/include/kernel\+\_\+engine.h File Reference}
+\hypertarget{kernel__engine_8h}{}\label{kernel__engine_8h}\index{C\_lib/include/kernel\_engine.h@{C\_lib/include/kernel\_engine.h}}
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$semaphore.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_node}{Node}}
+\begin{DoxyCompactList}\small\item\em 연결 리스트의 노드를 정의하는 구조체 \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_linked_list}{Linked\+List}}
+\begin{DoxyCompactList}\small\item\em 연결 리스트를 정의하는 구조체 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{kernel__engine_8h_a189e7cd8d6fb4ba4877b143116356c70}{ENGINE\+\_\+H}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct Node \mbox{\hyperlink{kernel__engine_8h_a3b09f37e675bcd48a01bf22155996872}{Node}}
+\item 
+typedef struct Linked\+List \mbox{\hyperlink{kernel__engine_8h_a44ddc92df57836b0340ed4213598da2c}{Linked\+List}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}{safe\+\_\+kernel\+\_\+printf}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em 스레드 안전한 출력 함수 선언 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__engine_8h_a76b922ca356d9458485b5da98e5d1d65}{create\+\_\+linkedlist}} ()
+\begin{DoxyCompactList}\small\item\em 연결 리스트 생성 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a0ee3efeef2e76cc26bbadf90a2bb9dff}{push}} (\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}list, void \texorpdfstring{$\ast$}{*}data)
+\begin{DoxyCompactList}\small\item\em 연결 리스트에 요소 추가 함수 선언 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__engine_8h_a4bc21bd3ad748e46faeade4f4e561209}{pop}} (\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}list)
+\begin{DoxyCompactList}\small\item\em 연결 리스트에서 요소 제거 함수 선언 \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{kernel__engine_8h_a1e85b6a1e963ff44d9462fbd1ed82c2f}{is\+\_\+empty}} (\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}list)
+\begin{DoxyCompactList}\small\item\em 연결 리스트가 비었는지 확인하는 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_aed35db54a83e994b6fedf291a43832a3}{destroy\+\_\+linkedlist}} (\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}list)
+\begin{DoxyCompactList}\small\item\em 연결 리스트 삭제 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a3c16fd109668254b00f005ac10d3e774}{create\+\_\+threads}} (int num\+\_\+threads,...)
+\begin{DoxyCompactList}\small\item\em 스레드 생성 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a5bacaa97e76d782c895fda4100b5e794}{create\+\_\+single\+\_\+process}} (void(\texorpdfstring{$\ast$}{*}func)())
+\begin{DoxyCompactList}\small\item\em 단일 프로세스 생성 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a2b81ab04158940dafe15c6cb3c4d1b42}{create\+\_\+multi\+\_\+processes}} (int num\+\_\+processes,...)
+\begin{DoxyCompactList}\small\item\em 다중 프로세스 생성 함수 선언 \end{DoxyCompactList}\item 
+sem\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__engine_8h_a0414b195dea921839f54fc9498c1daac}{init\+\_\+semaphore}} (int value)
+\begin{DoxyCompactList}\small\item\em 세마포어 초기화 함수 선언 \end{DoxyCompactList}\item 
+pthread\+\_\+mutex\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__engine_8h_ac6e8e5e774f25243fa8d6ed380b83dd7}{init\+\_\+mutex}} ()
+\begin{DoxyCompactList}\small\item\em 뮤텍스 초기화 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a749bc796682217e8a6f96067925f8ca1}{kernel\+\_\+err\+Msg}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em 커널 오류 메시지 출력 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a1748e88bd6a055c4f8aa09f69ef8c4da}{kernel\+\_\+err\+Exit}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em 커널 오류 종료 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a6d6f9d866f09fc1da90d209338a540dd}{kernel\+\_\+err\+Exit\+EN}} (int errnum, const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em 커널 오류 종료 함수 선언 (오류 번호 사용) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a52c0be10d50f477f2c893d6f069607ed}{kernel\+\_\+fatal}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em 커널 치명적 오류 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_aa90abfdd6cf6ec84db278ef862025dc5}{kernel\+\_\+usage\+Err}} (const char \texorpdfstring{$\ast$}{*}format,...) \+\_\+\+\_\+attribute\+\_\+\+\_\+((\+\_\+\+\_\+noreturn\+\_\+\+\_\+))
+\begin{DoxyCompactList}\small\item\em 커널 사용법 오류 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a0b8de9352ae88c83f838d85f910ee969}{kernel\+\_\+cmd\+Line\+Err}} (const char \texorpdfstring{$\ast$}{*}format,...) \+\_\+\+\_\+attribute\+\_\+\+\_\+((\+\_\+\+\_\+noreturn\+\_\+\+\_\+))
+\begin{DoxyCompactList}\small\item\em 커맨드 라인 오류 처리 함수 선언 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__engine_8h_a1f65de0c9e791e4683d03d23f24f6084}{semaphore\+\_\+thread}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 세마포어를 사용하는 스레드 작업 함수 선언 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__engine_8h_aa1e95d0ce42e7449a80b6d463da773f4}{mutex\+\_\+thread}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 뮤텍스를 사용하는 스레드 작업 함수 선언 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__engine_8h_a0b071d96626d37f35486e931a0da9fd8}{run\+\_\+multithreading}} (int num\+\_\+threads, int use\+\_\+semaphore,...)
+\begin{DoxyCompactList}\small\item\em 멀티스레드 실행 함수 선언 (쓰레드 수 및 동기화 방법을 입력받음) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{kernel__engine_8h_a189e7cd8d6fb4ba4877b143116356c70}\index{kernel\_engine.h@{kernel\_engine.h}!ENGINE\_H@{ENGINE\_H}}
+\index{ENGINE\_H@{ENGINE\_H}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{ENGINE\_H}{ENGINE\_H}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a189e7cd8d6fb4ba4877b143116356c70} 
+\#define ENGINE\+\_\+H}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8h_source_l00014}{14}} of file \mbox{\hyperlink{kernel__engine_8h_source}{kernel\+\_\+engine.\+h}}.
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{kernel__engine_8h_a44ddc92df57836b0340ed4213598da2c}\index{kernel\_engine.h@{kernel\_engine.h}!LinkedList@{LinkedList}}
+\index{LinkedList@{LinkedList}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{LinkedList}{LinkedList}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a44ddc92df57836b0340ed4213598da2c} 
+typedef struct Linked\+List Linked\+List}
+
+\Hypertarget{kernel__engine_8h_a3b09f37e675bcd48a01bf22155996872}\index{kernel\_engine.h@{kernel\_engine.h}!Node@{Node}}
+\index{Node@{Node}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{Node}{Node}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a3b09f37e675bcd48a01bf22155996872} 
+typedef struct Node Node}
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{kernel__engine_8h_a76b922ca356d9458485b5da98e5d1d65}\index{kernel\_engine.h@{kernel\_engine.h}!create\_linkedlist@{create\_linkedlist}}
+\index{create\_linkedlist@{create\_linkedlist}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{create\_linkedlist()}{create\_linkedlist()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a76b922ca356d9458485b5da98e5d1d65} 
+\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*} create\+\_\+linkedlist (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+연결 리스트 생성 함수 선언 
+
+\begin{DoxyReturn}{Returns}
+생성된 연결 리스트의 포인터
+\end{DoxyReturn}
+연결 리스트 생성 함수 선언
+
+\begin{DoxyReturn}{Returns}
+\doxylink{struct_linked_list}{Linked\+List} 포인터 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00170}{170}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a2b81ab04158940dafe15c6cb3c4d1b42}\index{kernel\_engine.h@{kernel\_engine.h}!create\_multi\_processes@{create\_multi\_processes}}
+\index{create\_multi\_processes@{create\_multi\_processes}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{create\_multi\_processes()}{create\_multi\_processes()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a2b81ab04158940dafe15c6cb3c4d1b42} 
+void create\+\_\+multi\+\_\+processes (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+processes}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+다중 프로세스 생성 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+processes} & 생성할 프로세스 수 \\
+\hline
+{\em ...} & 프로세스 함수 포인터\\
+\hline
+\end{DoxyParams}
+다중 프로세스 생성 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+processes} & 생성할 프로세스 수 \\
+\hline
+{\em ...} & 프로세스 함수 포인터 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00094}{94}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a5bacaa97e76d782c895fda4100b5e794}\index{kernel\_engine.h@{kernel\_engine.h}!create\_single\_process@{create\_single\_process}}
+\index{create\_single\_process@{create\_single\_process}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{create\_single\_process()}{create\_single\_process()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a5bacaa97e76d782c895fda4100b5e794} 
+void create\+\_\+single\+\_\+process (\begin{DoxyParamCaption}\item[{void(\texorpdfstring{$\ast$}{*}}]{func~}{)()}\end{DoxyParamCaption})}
+
+
+
+단일 프로세스 생성 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em func} & 실행할 함수 포인터\\
+\hline
+\end{DoxyParams}
+단일 프로세스 생성 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em func} & 실행할 함수 포인터 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00076}{76}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a3c16fd109668254b00f005ac10d3e774}\index{kernel\_engine.h@{kernel\_engine.h}!create\_threads@{create\_threads}}
+\index{create\_threads@{create\_threads}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{create\_threads()}{create\_threads()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a3c16fd109668254b00f005ac10d3e774} 
+void create\+\_\+threads (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+threads}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+스레드 생성 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+threads} & 생성할 스레드 수 \\
+\hline
+{\em ...} & 스레드 함수 포인터\\
+\hline
+\end{DoxyParams}
+스레드 생성 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+threads} & 생성할 스레드 수 \\
+\hline
+{\em ...} & 스레드 함수 포인터 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00050}{50}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_aed35db54a83e994b6fedf291a43832a3}\index{kernel\_engine.h@{kernel\_engine.h}!destroy\_linkedlist@{destroy\_linkedlist}}
+\index{destroy\_linkedlist@{destroy\_linkedlist}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{destroy\_linkedlist()}{destroy\_linkedlist()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_aed35db54a83e994b6fedf291a43832a3} 
+void destroy\+\_\+linkedlist (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}}]{list}{}\end{DoxyParamCaption})}
+
+
+
+연결 리스트 삭제 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & 연결 리스트의 포인터\\
+\hline
+\end{DoxyParams}
+연결 리스트 삭제 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & \doxylink{struct_linked_list}{Linked\+List} 포인터 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00238}{238}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_ac6e8e5e774f25243fa8d6ed380b83dd7}\index{kernel\_engine.h@{kernel\_engine.h}!init\_mutex@{init\_mutex}}
+\index{init\_mutex@{init\_mutex}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{init\_mutex()}{init\_mutex()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_ac6e8e5e774f25243fa8d6ed380b83dd7} 
+pthread\+\_\+mutex\+\_\+t \texorpdfstring{$\ast$}{*} init\+\_\+mutex (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+뮤텍스 초기화 함수 선언 
+
+\begin{DoxyReturn}{Returns}
+뮤텍스 포인터
+\end{DoxyReturn}
+뮤텍스 초기화 함수 선언
+
+\begin{DoxyReturn}{Returns}
+뮤텍스 포인터 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00157}{157}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a0414b195dea921839f54fc9498c1daac}\index{kernel\_engine.h@{kernel\_engine.h}!init\_semaphore@{init\_semaphore}}
+\index{init\_semaphore@{init\_semaphore}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{init\_semaphore()}{init\_semaphore()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a0414b195dea921839f54fc9498c1daac} 
+sem\+\_\+t \texorpdfstring{$\ast$}{*} init\+\_\+semaphore (\begin{DoxyParamCaption}\item[{int}]{value}{}\end{DoxyParamCaption})}
+
+
+
+세마포어 초기화 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & 초기화할 값 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+세마포어 포인터
+\end{DoxyReturn}
+세마포어 초기화 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & 초기화할 값 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+세마포어 포인터 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00122}{122}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a1e85b6a1e963ff44d9462fbd1ed82c2f}\index{kernel\_engine.h@{kernel\_engine.h}!is\_empty@{is\_empty}}
+\index{is\_empty@{is\_empty}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{is\_empty()}{is\_empty()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a1e85b6a1e963ff44d9462fbd1ed82c2f} 
+bool is\+\_\+empty (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}}]{list}{}\end{DoxyParamCaption})}
+
+
+
+연결 리스트가 비었는지 확인하는 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & 연결 리스트의 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 리스트가 비었을 경우 
+
+false 리스트에 요소가 있을 경우
+\end{DoxyReturn}
+연결 리스트가 비었는지 확인하는 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & \doxylink{struct_linked_list}{Linked\+List} 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 리스트가 비었을 경우 
+
+false 리스트에 요소가 있을 경우 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00229}{229}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a0b8de9352ae88c83f838d85f910ee969}\index{kernel\_engine.h@{kernel\_engine.h}!kernel\_cmdLineErr@{kernel\_cmdLineErr}}
+\index{kernel\_cmdLineErr@{kernel\_cmdLineErr}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_cmdLineErr()}{kernel\_cmdLineErr()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a0b8de9352ae88c83f838d85f910ee969} 
+void kernel\+\_\+cmd\+Line\+Err (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+커맨드 라인 오류 처리 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트\\
+\hline
+\end{DoxyParams}
+커맨드 라인 오류 처리 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00382}{382}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a1748e88bd6a055c4f8aa09f69ef8c4da}\index{kernel\_engine.h@{kernel\_engine.h}!kernel\_errExit@{kernel\_errExit}}
+\index{kernel\_errExit@{kernel\_errExit}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_errExit()}{kernel\_errExit()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a1748e88bd6a055c4f8aa09f69ef8c4da} 
+void kernel\+\_\+err\+Exit (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+커널 오류 종료 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트\\
+\hline
+\end{DoxyParams}
+커널 오류 종료 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00313}{313}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a6d6f9d866f09fc1da90d209338a540dd}\index{kernel\_engine.h@{kernel\_engine.h}!kernel\_errExitEN@{kernel\_errExitEN}}
+\index{kernel\_errExitEN@{kernel\_errExitEN}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_errExitEN()}{kernel\_errExitEN()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a6d6f9d866f09fc1da90d209338a540dd} 
+void kernel\+\_\+err\+Exit\+EN (\begin{DoxyParamCaption}\item[{int}]{errnum}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+커널 오류 종료 함수 선언 (오류 번호 사용) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em errnum} & 오류 번호 \\
+\hline
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트\\
+\hline
+\end{DoxyParams}
+커널 오류 종료 함수 선언 (오류 번호 사용)
+
+
+\begin{DoxyParams}{Parameters}
+{\em errnum} & 오류 번호 \\
+\hline
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00330}{330}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a749bc796682217e8a6f96067925f8ca1}\index{kernel\_engine.h@{kernel\_engine.h}!kernel\_errMsg@{kernel\_errMsg}}
+\index{kernel\_errMsg@{kernel\_errMsg}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_errMsg()}{kernel\_errMsg()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a749bc796682217e8a6f96067925f8ca1} 
+void kernel\+\_\+err\+Msg (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+커널 오류 메시지 출력 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트\\
+\hline
+\end{DoxyParams}
+커널 오류 메시지 출력 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00296}{296}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a52c0be10d50f477f2c893d6f069607ed}\index{kernel\_engine.h@{kernel\_engine.h}!kernel\_fatal@{kernel\_fatal}}
+\index{kernel\_fatal@{kernel\_fatal}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_fatal()}{kernel\_fatal()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a52c0be10d50f477f2c893d6f069607ed} 
+void kernel\+\_\+fatal (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+커널 치명적 오류 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트\\
+\hline
+\end{DoxyParams}
+커널 치명적 오류 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00346}{346}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_aa90abfdd6cf6ec84db278ef862025dc5}\index{kernel\_engine.h@{kernel\_engine.h}!kernel\_usageErr@{kernel\_usageErr}}
+\index{kernel\_usageErr@{kernel\_usageErr}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_usageErr()}{kernel\_usageErr()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_aa90abfdd6cf6ec84db278ef862025dc5} 
+void kernel\+\_\+usage\+Err (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+커널 사용법 오류 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트\\
+\hline
+\end{DoxyParams}
+커널 사용법 오류 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00362}{362}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_aa1e95d0ce42e7449a80b6d463da773f4}\index{kernel\_engine.h@{kernel\_engine.h}!mutex\_thread@{mutex\_thread}}
+\index{mutex\_thread@{mutex\_thread}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{mutex\_thread()}{mutex\_thread()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_aa1e95d0ce42e7449a80b6d463da773f4} 
+void \texorpdfstring{$\ast$}{*} mutex\+\_\+thread (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+뮤텍스를 사용하는 스레드 작업 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 뮤텍스 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL
+\end{DoxyReturn}
+뮤텍스를 사용하는 스레드 작업 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 뮤텍스 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00427}{427}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a4bc21bd3ad748e46faeade4f4e561209}\index{kernel\_engine.h@{kernel\_engine.h}!pop@{pop}}
+\index{pop@{pop}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a4bc21bd3ad748e46faeade4f4e561209} 
+void \texorpdfstring{$\ast$}{*} pop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}}]{list}{}\end{DoxyParamCaption})}
+
+
+
+연결 리스트에서 요소 제거 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & 연결 리스트의 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+제거된 데이터 포인터
+\end{DoxyReturn}
+연결 리스트에서 요소 제거 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & \doxylink{struct_linked_list}{Linked\+List} 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+제거된 데이터 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00203}{203}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a0ee3efeef2e76cc26bbadf90a2bb9dff}\index{kernel\_engine.h@{kernel\_engine.h}!push@{push}}
+\index{push@{push}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a0ee3efeef2e76cc26bbadf90a2bb9dff} 
+void push (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_linked_list}{Linked\+List}} \texorpdfstring{$\ast$}{*}}]{list}{, }\item[{void \texorpdfstring{$\ast$}{*}}]{data}{}\end{DoxyParamCaption})}
+
+
+
+연결 리스트에 요소 추가 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & 연결 리스트의 포인터 \\
+\hline
+{\em data} & 추가할 데이터 포인터\\
+\hline
+\end{DoxyParams}
+연결 리스트에 요소 추가 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & \doxylink{struct_linked_list}{Linked\+List} 포인터 \\
+\hline
+{\em data} & 추가할 데이터 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00183}{183}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a0b071d96626d37f35486e931a0da9fd8}\index{kernel\_engine.h@{kernel\_engine.h}!run\_multithreading@{run\_multithreading}}
+\index{run\_multithreading@{run\_multithreading}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{run\_multithreading()}{run\_multithreading()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a0b071d96626d37f35486e931a0da9fd8} 
+void run\+\_\+multithreading (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+threads}{, }\item[{int}]{use\+\_\+semaphore}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+멀티스레드 실행 함수 선언 (쓰레드 수 및 동기화 방법을 입력받음) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+threads} & 생성할 스레드 수 \\
+\hline
+{\em use\+\_\+semaphore} & 세마포어 사용 여부 \\
+\hline
+{\em ...} & 동기화 방법 (세마포어 또는 뮤텍스)\\
+\hline
+\end{DoxyParams}
+멀티스레드 실행 함수 선언 (쓰레드 수 및 동기화 방법을 입력받음)
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+threads} & 생성할 스레드 수 \\
+\hline
+{\em use\+\_\+semaphore} & 세마포어 사용 여부 \\
+\hline
+{\em ...} & 동기화 방법 (세마포어 또는 뮤텍스) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00453}{453}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}\index{kernel\_engine.h@{kernel\_engine.h}!safe\_kernel\_printf@{safe\_kernel\_printf}}
+\index{safe\_kernel\_printf@{safe\_kernel\_printf}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{safe\_kernel\_printf()}{safe\_kernel\_printf()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da} 
+void safe\+\_\+kernel\+\_\+printf (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+스레드 안전한 출력 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트\\
+\hline
+\end{DoxyParams}
+스레드 안전한 출력 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & 포맷 문자열 \\
+\hline
+{\em ...} & 가변 인자 리스트 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00032}{32}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{kernel__engine_8h_a1f65de0c9e791e4683d03d23f24f6084}\index{kernel\_engine.h@{kernel\_engine.h}!semaphore\_thread@{semaphore\_thread}}
+\index{semaphore\_thread@{semaphore\_thread}!kernel\_engine.h@{kernel\_engine.h}}
+\doxysubsubsection{\texorpdfstring{semaphore\_thread()}{semaphore\_thread()}}
+{\footnotesize\ttfamily \label{kernel__engine_8h_a1f65de0c9e791e4683d03d23f24f6084} 
+void \texorpdfstring{$\ast$}{*} semaphore\+\_\+thread (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+세마포어를 사용하는 스레드 작업 함수 선언 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 세마포어 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL
+\end{DoxyReturn}
+세마포어를 사용하는 스레드 작업 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 세마포어 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00402}{402}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+

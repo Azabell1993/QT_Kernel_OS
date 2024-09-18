@@ -1,0 +1,47 @@
+\doxysection{az\+\_\+atoi.\+c}
+\hypertarget{az__atoi_8c_source}{}\label{az__atoi_8c_source}\index{C\_lib/include\_printf/az\_atoi.c@{C\_lib/include\_printf/az\_atoi.c}}
+\mbox{\hyperlink{az__atoi_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00001}00001\ \textcolor{comment}{//\ kernel\_lib\_printf\_functions}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00002}00002\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00003}00003\ \textcolor{comment}{\ *\ Kernel\ Lib\ Printf\ Functions}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00005}00005\ \textcolor{comment}{\ *\ Maintainer:\ Park\ Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00006}00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00007}00007\ \textcolor{comment}{\ *\ Copyright\ (C)\ 2024\ Park-\/Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00008}00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00009}00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{kernel__pr__he_8h}{kernel\_pr\_he.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00012}\mbox{\hyperlink{az__atoi_8c_ad4155827deae98aebbb3697aba068ece}{00012}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{az__atoi_8c_ad4155827deae98aebbb3697aba068ece}{az\_atoi}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s)}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00013}00013\ \{}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00014}00014\ \ \ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00015}00015\ \ \ \ \ \textcolor{keywordtype}{int}\ conv;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00016}00016\ \ \ \ \ \textcolor{keywordtype}{int}\ res;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00017}00017\ \ \ \ \ \textcolor{keywordtype}{int}\ neg\_chk;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00019}00019\ \ \ \ \ i\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00020}00020\ \ \ \ \ conv\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00022}00022\ \ \ \ \ neg\_chk\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00024}00024\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\ ==\ NULL)}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (0);}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00027}00027\ \ \ \ \ \textcolor{keywordflow}{if}\ (s[i]\ ==\ \textcolor{charliteral}{'-\/'})}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00028}00028\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00029}00029\ \ \ \ \ \ \ \ \ neg\_chk\ =\ -\/1;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00030}00030\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00031}00031\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00032}00032\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (s[i]\ ==\ \textcolor{charliteral}{'+'})}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00033}00033\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00035}00035\ \ \ \ \ \textcolor{keywordflow}{while}\ (s[i]\ >=\ 48\ \&\&\ s[i]\ <=\ 57)}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00036}00036\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00037}00037\ \ \ \ \ \ \ \ \ conv\ =\ conv\ *\ 10\ +\ s[i++]\ -\/\ 48;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00038}00038\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00039}00039\ \ \ \ \ res\ =\ conv\ *\ neg\_chk;}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00040}00040\ \ \ \ \ \textcolor{keywordflow}{return}\ (res);}
+\DoxyCodeLine{\Hypertarget{az__atoi_8c_source_l00041}00041\ \}}
+
+\end{DoxyCode}

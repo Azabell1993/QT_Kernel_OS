@@ -1,0 +1,271 @@
+\doxysection{kernel\+\_\+asm.\+h}
+\hypertarget{kernel__asm_8h_source}{}\label{kernel__asm_8h_source}\index{C\_lib/include/kernel\_asm.h@{C\_lib/include/kernel\_asm.h}}
+\mbox{\hyperlink{kernel__asm_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00001}00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00002}00002\ \textcolor{preprocessor}{\#ifndef\ KERNEL\_ASM\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00003}\mbox{\hyperlink{kernel__asm_8h_a24ba6aec10f48fdafa59aab64182780b}{00003}}\ \textcolor{preprocessor}{\#define\ KERNEL\_ASM\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <setjmp.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <memory.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00010}00010\ \textcolor{comment}{//\ 컴파일러에\ 따른\ 분기\ 설정}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00011}00011\ \textcolor{preprocessor}{\#if\ defined(\_\_clang\_\_)\ }\textcolor{comment}{//\ Clang용\ 설정}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00012}00012\ \textcolor{preprocessor}{\#if\ defined(\_\_x86\_64\_\_)\ ||\ defined(\_\_ppc64\_\_)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00013}00013\ \textcolor{preprocessor}{\#define\ SYSTEM\_BIT\ 64\ }\textcolor{comment}{//\ 64비트\ 시스템}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00014}00014\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00015}00015\ \textcolor{preprocessor}{\#define\ SYSTEM\_BIT\ 32\ }\textcolor{comment}{//\ 32비트\ 시스템}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00016}00016\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00017}00017\ \textcolor{preprocessor}{\#elif\ defined(\_\_GNUC\_\_)\ }\textcolor{comment}{//\ GCC용\ 설정}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00018}00018\ \textcolor{preprocessor}{\#if\ defined(\_\_x86\_64\_\_)\ ||\ defined(\_\_ppc64\_\_)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00019}00019\ \textcolor{preprocessor}{\#define\ SYSTEM\_BIT\ 64\ }\textcolor{comment}{//\ 64비트\ 시스템}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00020}00020\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00021}00021\ \textcolor{preprocessor}{\#define\ SYSTEM\_BIT\ 32\ }\textcolor{comment}{//\ 32비트\ 시스템}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00022}00022\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00023}00023\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00024}00024\ \textcolor{preprocessor}{\#error\ "{}Unsupported\ compiler"{}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00025}00025\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00027}\mbox{\hyperlink{kernel__asm_8h_a48dc92090833336aa7b657c4b624086d}{00027}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{kernel__asm_8h_a48dc92090833336aa7b657c4b624086d}{STRING}};\ \ \ \ \ \ \ \textcolor{comment}{//\ STRING\ 타입을\ const\ char*로\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00028}\mbox{\hyperlink{kernel__asm_8h_a4ae1dab0fb4b072a66584546209e7d58}{00028}}\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{kernel__asm_8h_a4ae1dab0fb4b072a66584546209e7d58}{BYTE}};\ \ \ \ \ \ \ \textcolor{comment}{//\ BYTE\ 타입을\ unsigned\ char로\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00029}\mbox{\hyperlink{kernel__asm_8h_a197942eefa7db30960ae396d68339b97}{00029}}\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ \mbox{\hyperlink{kernel__asm_8h_a197942eefa7db30960ae396d68339b97}{WORD}};\ \ \ \ \ \ \textcolor{comment}{//\ WORD\ 타입을\ unsigned\ short로\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00030}\mbox{\hyperlink{kernel__asm_8h_ad342ac907eb044443153a22f964bf0af}{00030}}\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \mbox{\hyperlink{kernel__asm_8h_ad342ac907eb044443153a22f964bf0af}{DWORD}};\ \ \ \ \ \ \textcolor{comment}{//\ DWORD\ 타입을\ unsigned\ long으로\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00031}\mbox{\hyperlink{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}{00031}}\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{long}\ \mbox{\hyperlink{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}{QWORD}};\ \textcolor{comment}{//\ QWORD\ 타입을\ unsigned\ long\ long으로\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00033}00033\ \textcolor{preprocessor}{\#if\ SYSTEM\_BIT\ ==\ 32}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00034}00034\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{kernel__asm_8h_ad342ac907eb044443153a22f964bf0af}{DWORD}}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}};\ \textcolor{comment}{//\ 32비트\ 시스템에서는\ INT를\ DWORD로\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00035}00035\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00036}\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{00036}}\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}{QWORD}}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}};\ \textcolor{comment}{//\ 64비트\ 시스템에서는\ INT를\ QWORD로\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00037}00037\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00039}00039\ \textcolor{comment}{//\ 프로시저\ 선언을\ 위한\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00040}\mbox{\hyperlink{kernel__asm_8h_aaa0f918e81849212e54b997c9be760aa}{00040}}\ \textcolor{preprocessor}{\#define\ PROTO(proc)\ static\ INT\ proc();\ }\textcolor{comment}{//\ 내부\ 프로시저\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00041}\mbox{\hyperlink{kernel__asm_8h_a2b5a8650f992ab32dfc8ca36c51b8161}{00041}}\ \textcolor{preprocessor}{\#define\ EXTERN(proc)\ INT\ proc();\ \ \ \ \ \ \ }\textcolor{comment}{//\ 외부\ 프로시저\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00043}00043\ \textcolor{comment}{//\ 프로시저\ 관련\ 함수\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00044}00044\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ proc\_init();\ \textcolor{comment}{//\ 프로시저\ 초기화\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00045}00045\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ proc\_retn();\ \textcolor{comment}{//\ 프로시저\ 반환\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00046}00046\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ print\_int();\ \textcolor{comment}{//\ 콘솔에\ 정수를\ 출력하는\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00047}00047\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ print\_str();\ \textcolor{comment}{//\ 콘솔에\ 문자열을\ 출력하는\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00049}\mbox{\hyperlink{kernel__asm_8h_a95e22d3f9880a08899f7a3f4371ba5f9}{00049}}\ \textcolor{preprocessor}{\#define\ MAX\_MEMORY\_LEN\ 100\ }\textcolor{comment}{//\ 최대\ 메모리\ 길이}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00051}00051\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_a4ae1dab0fb4b072a66584546209e7d58}{BYTE}}\ m[\mbox{\hyperlink{kernel__asm_8h_a95e22d3f9880a08899f7a3f4371ba5f9}{MAX\_MEMORY\_LEN}}];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 메모리\ 배열\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00052}00052\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ a,\ b,\ c,\ d;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ INT\ 타입\ 변수\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00053}00053\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ sp\ =\ \mbox{\hyperlink{kernel__asm_8h_a95e22d3f9880a08899f7a3f4371ba5f9}{MAX\_MEMORY\_LEN}},\ bp\ =\ \mbox{\hyperlink{kernel__asm_8h_a95e22d3f9880a08899f7a3f4371ba5f9}{MAX\_MEMORY\_LEN}};\ \textcolor{comment}{//\ 스택\ 포인터와\ 베이스\ 포인터\ 초기화}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00054}00054\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ flag\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 플래그\ 변수\ 초기화}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00056}00056\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ ip\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 명령\ 포인터\ 초기화}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00057}00057\ \textcolor{keyword}{static}\ jmp\_buf\ \_ipArray[10];\ \textcolor{comment}{//\ 점프\ 버퍼\ 배열\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00059}00059\ \textcolor{keyword}{static}\ jmp\_buf\ \_ip;\ \textcolor{comment}{//\ 점프\ 버퍼\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00061}\mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec}{00061}}\ \textcolor{keyword}{enum}\ \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec}{FLAG}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00062}00062\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00063}\mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ecaf964b8aefc62849e850939bc1ab359b3}{00063}}\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ecaf964b8aefc62849e850939bc1ab359b3}{FLAG\_SIGNED}}\ =\ 1,\ \ \ \textcolor{comment}{//\ 부호\ 플래그}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00064}00064\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103eca881c5b2c87de417f20d85b178b645fbd}{FLAG\_ZERO}}\ =\ 1\ <<\ 2\ \textcolor{comment}{//\ 제로\ 플래그}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00065}\mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103eca881c5b2c87de417f20d85b178b645fbd}{00065}}\ \};}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00067}00067\ \textcolor{comment}{//\ 프로시저\ 시작을\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00068}\mbox{\hyperlink{kernel__asm_8h_ad6efdfac8f133b0616152b2bd6620b1a}{00068}}\ \textcolor{preprocessor}{\#define\ PROC(proc\_name)\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00069}00069\ \textcolor{preprocessor}{\ \ \ \ static\ int\ proc\_name\#\#DTCASE()\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00070}00070\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00071}00071\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ proc\_init();}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00073}\mbox{\hyperlink{kernel__asm_8h_a85430107ec32d5fa7bedeaa47eb6777b}{00073}}\ \textcolor{preprocessor}{\#define\ ENDP\ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00074}00074\ \textcolor{preprocessor}{\ \ \ \ \_end\_proc:\ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00075}00075\ \textcolor{preprocessor}{\ \ \ \ proc\_retn();\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00076}00076\ \textcolor{preprocessor}{\ \ \ \ return\ 0;\ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00077}00077\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00079}00079\ \textcolor{comment}{//\ PUSH\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00080}\mbox{\hyperlink{kernel__asm_8h_aa6b60a74a8668b892e4cb9880f1ba01d}{00080}}\ \textcolor{preprocessor}{\#define\ PUSH(param)\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00081}00081\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00082}00082\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ INT\ *p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00083}00083\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ sp\ -\/=\ sizeof(INT);\ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00084}00084\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ p\ =\ (INT\ *)(m\ +\ sp);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00085}00085\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ *p\ =\ (INT)(param);\ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00086}00086\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00087}00087\ \textcolor{comment}{//\ POP\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00088}\mbox{\hyperlink{kernel__asm_8h_ab307c07fc0392a669d245f6a372a4cf1}{00088}}\ \textcolor{preprocessor}{\#define\ POP(param)\ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00089}00089\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00090}00090\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ INT\ *p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00091}00091\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ p\ =\ (INT\ *)(m\ +\ sp);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00092}00092\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ sp\ +=\ sizeof(INT);\ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00093}00093\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (param)\ =\ *p;\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00094}00094\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00096}00096\ \textcolor{comment}{//\ MOVL\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00097}\mbox{\hyperlink{kernel__asm_8h_acd6e3f55003a1a30ffc66e9d46f6077f}{00097}}\ \textcolor{preprocessor}{\#define\ MOVL(dst,\ src)\ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00098}00098\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00099}00099\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (dst)\ =\ (INT)(src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00100}00100\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00101}00101\ \textcolor{comment}{//\ ADD\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00102}\mbox{\hyperlink{kernel__asm_8h_ae3e8bb8d6cf141dfa579232699edd3b0}{00102}}\ \textcolor{preprocessor}{\#define\ ADD(dst,\ src)\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00103}00103\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00104}00104\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (dst)\ +=\ (INT)(src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00105}00105\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00106}00106\ \textcolor{comment}{//\ SUB\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00107}\mbox{\hyperlink{kernel__asm_8h_ad49443868508bb4f5c6985bc55d464a4}{00107}}\ \textcolor{preprocessor}{\#define\ SUB(dst,\ src)\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00108}00108\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00109}00109\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (dst)\ -\/=\ (INT)(src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00110}00110\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00111}00111\ \textcolor{comment}{//\ MUL\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00112}\mbox{\hyperlink{kernel__asm_8h_a112d847573d7e1cedb3b66d3950296bc}{00112}}\ \textcolor{preprocessor}{\#define\ MUL(dst,\ src)\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00113}00113\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00114}00114\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (dst)\ *=\ (INT)(src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00115}00115\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00116}00116\ \textcolor{comment}{//\ DIV\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00117}\mbox{\hyperlink{kernel__asm_8h_a8747ed6d9d974ecf49908d04321b4485}{00117}}\ \textcolor{preprocessor}{\#define\ DIV(dst,\ src)\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00118}00118\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00119}00119\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (dst)\ /=\ (INT)(src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00120}00120\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00122}00122\ \textcolor{comment}{//\ JMP\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00123}\mbox{\hyperlink{kernel__asm_8h_af567e6c3e02f4bad51c9ede1a5e9f31f}{00123}}\ \textcolor{preprocessor}{\#define\ JMP(lbl)\ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00124}00124\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00125}00125\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ goto\ lbl;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00126}00126\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00128}00128\ \textcolor{comment}{//\ CMP\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00129}\mbox{\hyperlink{kernel__asm_8h_a590ecc8e5255f0b626161d424b7bc90f}{00129}}\ \textcolor{preprocessor}{\#define\ CMP(p1,\ p2)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00130}00130\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00131}00131\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ flag\ =\ ((p1)\ ==\ (p2))\ ?\ FLAG\_ZERO\ :\ 0;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00132}00132\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00133}00133\ \textcolor{comment}{//\ JZ\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00134}\mbox{\hyperlink{kernel__asm_8h_aba1dd458b6330fd89d8888155b5abec8}{00134}}\ \textcolor{preprocessor}{\#define\ JZ(lbl)\ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00135}00135\ \textcolor{preprocessor}{\ \ \ \ if\ (flag\ \&\ FLAG\_ZERO)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00136}00136\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00137}00137\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ goto\ lbl;\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00138}00138\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00139}00139\ \textcolor{comment}{//\ JNZ\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00140}\mbox{\hyperlink{kernel__asm_8h_a9d2d1f5f4a04307e5a0f0c74ab1efe56}{00140}}\ \textcolor{preprocessor}{\#define\ JNZ(lbl)\ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00141}00141\ \textcolor{preprocessor}{\ \ \ \ if\ (!(flag\ \&\ FLAG\_ZERO))\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00142}00142\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00143}00143\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ goto\ lbl;\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00144}00144\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00146}00146\ \textcolor{comment}{//\ INC\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00147}\mbox{\hyperlink{kernel__asm_8h_a190f1d4fb8f6ab732942590c9f9f2519}{00147}}\ \textcolor{preprocessor}{\#define\ INC(param)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00148}00148\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00149}00149\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ ++(param);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00150}00150\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00151}00151\ \textcolor{comment}{//\ DEC\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00152}\mbox{\hyperlink{kernel__asm_8h_a186a852e8bd85e05434ae05e984217b9}{00152}}\ \textcolor{preprocessor}{\#define\ DEC(param)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00153}00153\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00154}00154\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ -\/-\/(param);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00155}00155\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00157}00157\ \textcolor{comment}{//\ LEA\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00158}\mbox{\hyperlink{kernel__asm_8h_aa223fedfdba50b322a6e05187449fe69}{00158}}\ \textcolor{preprocessor}{\#define\ LEA(dst,\ src)\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00159}00159\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00160}00160\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (dst)\ =\ (void\ *)(src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00161}00161\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00162}00162\ \textcolor{comment}{//\ SETL\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00163}\mbox{\hyperlink{kernel__asm_8h_ad5f8fb8fb60b7440f683cbb776a33389}{00163}}\ \textcolor{preprocessor}{\#define\ SETL(dst,\ src)\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00164}00164\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00165}00165\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ *(INT\ *)(dst)\ =\ (src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00166}00166\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00167}00167\ \textcolor{comment}{//\ GETL\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00168}\mbox{\hyperlink{kernel__asm_8h_aeb32ab9f41214832f47dc5f33faad96d}{00168}}\ \textcolor{preprocessor}{\#define\ GETL(dst,\ src)\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00169}00169\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00170}00170\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (dst)\ =\ *(INT\ *)(src);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00171}00171\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00173}00173\ \textcolor{comment}{//\ CALL\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00174}\mbox{\hyperlink{kernel__asm_8h_a7b58b89d106da5aa919a3894bf48bfb5}{00174}}\ \textcolor{preprocessor}{\#define\ CALL(proc)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00175}00175\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00176}00176\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ static\ INT\ ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00177}00177\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ static\ jmp\_buf\ \_ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00178}00178\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ static\ jmp\_buf\ \_ipArray[10];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00179}00179\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ if\ (setjmp(\_ip)\ ==\ 0)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00180}00180\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00181}00181\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ memcpy(\_ipArray[ip++],\ \&\_ip,\ sizeof(jmp\_buf));\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00182}00182\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ PUSH(ip);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00183}00183\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ proc();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00184}00184\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00185}00185\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00186}00186\ \textcolor{comment}{//\ INVOKE\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00187}\mbox{\hyperlink{kernel__asm_8h_a7ff7fc39cdb456feaa9efc1a09324875}{00187}}\ \textcolor{preprocessor}{\#define\ INVOKE(proc)\ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00188}00188\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00189}00189\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ static\ INT\ n;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00190}00190\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ CALL(proc);\ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00191}00191\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ POP(n);\ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00192}00192\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00193}00193\ \textcolor{comment}{//\ RETURN\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00194}\mbox{\hyperlink{kernel__asm_8h_a419f83b5dd1e61914653319c543ef682}{00194}}\ \textcolor{preprocessor}{\#define\ RETURN()\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00195}00195\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00196}00196\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ goto\ \_end\_proc;\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00197}00197\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00198}00198\ \textcolor{comment}{//\ RET\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00199}\mbox{\hyperlink{kernel__asm_8h_aea5f5503d3239c71deb8366c013d6866}{00199}}\ \textcolor{preprocessor}{\#define\ RET()\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00200}00200\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00201}00201\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ static\ INT\ ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00202}00202\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ static\ jmp\_buf\ \_ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00203}00203\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ static\ jmp\_buf\ \_ipArray[];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00204}00204\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ POP(ip);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00205}00205\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ memcpy(\&\_ip,\ \_ipArray[ip\ -\/\ 1],\ sizeof(jmp\_buf));\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00206}00206\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ longjmp(\_ip,\ a);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00207}00207\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00209}00209\ \textcolor{comment}{//\ LOOP\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00210}\mbox{\hyperlink{kernel__asm_8h_a0326f2208f841bc6fa1b8093f4d3f2d1}{00210}}\ \textcolor{preprocessor}{\#define\ LOOP(index,\ start,\ end)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00211}00211\ \textcolor{preprocessor}{\ \ \ \ MOVL(index,\ start);\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00212}00212\ \textcolor{preprocessor}{\ \ \ \ while\ (index\ <\ end)\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00213}00213\ \textcolor{preprocessor}{\ \ \ \ \{}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00215}00215\ \textcolor{comment}{//\ ENDLOOP\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00216}\mbox{\hyperlink{kernel__asm_8h_a0574104745ab8552cb8faed9dca767a3}{00216}}\ \textcolor{preprocessor}{\#define\ ENDLOOP(index)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00217}00217\ \textcolor{preprocessor}{\ \ \ \ INC(index);\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00218}00218\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00219}00219\ \textcolor{comment}{//\ 프로그램\ 종료\ 명령어를\ 정의하는\ 매크로}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00220}\mbox{\hyperlink{kernel__asm_8h_acb518006643e05e763f3e5672a014515}{00220}}\ \textcolor{preprocessor}{\#define\ EXIT()\ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00221}00221\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00222}00222\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ exit(a);\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00223}00223\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00224}00224\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00225}00225\ \textcolor{comment}{//\ 프로시저를\ 정의하는\ 매크로\ (엔트리\ 포인트\ 없음)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00226}\mbox{\hyperlink{kernel__asm_8h_ad0014be4f15aabdff34c3c92c7ee7a2d}{00226}}\ \textcolor{preprocessor}{\#define\ PROC\_NAKED(proc\_name)\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00227}00227\ \textcolor{preprocessor}{\ \ \ \ static\ INT\ proc\_name()\ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00228}00228\ \textcolor{preprocessor}{\ \ \ \ \{}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00229}00229\ \textcolor{comment}{//\ 프로시저\ 종료를\ 정의하는\ 매크로\ (엔트리\ 포인트\ 없음)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00230}\mbox{\hyperlink{kernel__asm_8h_a67bc46f39572849341562468bd832471}{00230}}\ \textcolor{preprocessor}{\#define\ ENDP\_NAKED\ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00231}00231\ \textcolor{preprocessor}{\ \ \ \ \_end\_proc:\ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00232}00232\ \textcolor{preprocessor}{\ \ \ \ return\ 0;\ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00233}00233\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00234}00234\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00235}00235\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ n;\ \textcolor{comment}{//\ 전역\ 변수\ n\ 선언}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00237}00237\ \textcolor{comment}{//\ 프로시저\ 초기화\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00238}00238\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ proc\_init()}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00239}00239\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00240}00240\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_aa6b60a74a8668b892e4cb9880f1ba01d}{PUSH}}(bp);\ \ \ \ \ \textcolor{comment}{//\ 현재\ 베이스\ 포인터를\ 스택에\ 저장}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00241}00241\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_acd6e3f55003a1a30ffc66e9d46f6077f}{MOVL}}(bp,\ sp);\ \textcolor{comment}{//\ 베이스\ 포인터를\ 현재\ 스택\ 포인터로\ 설정}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00242}00242\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00243}00243\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00244}00244\ \textcolor{comment}{//\ 프로시저\ 반환\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00245}00245\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ proc\_retn()}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00246}00246\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00247}00247\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_acd6e3f55003a1a30ffc66e9d46f6077f}{MOVL}}(sp,\ bp);\ \textcolor{comment}{//\ 스택\ 포인터를\ 베이스\ 포인터로\ 설정}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00248}00248\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_ab307c07fc0392a669d245f6a372a4cf1}{POP}}(bp);\ \ \ \ \ \ \textcolor{comment}{//\ 이전\ 베이스\ 포인터를\ 스택에서\ 복원}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00249}00249\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00250}00250\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00252}00252\ \textcolor{comment}{//\ 콘솔에\ 정수를\ 출력하는\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00253}00253\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ print\_int()}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00254}00254\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00255}00255\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ num\ =\ *(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *)(m\ +\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})\ +\ sp);\ \textcolor{comment}{//\ 스택에서\ 정수\ 값\ 가져오기}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00256}00256\ \ \ \ \ \textcolor{keywordflow}{return}\ printf(\textcolor{stringliteral}{"{}\%d"{}},\ (\textcolor{keywordtype}{int})num);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 정수\ 값\ 출력}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00257}00257\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00258}00258\ \textcolor{comment}{//\ 콘솔에\ 문자열을\ 출력하는\ 함수}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00259}00259\ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ print\_str()}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00260}00260\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00261}00261\ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ val\ =\ *(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *)(m\ +\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})\ +\ sp);\ \textcolor{comment}{//\ 스택에서\ 문자열\ 주소\ 가져오기}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00262}00262\ \ \ \ \ \textcolor{keywordflow}{return}\ printf(\textcolor{stringliteral}{"{}\%s"{}},\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)val);\ \ \ \textcolor{comment}{//\ 문자열\ 출력}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00263}00263\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{kernel__asm_8h_source_l00265}00265\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

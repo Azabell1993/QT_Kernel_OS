@@ -1,0 +1,163 @@
+\doxysection{C\+\_\+lib/src/td\+\_\+kernel\+\_\+engine.c File Reference}
+\hypertarget{td__kernel__engine_8c}{}\label{td__kernel__engine_8c}\index{C\_lib/src/td\_kernel\_engine.c@{C\_lib/src/td\_kernel\_engine.c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$semaphore.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include "{}kernel\+\_\+chat.\+h"{}}\newline
+{\ttfamily \#include "{}kernel\+\_\+engine.\+h"{}}\newline
+{\ttfamily \#include "{}kernel\+\_\+print.\+h"{}}\newline
+{\ttfamily \#include "{}kernel\+\_\+smartptr.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{td__kernel__engine_8c_a7735206bdfad487588bba2126b806ab7}{NUM\+\_\+\+THREADS}}~3
+\item 
+\#define \mbox{\hyperlink{td__kernel__engine_8c_a25aee491187b1d8ddd8bc014f983fc10}{NUM\+\_\+\+PROCESSES}}~2
+\item 
+\#define \mbox{\hyperlink{td__kernel__engine_8c_ae9a2dfaddc7885a43c4dfdd24c8a8c55}{DEFAULT\+\_\+\+TCP\+\_\+\+PORT}}~5100
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{td__kernel__engine_8c_a0b071d96626d37f35486e931a0da9fd8}{run\+\_\+multithreading}} (int num\+\_\+threads, int use\+\_\+semaphore,...)
+\begin{DoxyCompactList}\small\item\em 멀티스레드 실행 함수 (쓰레드 수 및 동기화 방법을 입력받음) \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{td__kernel__engine_8c_a1f65de0c9e791e4683d03d23f24f6084}{semaphore\+\_\+thread}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 세마포어를 사용하는 스레드 작업 함수 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{td__kernel__engine_8c_aa1e95d0ce42e7449a80b6d463da773f4}{mutex\+\_\+thread}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 뮤텍스를 사용하는 스레드 작업 함수 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{td__kernel__engine_8c_a6ac9570fad24030ea7da53044f1d4951}{thread\+\_\+function}} (void \texorpdfstring{$\ast$}{*}arg)
+\item 
+int \mbox{\hyperlink{td__kernel__engine_8c_a5d6593faf282c1f0cec0d54c63dba874}{main}} (int argc \+\_\+\+\_\+attribute\+\_\+\+\_\+((unused)), char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv \+\_\+\+\_\+attribute\+\_\+\+\_\+((unused)))
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{td__kernel__engine_8c_ae9a2dfaddc7885a43c4dfdd24c8a8c55}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!DEFAULT\_TCP\_PORT@{DEFAULT\_TCP\_PORT}}
+\index{DEFAULT\_TCP\_PORT@{DEFAULT\_TCP\_PORT}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_TCP\_PORT}{DEFAULT\_TCP\_PORT}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_ae9a2dfaddc7885a43c4dfdd24c8a8c55} 
+\#define DEFAULT\+\_\+\+TCP\+\_\+\+PORT~5100}
+
+
+
+Definition at line \mbox{\hyperlink{td__kernel__engine_8c_source_l00031}{31}} of file \mbox{\hyperlink{td__kernel__engine_8c_source}{td\+\_\+kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{td__kernel__engine_8c_a25aee491187b1d8ddd8bc014f983fc10}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!NUM\_PROCESSES@{NUM\_PROCESSES}}
+\index{NUM\_PROCESSES@{NUM\_PROCESSES}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{NUM\_PROCESSES}{NUM\_PROCESSES}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_a25aee491187b1d8ddd8bc014f983fc10} 
+\#define NUM\+\_\+\+PROCESSES~2}
+
+
+
+Definition at line \mbox{\hyperlink{td__kernel__engine_8c_source_l00030}{30}} of file \mbox{\hyperlink{td__kernel__engine_8c_source}{td\+\_\+kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{td__kernel__engine_8c_a7735206bdfad487588bba2126b806ab7}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!NUM\_THREADS@{NUM\_THREADS}}
+\index{NUM\_THREADS@{NUM\_THREADS}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{NUM\_THREADS}{NUM\_THREADS}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_a7735206bdfad487588bba2126b806ab7} 
+\#define NUM\+\_\+\+THREADS~3}
+
+
+
+Definition at line \mbox{\hyperlink{td__kernel__engine_8c_source_l00029}{29}} of file \mbox{\hyperlink{td__kernel__engine_8c_source}{td\+\_\+kernel\+\_\+engine.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{td__kernel__engine_8c_a5d6593faf282c1f0cec0d54c63dba874}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!main@{main}}
+\index{main@{main}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_a5d6593faf282c1f0cec0d54c63dba874} 
+int main (\begin{DoxyParamCaption}\item[{int argc }]{\+\_\+\+\_\+attribute\+\_\+\+\_\+}{(unused), }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv }]{\+\_\+\+\_\+attribute\+\_\+\+\_\+}{(unused)}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{td__kernel__engine_8c_source_l00057}{57}} of file \mbox{\hyperlink{td__kernel__engine_8c_source}{td\+\_\+kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{td__kernel__engine_8c_aa1e95d0ce42e7449a80b6d463da773f4}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!mutex\_thread@{mutex\_thread}}
+\index{mutex\_thread@{mutex\_thread}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{mutex\_thread()}{mutex\_thread()}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_aa1e95d0ce42e7449a80b6d463da773f4} 
+void \texorpdfstring{$\ast$}{*} mutex\+\_\+thread (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+뮤텍스를 사용하는 스레드 작업 함수 
+
+뮤텍스를 사용하는 스레드 작업 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 뮤텍스 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00427}{427}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{td__kernel__engine_8c_a0b071d96626d37f35486e931a0da9fd8}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!run\_multithreading@{run\_multithreading}}
+\index{run\_multithreading@{run\_multithreading}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{run\_multithreading()}{run\_multithreading()}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_a0b071d96626d37f35486e931a0da9fd8} 
+void run\+\_\+multithreading (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+threads}{, }\item[{int}]{use\+\_\+semaphore}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+멀티스레드 실행 함수 (쓰레드 수 및 동기화 방법을 입력받음) 
+
+멀티스레드 실행 함수 선언 (쓰레드 수 및 동기화 방법을 입력받음)
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+threads} & 생성할 스레드 수 \\
+\hline
+{\em use\+\_\+semaphore} & 세마포어 사용 여부 \\
+\hline
+{\em ...} & 동기화 방법 (세마포어 또는 뮤텍스) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00453}{453}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{td__kernel__engine_8c_a1f65de0c9e791e4683d03d23f24f6084}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!semaphore\_thread@{semaphore\_thread}}
+\index{semaphore\_thread@{semaphore\_thread}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{semaphore\_thread()}{semaphore\_thread()}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_a1f65de0c9e791e4683d03d23f24f6084} 
+void \texorpdfstring{$\ast$}{*} semaphore\+\_\+thread (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+세마포어를 사용하는 스레드 작업 함수 
+
+세마포어를 사용하는 스레드 작업 함수 선언
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 세마포어 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__engine_8c_source_l00402}{402}} of file \mbox{\hyperlink{kernel__engine_8c_source}{kernel\+\_\+engine.\+c}}.
+
+\Hypertarget{td__kernel__engine_8c_a6ac9570fad24030ea7da53044f1d4951}\index{td\_kernel\_engine.c@{td\_kernel\_engine.c}!thread\_function@{thread\_function}}
+\index{thread\_function@{thread\_function}!td\_kernel\_engine.c@{td\_kernel\_engine.c}}
+\doxysubsubsection{\texorpdfstring{thread\_function()}{thread\_function()}}
+{\footnotesize\ttfamily \label{td__kernel__engine_8c_a6ac9570fad24030ea7da53044f1d4951} 
+void \texorpdfstring{$\ast$}{*} thread\+\_\+function (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+

@@ -1,0 +1,44 @@
+\doxysection{az\+\_\+strchr.\+c}
+\hypertarget{az__strchr_8c_source}{}\label{az__strchr_8c_source}\index{C\_lib/include\_printf/az\_strchr.c@{C\_lib/include\_printf/az\_strchr.c}}
+\mbox{\hyperlink{az__strchr_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00001}00001\ \textcolor{comment}{//\ kernel\_lib\_printf\_functions}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00002}00002\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00003}00003\ \textcolor{comment}{\ *\ Kernel\ Lib\ Printf\ Functions}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00005}00005\ \textcolor{comment}{\ *\ Maintainer:\ Park\ Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00006}00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00007}00007\ \textcolor{comment}{\ *\ Copyright\ (C)\ 2024\ Park-\/Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00008}00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00009}00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{kernel__pr__he_8h}{kernel\_pr\_he.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00013}\mbox{\hyperlink{az__strchr_8c_a71b07d69a9421a7aaf824e995df039c3}{00013}}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{az__strchr_8c_a71b07d69a9421a7aaf824e995df039c3}{az\_strchr}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s,\ \textcolor{keywordtype}{int}\ c)}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00014}00014\ \{}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00015}00015\ \ \ \ \ \textcolor{keywordtype}{char}\ *tmp;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00016}00016\ \ \ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00017}00017\ \ \ \ \ \textcolor{keywordtype}{int}\ track;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00019}00019\ \ \ \ \ tmp\ =\ (\textcolor{keywordtype}{char}\ *)malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})\ *\ \mbox{\hyperlink{az__strlen_8c_a5e248919b9254206d5f877cbf0d69cfa}{az\_strlen}}(s));}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00020}00020\ \ \ \ \ i\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00021}00021\ \ \ \ \ track\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00022}00022\ \ \ \ \ \textcolor{keywordflow}{if}\ ((\textcolor{keywordtype}{char})s[i]\ ==\ \textcolor{charliteral}{'\(\backslash\)0'})}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00023}00023\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (NULL);}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00024}00024\ \ \ \ \ \textcolor{keywordflow}{while}\ (s[i]\ !=\ \textcolor{charliteral}{'\(\backslash\)0'}\ \&\&\ s[i]\ !=\ c)}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00025}00025\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00026}00026\ \ \ \ \ \textcolor{keywordflow}{if}\ (s[i]\ !=\ \textcolor{charliteral}{'\(\backslash\)0'})}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00027}00027\ \ \ \ \ \ \ \ \ i\ =\ i\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00028}00028\ \ \ \ \ \textcolor{keywordflow}{while}\ (s[i]\ !=\ \textcolor{charliteral}{'\(\backslash\)0'})}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00029}00029\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00030}00030\ \ \ \ \ \ \ \ \ tmp[track]\ =\ (char)s[i];}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00031}00031\ \ \ \ \ \ \ \ \ i++;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00032}00032\ \ \ \ \ \ \ \ \ track++;}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00033}00033\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00034}00034\ \ \ \ \ tmp[track]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00035}00035\ \ \ \ \ \textcolor{keywordflow}{if}\ (track\ ==\ 0)}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00036}00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (NULL);}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00037}00037\ \ \ \ \ \textcolor{keywordflow}{return}\ (tmp);}
+\DoxyCodeLine{\Hypertarget{az__strchr_8c_source_l00038}00038\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,53 @@
+\doxysection{az\+\_\+putchar.\+c}
+\hypertarget{az__putchar_8c_source}{}\label{az__putchar_8c_source}\index{C\_lib/include\_printf/az\_putchar.c@{C\_lib/include\_printf/az\_putchar.c}}
+\mbox{\hyperlink{az__putchar_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00001}00001\ \textcolor{comment}{//\ kernel\_lib\_printf\_functions}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00002}00002\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00003}00003\ \textcolor{comment}{\ *\ Kernel\ Lib\ Printf\ Functions}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00005}00005\ \textcolor{comment}{\ *\ Maintainer:\ Park\ Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00006}00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00007}00007\ \textcolor{comment}{\ *\ Copyright\ (C)\ 2024\ Park-\/Jiwoo}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00008}00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00009}00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{kernel__pr__he_8h}{kernel\_pr\_he.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00013}\mbox{\hyperlink{az__putchar_8c_a13949e658b58cd9752c5edd66a9c7f05}{00013}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{az__putchar_8c_a13949e658b58cd9752c5edd66a9c7f05}{kernel\_putchar}}(\textcolor{keywordtype}{char}\ c)}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00014}00014\ \{}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00015}00015\ \ \ \ \ write(1,\ \&c,\ 1);}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00016}00016\ \}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00019}00019\ \textcolor{comment}{//\ 인라인\ 어셈블리언어.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00020}00020\ \textcolor{comment}{//\ 인텔전용\ 어셈블리\ 문법임.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00021}00021\ \textcolor{comment}{//\ 맥에선\ 돌아가지\ 않기\ 때문에\ 이\ 부분은\ 주석\ 처리.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00022}00022\ \textcolor{comment}{//\ -\/-\/-\/-\/\ Intel\ Assembly}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00023}00023\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00024}00024\ \textcolor{comment}{//\ void\ az\_putchar(char\ c)}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00025}00025\ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00026}00026\ \textcolor{comment}{//\ \ \ \ \ int\ dword\_char;}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00027}00027\ \textcolor{comment}{//\ \ \ \ \ dword\_char\ =\ (char)c;}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00029}00029\ \textcolor{comment}{//\ \ \ \ \ asm\ volatile(}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00030}00030\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}.intel\_syntax\ noprefix;"{}}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00031}00031\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}mov\ r10,rsp;"{}\ \ //\ save\ rsp.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00032}00032\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}sub\ rsp,8;"{}\ \ \ \ //\ space\ for\ buffer,\ align\ by\ 8.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00033}00033\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}mov\ [rsp],al;"{}\ //\ store\ the\ character\ into\ buffer.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00034}00034\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}mov\ edi,1;"{}\ \ \ \ //\ STDOUT.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00035}00035\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}mov\ rsi,rsp;"{}\ \ //\ pointer\ to\ buffer.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00036}00036\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}mov\ edx,1;"{}\ \ \ \ //\ string\ length\ in\ bytes.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00037}00037\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}mov\ eax,1;"{}\ \ \ \ //\ WRITE.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00038}00038\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}syscall;"{}\ \ \ \ \ \ //\ clobbers\ rcx\ \&\ r11.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00039}00039\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}mov\ rsp,r10;"{}\ \ //\ restore\ rsp.}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00040}00040\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ "{}.att\_syntax\ prefix;"{}}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00041}00041\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ outputs\ */}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00042}00042\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ :}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00043}00043\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ inputs:\ eax\ */}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00044}00044\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ :\ "{}b"{}(dword\_char)}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00045}00045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ /*\ clobbered\ regs\ */}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00046}00046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ :\ "{}rcx"{},\ "{}rdx"{},\ "{}rsi"{},\ "{}rdi"{},\ "{}r10"{},\ "{}r11"{});}}
+\DoxyCodeLine{\Hypertarget{az__putchar_8c_source_l00047}00047\ \textcolor{comment}{//\ \}}}
+
+\end{DoxyCode}

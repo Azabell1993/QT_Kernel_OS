@@ -1,0 +1,713 @@
+\doxysection{C\+\_\+lib/include/kernel\+\_\+asm.h File Reference}
+\hypertarget{kernel__asm_8h}{}\label{kernel__asm_8h}\index{C\_lib/include/kernel\_asm.h@{C\_lib/include/kernel\_asm.h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$setjmp.\+h$>$}\newline
+{\ttfamily \#include $<$memory.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a24ba6aec10f48fdafa59aab64182780b}{KERNEL\+\_\+\+ASM\+\_\+H}}
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_aaa0f918e81849212e54b997c9be760aa}{PROTO}}(proc)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a2b5a8650f992ab32dfc8ca36c51b8161}{EXTERN}}(proc)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a95e22d3f9880a08899f7a3f4371ba5f9}{MAX\+\_\+\+MEMORY\+\_\+\+LEN}}~100
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_ad6efdfac8f133b0616152b2bd6620b1a}{PROC}}(proc\+\_\+name)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a85430107ec32d5fa7bedeaa47eb6777b}{ENDP}}
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_aa6b60a74a8668b892e4cb9880f1ba01d}{PUSH}}(param)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_ab307c07fc0392a669d245f6a372a4cf1}{POP}}(param)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_acd6e3f55003a1a30ffc66e9d46f6077f}{MOVL}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_ae3e8bb8d6cf141dfa579232699edd3b0}{ADD}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_ad49443868508bb4f5c6985bc55d464a4}{SUB}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a112d847573d7e1cedb3b66d3950296bc}{MUL}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a8747ed6d9d974ecf49908d04321b4485}{DIV}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_af567e6c3e02f4bad51c9ede1a5e9f31f}{JMP}}(lbl)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a590ecc8e5255f0b626161d424b7bc90f}{CMP}}(p1,  p2)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_aba1dd458b6330fd89d8888155b5abec8}{JZ}}(lbl)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a9d2d1f5f4a04307e5a0f0c74ab1efe56}{JNZ}}(lbl)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a190f1d4fb8f6ab732942590c9f9f2519}{INC}}(param)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a186a852e8bd85e05434ae05e984217b9}{DEC}}(param)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_aa223fedfdba50b322a6e05187449fe69}{LEA}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_ad5f8fb8fb60b7440f683cbb776a33389}{SETL}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_aeb32ab9f41214832f47dc5f33faad96d}{GETL}}(dst,  src)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a7b58b89d106da5aa919a3894bf48bfb5}{CALL}}(proc)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a7ff7fc39cdb456feaa9efc1a09324875}{INVOKE}}(proc)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a419f83b5dd1e61914653319c543ef682}{RETURN}}()
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_aea5f5503d3239c71deb8366c013d6866}{RET}}()
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a0326f2208f841bc6fa1b8093f4d3f2d1}{LOOP}}(index,  start,  end)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a0574104745ab8552cb8faed9dca767a3}{ENDLOOP}}(index)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_acb518006643e05e763f3e5672a014515}{EXIT}}()
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_ad0014be4f15aabdff34c3c92c7ee7a2d}{PROC\+\_\+\+NAKED}}(proc\+\_\+name)
+\item 
+\#define \mbox{\hyperlink{kernel__asm_8h_a67bc46f39572849341562468bd832471}{ENDP\+\_\+\+NAKED}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__asm_8h_a48dc92090833336aa7b657c4b624086d}{STRING}}
+\item 
+typedef unsigned char \mbox{\hyperlink{kernel__asm_8h_a4ae1dab0fb4b072a66584546209e7d58}{BYTE}}
+\item 
+typedef unsigned short \mbox{\hyperlink{kernel__asm_8h_a197942eefa7db30960ae396d68339b97}{WORD}}
+\item 
+typedef unsigned long \mbox{\hyperlink{kernel__asm_8h_ad342ac907eb044443153a22f964bf0af}{DWORD}}
+\item 
+typedef unsigned long long \mbox{\hyperlink{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}{QWORD}}
+\item 
+typedef \mbox{\hyperlink{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}{QWORD}} \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec}{FLAG}} \{ \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ecaf964b8aefc62849e850939bc1ab359b3}{FLAG\+\_\+\+SIGNED}} = 1
+, \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103eca881c5b2c87de417f20d85b178b645fbd}{FLAG\+\_\+\+ZERO}} = 1 \texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} 2
+ \}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{kernel__asm_8h_ae3e8bb8d6cf141dfa579232699edd3b0}\index{kernel\_asm.h@{kernel\_asm.h}!ADD@{ADD}}
+\index{ADD@{ADD}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{ADD}{ADD}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_ae3e8bb8d6cf141dfa579232699edd3b0} 
+\#define ADD(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (dst)\ +=\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})(src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00102}{102}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a7b58b89d106da5aa919a3894bf48bfb5}\index{kernel\_asm.h@{kernel\_asm.h}!CALL@{CALL}}
+\index{CALL@{CALL}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{CALL}{CALL}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a7b58b89d106da5aa919a3894bf48bfb5} 
+\#define CALL(\begin{DoxyParamCaption}\item[{}]{proc}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ jmp\_buf\ \_ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ jmp\_buf\ \_ipArray[10];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ if\ (setjmp(\_ip)\ ==\ 0)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ memcpy(\_ipArray[ip++],\ \&\_ip,\ \textcolor{keyword}{sizeof}(jmp\_buf));\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ PUSH(ip);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ proc();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00174}{174}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a590ecc8e5255f0b626161d424b7bc90f}\index{kernel\_asm.h@{kernel\_asm.h}!CMP@{CMP}}
+\index{CMP@{CMP}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{CMP}{CMP}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a590ecc8e5255f0b626161d424b7bc90f} 
+\#define CMP(\begin{DoxyParamCaption}\item[{}]{p1}{, }\item[{}]{p2}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ flag\ =\ ((p1)\ ==\ (p2))\ ?\ \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103eca881c5b2c87de417f20d85b178b645fbd}{FLAG\_ZERO}}\ :\ 0;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00129}{129}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a186a852e8bd85e05434ae05e984217b9}\index{kernel\_asm.h@{kernel\_asm.h}!DEC@{DEC}}
+\index{DEC@{DEC}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{DEC}{DEC}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a186a852e8bd85e05434ae05e984217b9} 
+\#define DEC(\begin{DoxyParamCaption}\item[{}]{param}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ -\/-\/(param);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00152}{152}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a8747ed6d9d974ecf49908d04321b4485}\index{kernel\_asm.h@{kernel\_asm.h}!DIV@{DIV}}
+\index{DIV@{DIV}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{DIV}{DIV}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a8747ed6d9d974ecf49908d04321b4485} 
+\#define DIV(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (dst)\ /=\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})(src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00117}{117}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a0574104745ab8552cb8faed9dca767a3}\index{kernel\_asm.h@{kernel\_asm.h}!ENDLOOP@{ENDLOOP}}
+\index{ENDLOOP@{ENDLOOP}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{ENDLOOP}{ENDLOOP}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a0574104745ab8552cb8faed9dca767a3} 
+\#define ENDLOOP(\begin{DoxyParamCaption}\item[{}]{index}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{kernel__asm_8h_a190f1d4fb8f6ab732942590c9f9f2519}{INC}}(index);\ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00216}{216}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a85430107ec32d5fa7bedeaa47eb6777b}\index{kernel\_asm.h@{kernel\_asm.h}!ENDP@{ENDP}}
+\index{ENDP@{ENDP}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{ENDP}{ENDP}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a85430107ec32d5fa7bedeaa47eb6777b} 
+\#define ENDP}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \_end\_proc:\ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ proc\_retn();\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ 0;\ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00073}{73}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a67bc46f39572849341562468bd832471}\index{kernel\_asm.h@{kernel\_asm.h}!ENDP\_NAKED@{ENDP\_NAKED}}
+\index{ENDP\_NAKED@{ENDP\_NAKED}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{ENDP\_NAKED}{ENDP\_NAKED}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a67bc46f39572849341562468bd832471} 
+\#define ENDP\+\_\+\+NAKED}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \_end\_proc:\ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ 0;\ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00230}{230}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_acb518006643e05e763f3e5672a014515}\index{kernel\_asm.h@{kernel\_asm.h}!EXIT@{EXIT}}
+\index{EXIT@{EXIT}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{EXIT}{EXIT}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_acb518006643e05e763f3e5672a014515} 
+\#define EXIT(\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ exit(a);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00220}{220}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a2b5a8650f992ab32dfc8ca36c51b8161}\index{kernel\_asm.h@{kernel\_asm.h}!EXTERN@{EXTERN}}
+\index{EXTERN@{EXTERN}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{EXTERN}{EXTERN}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a2b5a8650f992ab32dfc8ca36c51b8161} 
+\#define EXTERN(\begin{DoxyParamCaption}\item[{}]{proc}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ proc();}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00041}{41}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_aeb32ab9f41214832f47dc5f33faad96d}\index{kernel\_asm.h@{kernel\_asm.h}!GETL@{GETL}}
+\index{GETL@{GETL}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{GETL}{GETL}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aeb32ab9f41214832f47dc5f33faad96d} 
+\#define GETL(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (dst)\ =\ *(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *)(src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00168}{168}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a190f1d4fb8f6ab732942590c9f9f2519}\index{kernel\_asm.h@{kernel\_asm.h}!INC@{INC}}
+\index{INC@{INC}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{INC}{INC}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a190f1d4fb8f6ab732942590c9f9f2519} 
+\#define INC(\begin{DoxyParamCaption}\item[{}]{param}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ++(param);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00147}{147}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a7ff7fc39cdb456feaa9efc1a09324875}\index{kernel\_asm.h@{kernel\_asm.h}!INVOKE@{INVOKE}}
+\index{INVOKE@{INVOKE}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{INVOKE}{INVOKE}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a7ff7fc39cdb456feaa9efc1a09324875} 
+\#define INVOKE(\begin{DoxyParamCaption}\item[{}]{proc}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ n;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ CALL(proc);\ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ POP(n);\ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00187}{187}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_af567e6c3e02f4bad51c9ede1a5e9f31f}\index{kernel\_asm.h@{kernel\_asm.h}!JMP@{JMP}}
+\index{JMP@{JMP}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{JMP}{JMP}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_af567e6c3e02f4bad51c9ede1a5e9f31f} 
+\#define JMP(\begin{DoxyParamCaption}\item[{}]{lbl}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{goto}\ lbl;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00123}{123}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a9d2d1f5f4a04307e5a0f0c74ab1efe56}\index{kernel\_asm.h@{kernel\_asm.h}!JNZ@{JNZ}}
+\index{JNZ@{JNZ}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{JNZ}{JNZ}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a9d2d1f5f4a04307e5a0f0c74ab1efe56} 
+\#define JNZ(\begin{DoxyParamCaption}\item[{}]{lbl}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}\ (!(flag\ \&\ \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103eca881c5b2c87de417f20d85b178b645fbd}{FLAG\_ZERO}}))\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{goto}\ lbl;\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00140}{140}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_aba1dd458b6330fd89d8888155b5abec8}\index{kernel\_asm.h@{kernel\_asm.h}!JZ@{JZ}}
+\index{JZ@{JZ}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{JZ}{JZ}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aba1dd458b6330fd89d8888155b5abec8} 
+\#define JZ(\begin{DoxyParamCaption}\item[{}]{lbl}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}\ (flag\ \&\ \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103eca881c5b2c87de417f20d85b178b645fbd}{FLAG\_ZERO}})\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{goto}\ lbl;\ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00134}{134}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a24ba6aec10f48fdafa59aab64182780b}\index{kernel\_asm.h@{kernel\_asm.h}!KERNEL\_ASM\_H@{KERNEL\_ASM\_H}}
+\index{KERNEL\_ASM\_H@{KERNEL\_ASM\_H}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{KERNEL\_ASM\_H}{KERNEL\_ASM\_H}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a24ba6aec10f48fdafa59aab64182780b} 
+\#define KERNEL\+\_\+\+ASM\+\_\+H}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00003}{3}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_aa223fedfdba50b322a6e05187449fe69}\index{kernel\_asm.h@{kernel\_asm.h}!LEA@{LEA}}
+\index{LEA@{LEA}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{LEA}{LEA}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aa223fedfdba50b322a6e05187449fe69} 
+\#define LEA(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (dst)\ =\ (\textcolor{keywordtype}{void}\ *)(src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00158}{158}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a0326f2208f841bc6fa1b8093f4d3f2d1}\index{kernel\_asm.h@{kernel\_asm.h}!LOOP@{LOOP}}
+\index{LOOP@{LOOP}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{LOOP}{LOOP}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a0326f2208f841bc6fa1b8093f4d3f2d1} 
+\#define LOOP(\begin{DoxyParamCaption}\item[{}]{index}{, }\item[{}]{start}{, }\item[{}]{end}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \mbox{\hyperlink{kernel__asm_8h_acd6e3f55003a1a30ffc66e9d46f6077f}{MOVL}}(index,\ start);\ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ while\ (index\ <\ end)\ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \{}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00210}{210}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a95e22d3f9880a08899f7a3f4371ba5f9}\index{kernel\_asm.h@{kernel\_asm.h}!MAX\_MEMORY\_LEN@{MAX\_MEMORY\_LEN}}
+\index{MAX\_MEMORY\_LEN@{MAX\_MEMORY\_LEN}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_MEMORY\_LEN}{MAX\_MEMORY\_LEN}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a95e22d3f9880a08899f7a3f4371ba5f9} 
+\#define MAX\+\_\+\+MEMORY\+\_\+\+LEN~100}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00049}{49}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_acd6e3f55003a1a30ffc66e9d46f6077f}\index{kernel\_asm.h@{kernel\_asm.h}!MOVL@{MOVL}}
+\index{MOVL@{MOVL}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{MOVL}{MOVL}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_acd6e3f55003a1a30ffc66e9d46f6077f} 
+\#define MOVL(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (dst)\ =\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})(src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00097}{97}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a112d847573d7e1cedb3b66d3950296bc}\index{kernel\_asm.h@{kernel\_asm.h}!MUL@{MUL}}
+\index{MUL@{MUL}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{MUL}{MUL}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a112d847573d7e1cedb3b66d3950296bc} 
+\#define MUL(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (dst)\ *=\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})(src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00112}{112}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_ab307c07fc0392a669d245f6a372a4cf1}\index{kernel\_asm.h@{kernel\_asm.h}!POP@{POP}}
+\index{POP@{POP}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{POP}{POP}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_ab307c07fc0392a669d245f6a372a4cf1} 
+\#define POP(\begin{DoxyParamCaption}\item[{}]{param}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ p\ =\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *)(m\ +\ sp);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ sp\ +=\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}});\ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (param)\ =\ *p;\ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00088}{88}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_ad6efdfac8f133b0616152b2bd6620b1a}\index{kernel\_asm.h@{kernel\_asm.h}!PROC@{PROC}}
+\index{PROC@{PROC}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{PROC}{PROC}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_ad6efdfac8f133b0616152b2bd6620b1a} 
+\#define PROC(\begin{DoxyParamCaption}\item[{}]{proc\+\_\+name}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ proc\_name\#\#DTCASE()\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ proc\_init();}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00068}{68}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_ad0014be4f15aabdff34c3c92c7ee7a2d}\index{kernel\_asm.h@{kernel\_asm.h}!PROC\_NAKED@{PROC\_NAKED}}
+\index{PROC\_NAKED@{PROC\_NAKED}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{PROC\_NAKED}{PROC\_NAKED}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_ad0014be4f15aabdff34c3c92c7ee7a2d} 
+\#define PROC\+\_\+\+NAKED(\begin{DoxyParamCaption}\item[{}]{proc\+\_\+name}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ proc\_name()\ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \{}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00226}{226}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_aaa0f918e81849212e54b997c9be760aa}\index{kernel\_asm.h@{kernel\_asm.h}!PROTO@{PROTO}}
+\index{PROTO@{PROTO}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{PROTO}{PROTO}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aaa0f918e81849212e54b997c9be760aa} 
+\#define PROTO(\begin{DoxyParamCaption}\item[{}]{proc}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ proc();}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00040}{40}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_aa6b60a74a8668b892e4cb9880f1ba01d}\index{kernel\_asm.h@{kernel\_asm.h}!PUSH@{PUSH}}
+\index{PUSH@{PUSH}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{PUSH}{PUSH}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aa6b60a74a8668b892e4cb9880f1ba01d} 
+\#define PUSH(\begin{DoxyParamCaption}\item[{}]{param}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ sp\ -\/=\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}});\ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ p\ =\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *)(m\ +\ sp);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ *p\ =\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})(param);\ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00080}{80}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_aea5f5503d3239c71deb8366c013d6866}\index{kernel\_asm.h@{kernel\_asm.h}!RET@{RET}}
+\index{RET@{RET}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{RET}{RET}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aea5f5503d3239c71deb8366c013d6866} 
+\#define RET(\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ jmp\_buf\ \_ip;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ jmp\_buf\ \_ipArray[];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ POP(ip);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ memcpy(\&\_ip,\ \_ipArray[ip\ -\/\ 1],\ \textcolor{keyword}{sizeof}(jmp\_buf));\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ longjmp(\_ip,\ a);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00199}{199}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a419f83b5dd1e61914653319c543ef682}\index{kernel\_asm.h@{kernel\_asm.h}!RETURN@{RETURN}}
+\index{RETURN@{RETURN}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{RETURN}{RETURN}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a419f83b5dd1e61914653319c543ef682} 
+\#define RETURN(\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keywordflow}{goto}\ \_end\_proc;\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00194}{194}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_ad5f8fb8fb60b7440f683cbb776a33389}\index{kernel\_asm.h@{kernel\_asm.h}!SETL@{SETL}}
+\index{SETL@{SETL}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{SETL}{SETL}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_ad5f8fb8fb60b7440f683cbb776a33389} 
+\#define SETL(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ *(\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}\ *)(dst)\ =\ (src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00163}{163}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_ad49443868508bb4f5c6985bc55d464a4}\index{kernel\_asm.h@{kernel\_asm.h}!SUB@{SUB}}
+\index{SUB@{SUB}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{SUB}{SUB}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_ad49443868508bb4f5c6985bc55d464a4} 
+\#define SUB(\begin{DoxyParamCaption}\item[{}]{dst}{, }\item[{}]{src}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ (dst)\ -\/=\ (\mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}})(src);\ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00107}{107}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{kernel__asm_8h_a4ae1dab0fb4b072a66584546209e7d58}\index{kernel\_asm.h@{kernel\_asm.h}!BYTE@{BYTE}}
+\index{BYTE@{BYTE}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{BYTE}{BYTE}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a4ae1dab0fb4b072a66584546209e7d58} 
+typedef unsigned char \mbox{\hyperlink{kernel__asm_8h_a4ae1dab0fb4b072a66584546209e7d58}{BYTE}}}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00028}{28}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_ad342ac907eb044443153a22f964bf0af}\index{kernel\_asm.h@{kernel\_asm.h}!DWORD@{DWORD}}
+\index{DWORD@{DWORD}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{DWORD}{DWORD}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_ad342ac907eb044443153a22f964bf0af} 
+typedef unsigned long \mbox{\hyperlink{kernel__asm_8h_ad342ac907eb044443153a22f964bf0af}{DWORD}}}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00030}{30}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}\index{kernel\_asm.h@{kernel\_asm.h}!INT@{INT}}
+\index{INT@{INT}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{INT}{INT}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a} 
+typedef \mbox{\hyperlink{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}{QWORD}} \mbox{\hyperlink{kernel__asm_8h_aa222b6ebceb36add98c92b50b0ee920a}{INT}}}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00036}{36}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}\index{kernel\_asm.h@{kernel\_asm.h}!QWORD@{QWORD}}
+\index{QWORD@{QWORD}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{QWORD}{QWORD}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6} 
+typedef unsigned long long \mbox{\hyperlink{kernel__asm_8h_a6fe04fdd875bcad282f702bb818897b6}{QWORD}}}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00031}{31}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a48dc92090833336aa7b657c4b624086d}\index{kernel\_asm.h@{kernel\_asm.h}!STRING@{STRING}}
+\index{STRING@{STRING}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{STRING}{STRING}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a48dc92090833336aa7b657c4b624086d} 
+typedef const char\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__asm_8h_a48dc92090833336aa7b657c4b624086d}{STRING}}}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00027}{27}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+\Hypertarget{kernel__asm_8h_a197942eefa7db30960ae396d68339b97}\index{kernel\_asm.h@{kernel\_asm.h}!WORD@{WORD}}
+\index{WORD@{WORD}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{WORD}{WORD}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_a197942eefa7db30960ae396d68339b97} 
+typedef unsigned short \mbox{\hyperlink{kernel__asm_8h_a197942eefa7db30960ae396d68339b97}{WORD}}}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00029}{29}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec}\index{kernel\_asm.h@{kernel\_asm.h}!FLAG@{FLAG}}
+\index{FLAG@{FLAG}!kernel\_asm.h@{kernel\_asm.h}}
+\doxysubsubsection{\texorpdfstring{FLAG}{FLAG}}
+{\footnotesize\ttfamily \label{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec} 
+enum \mbox{\hyperlink{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec}{FLAG}}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLAG\_SIGNED@{FLAG\_SIGNED}!kernel\_asm.h@{kernel\_asm.h}}\index{kernel\_asm.h@{kernel\_asm.h}!FLAG\_SIGNED@{FLAG\_SIGNED}}}\Hypertarget{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ecaf964b8aefc62849e850939bc1ab359b3}\label{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec} 
+FLAG\+\_\+\+SIGNED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLAG\_ZERO@{FLAG\_ZERO}!kernel\_asm.h@{kernel\_asm.h}}\index{kernel\_asm.h@{kernel\_asm.h}!FLAG\_ZERO@{FLAG\_ZERO}}}\Hypertarget{kernel__asm_8h_aea43282ab1b4708d7657390fa01103eca881c5b2c87de417f20d85b178b645fbd}\label{kernel__asm_8h_aea43282ab1b4708d7657390fa01103ec} 
+FLAG\+\_\+\+ZERO&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line \mbox{\hyperlink{kernel__asm_8h_source_l00061}{61}} of file \mbox{\hyperlink{kernel__asm_8h_source}{kernel\+\_\+asm.\+h}}.
+

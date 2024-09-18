@@ -1,0 +1,332 @@
+\doxysection{C\+\_\+lib/include/kernel\+\_\+uniqueptr.h File Reference}
+\hypertarget{kernel__uniqueptr_8h}{}\label{kernel__uniqueptr_8h}\index{C\_lib/include/kernel\_uniqueptr.h@{C\_lib/include/kernel\_uniqueptr.h}}
+{\ttfamily \#include $<$dlfcn.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$semaphore.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$netdb.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include "{}kernel\+\_\+print.\+h"{}}\newline
+{\ttfamily \#include "{}kernel\+\_\+engine.\+h"{}}\newline
+{\ttfamily \#include "{}../src/ename.\+c.\+inc"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_shared_ptr}{Shared\+Ptr}}
+\begin{DoxyCompactList}\small\item\em 공유 스마트 포인터 \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}}
+\begin{DoxyCompactList}\small\item\em 고유 스마트 포인터 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{kernel__uniqueptr_8h_af8ae8164b7cc517281f99e9b2335cf3c}{KERNEL\+\_\+\+UNIQUEPTR\+\_\+H}}
+\item 
+\#define \mbox{\hyperlink{kernel__uniqueptr_8h_a6821bafc3c88dfb2e433a095df9940c6}{BUF\+\_\+\+SIZE}}~100
+\item 
+\#define \mbox{\hyperlink{kernel__uniqueptr_8h_a7735206bdfad487588bba2126b806ab7}{NUM\+\_\+\+THREADS}}~3
+\item 
+\#define \mbox{\hyperlink{kernel__uniqueptr_8h_a220f38b26fa99d4d91b574f42d991516}{MAX\+\_\+\+STRING\+\_\+\+SIZE}}~100
+\item 
+\#define \mbox{\hyperlink{kernel__uniqueptr_8h_afb3e2c8f77b996229ee801821237e411}{RETAIN\+\_\+\+SHARED\+\_\+\+PTR}}(ptr)
+\item 
+\#define \mbox{\hyperlink{kernel__uniqueptr_8h_a8ab64fdb1355aac975e77ae309fba0b4}{RELEASE\+\_\+\+SHARED\+\_\+\+PTR}}(ptr)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{kernel__uniqueptr_8h_a70da70f3c50d15d43b532fef795bd814}{default\+\_\+deleter}} (void \texorpdfstring{$\ast$}{*}ptr)
+\begin{DoxyCompactList}\small\item\em 기본 소멸자 함수 (free 사용) \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_shared_ptr}{Shared\+Ptr}} \mbox{\hyperlink{kernel__uniqueptr_8h_a5e4b1c5f2f99dd40f4f957a0bc783cfd}{create\+\_\+shared\+\_\+ptr}} (size\+\_\+t size, void(\texorpdfstring{$\ast$}{*}deleter)(void \texorpdfstring{$\ast$}{*}))
+\begin{DoxyCompactList}\small\item\em shared\+\_\+ptr 생성 함수 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} \mbox{\hyperlink{kernel__uniqueptr_8h_ac61360dbe29daa4ef0965e19f858bbd6}{create\+\_\+unique\+\_\+ptr}} (size\+\_\+t size, void(\texorpdfstring{$\ast$}{*}deleter)(void \texorpdfstring{$\ast$}{*}))
+\begin{DoxyCompactList}\small\item\em unique\+\_\+ptr 생성 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__uniqueptr_8h_af3220cea62be4539d7dd7be986282f52}{retain\+\_\+shared\+\_\+ptr}} (\mbox{\hyperlink{struct_shared_ptr}{Shared\+Ptr}} \texorpdfstring{$\ast$}{*}sp)
+\begin{DoxyCompactList}\small\item\em shared\+\_\+ptr 참조 카운트 증가 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__uniqueptr_8h_a9f9f63294c5718add8a0f6dac5b5697d}{release\+\_\+shared\+\_\+ptr}} (\mbox{\hyperlink{struct_shared_ptr}{Shared\+Ptr}} \texorpdfstring{$\ast$}{*}sp)
+\begin{DoxyCompactList}\small\item\em shared\+\_\+ptr 참조 카운트 감소 및 메모리 해제 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__uniqueptr_8h_a8bdb65a24223d991df006ebb04a4715c}{release\+\_\+unique\+\_\+ptr}} (\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} \texorpdfstring{$\ast$}{*}up)
+\begin{DoxyCompactList}\small\item\em unique\+\_\+ptr 메모리 해제 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} \mbox{\hyperlink{kernel__uniqueptr_8h_af16a4521096d757aac655c0589dff53f}{transfer\+\_\+unique\+\_\+ptr}} (\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} \texorpdfstring{$\ast$}{*}up)
+\begin{DoxyCompactList}\small\item\em unique\+\_\+ptr 소유권 이전 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__uniqueptr_8h_afdcd3c4530e88a357c01bd1fe47f4d26}{thread\+\_\+function\+\_\+shared}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 스레드 함수 (shared\+\_\+ptr 사용) \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__uniqueptr_8h_a90c7035b12e90d2407263f548a2095ca}{thread\+\_\+function\+\_\+unique}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 스레드 함수 (unique\+\_\+ptr 사용) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{kernel__uniqueptr_8h_a6821bafc3c88dfb2e433a095df9940c6}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!BUF\_SIZE@{BUF\_SIZE}}
+\index{BUF\_SIZE@{BUF\_SIZE}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{BUF\_SIZE}{BUF\_SIZE}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a6821bafc3c88dfb2e433a095df9940c6} 
+\#define BUF\+\_\+\+SIZE~100}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00027}{27}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_af8ae8164b7cc517281f99e9b2335cf3c}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!KERNEL\_UNIQUEPTR\_H@{KERNEL\_UNIQUEPTR\_H}}
+\index{KERNEL\_UNIQUEPTR\_H@{KERNEL\_UNIQUEPTR\_H}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{KERNEL\_UNIQUEPTR\_H}{KERNEL\_UNIQUEPTR\_H}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_af8ae8164b7cc517281f99e9b2335cf3c} 
+\#define KERNEL\+\_\+\+UNIQUEPTR\+\_\+H}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00003}{3}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_a220f38b26fa99d4d91b574f42d991516}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!MAX\_STRING\_SIZE@{MAX\_STRING\_SIZE}}
+\index{MAX\_STRING\_SIZE@{MAX\_STRING\_SIZE}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_STRING\_SIZE}{MAX\_STRING\_SIZE}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a220f38b26fa99d4d91b574f42d991516} 
+\#define MAX\+\_\+\+STRING\+\_\+\+SIZE~100}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00029}{29}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_a7735206bdfad487588bba2126b806ab7}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!NUM\_THREADS@{NUM\_THREADS}}
+\index{NUM\_THREADS@{NUM\_THREADS}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{NUM\_THREADS}{NUM\_THREADS}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a7735206bdfad487588bba2126b806ab7} 
+\#define NUM\+\_\+\+THREADS~3}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00028}{28}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_a8ab64fdb1355aac975e77ae309fba0b4}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!RELEASE\_SHARED\_PTR@{RELEASE\_SHARED\_PTR}}
+\index{RELEASE\_SHARED\_PTR@{RELEASE\_SHARED\_PTR}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{RELEASE\_SHARED\_PTR}{RELEASE\_SHARED\_PTR}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a8ab64fdb1355aac975e77ae309fba0b4} 
+\#define RELEASE\+\_\+\+SHARED\+\_\+\+PTR(\begin{DoxyParamCaption}\item[{}]{ptr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{kernel__uniqueptr_8h_a9f9f63294c5718add8a0f6dac5b5697d}{release\_shared\_ptr}}(ptr);}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00032}{32}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_afb3e2c8f77b996229ee801821237e411}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!RETAIN\_SHARED\_PTR@{RETAIN\_SHARED\_PTR}}
+\index{RETAIN\_SHARED\_PTR@{RETAIN\_SHARED\_PTR}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{RETAIN\_SHARED\_PTR}{RETAIN\_SHARED\_PTR}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_afb3e2c8f77b996229ee801821237e411} 
+\#define RETAIN\+\_\+\+SHARED\+\_\+\+PTR(\begin{DoxyParamCaption}\item[{}]{ptr}{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{kernel__uniqueptr_8h_af3220cea62be4539d7dd7be986282f52}{retain\_shared\_ptr}}(ptr);}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00031}{31}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{kernel__uniqueptr_8h_a5e4b1c5f2f99dd40f4f957a0bc783cfd}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!create\_shared\_ptr@{create\_shared\_ptr}}
+\index{create\_shared\_ptr@{create\_shared\_ptr}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{create\_shared\_ptr()}{create\_shared\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a5e4b1c5f2f99dd40f4f957a0bc783cfd} 
+\mbox{\hyperlink{struct_shared_ptr}{Shared\+Ptr}} create\+\_\+shared\+\_\+ptr (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size}{, }\item[{void(\texorpdfstring{$\ast$}{*}}]{deleter~}{)(void \texorpdfstring{$\ast$}{*})}\end{DoxyParamCaption})}
+
+
+
+shared\+\_\+ptr 생성 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & 할당할 메모리 크기 \\
+\hline
+{\em deleter} & 소멸자 함수 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+생성된 \doxylink{struct_shared_ptr}{Shared\+Ptr} 구조체 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00070}{70}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_ac61360dbe29daa4ef0965e19f858bbd6}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!create\_unique\_ptr@{create\_unique\_ptr}}
+\index{create\_unique\_ptr@{create\_unique\_ptr}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{create\_unique\_ptr()}{create\_unique\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_ac61360dbe29daa4ef0965e19f858bbd6} 
+\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} create\+\_\+unique\+\_\+ptr (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size}{, }\item[{void(\texorpdfstring{$\ast$}{*}}]{deleter~}{)(void \texorpdfstring{$\ast$}{*})}\end{DoxyParamCaption})}
+
+
+
+unique\+\_\+ptr 생성 함수 
+
+클라이언트 정보를 스마트 포인터로 관리하는 배열
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & 할당할 메모리 크기 \\
+\hline
+{\em deleter} & 소멸자 함수 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+생성된 \doxylink{struct_unique_ptr}{Unique\+Ptr} 구조체 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00089}{89}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_a70da70f3c50d15d43b532fef795bd814}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!default\_deleter@{default\_deleter}}
+\index{default\_deleter@{default\_deleter}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{default\_deleter()}{default\_deleter()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a70da70f3c50d15d43b532fef795bd814} 
+void default\+\_\+deleter (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{ptr}{}\end{DoxyParamCaption})}
+
+
+
+기본 소멸자 함수 (free 사용) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ptr} & 해제할 포인터 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00039}{39}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_a9f9f63294c5718add8a0f6dac5b5697d}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!release\_shared\_ptr@{release\_shared\_ptr}}
+\index{release\_shared\_ptr@{release\_shared\_ptr}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{release\_shared\_ptr()}{release\_shared\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a9f9f63294c5718add8a0f6dac5b5697d} 
+void release\+\_\+shared\+\_\+ptr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_shared_ptr}{Shared\+Ptr}} \texorpdfstring{$\ast$}{*}}]{sp}{}\end{DoxyParamCaption})}
+
+
+
+shared\+\_\+ptr 참조 카운트 감소 및 메모리 해제 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sp} & 해제할 \doxylink{struct_shared_ptr}{Shared\+Ptr} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00112}{112}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_a8bdb65a24223d991df006ebb04a4715c}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!release\_unique\_ptr@{release\_unique\_ptr}}
+\index{release\_unique\_ptr@{release\_unique\_ptr}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{release\_unique\_ptr()}{release\_unique\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a8bdb65a24223d991df006ebb04a4715c} 
+void release\+\_\+unique\+\_\+ptr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} \texorpdfstring{$\ast$}{*}}]{up}{}\end{DoxyParamCaption})}
+
+
+
+unique\+\_\+ptr 메모리 해제 
+
+
+\begin{DoxyParams}{Parameters}
+{\em up} & 해제할 \doxylink{struct_unique_ptr}{Unique\+Ptr} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00133}{133}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_af3220cea62be4539d7dd7be986282f52}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!retain\_shared\_ptr@{retain\_shared\_ptr}}
+\index{retain\_shared\_ptr@{retain\_shared\_ptr}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{retain\_shared\_ptr()}{retain\_shared\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_af3220cea62be4539d7dd7be986282f52} 
+void retain\+\_\+shared\+\_\+ptr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_shared_ptr}{Shared\+Ptr}} \texorpdfstring{$\ast$}{*}}]{sp}{}\end{DoxyParamCaption})}
+
+
+
+shared\+\_\+ptr 참조 카운트 증가 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sp} & 참조할 \doxylink{struct_shared_ptr}{Shared\+Ptr} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00101}{101}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_afdcd3c4530e88a357c01bd1fe47f4d26}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!thread\_function\_shared@{thread\_function\_shared}}
+\index{thread\_function\_shared@{thread\_function\_shared}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{thread\_function\_shared()}{thread\_function\_shared()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_afdcd3c4530e88a357c01bd1fe47f4d26} 
+void \texorpdfstring{$\ast$}{*} thread\+\_\+function\+\_\+shared (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+스레드 함수 (shared\+\_\+ptr 사용) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & \doxylink{struct_shared_ptr}{Shared\+Ptr} 인수 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00158}{158}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_a90c7035b12e90d2407263f548a2095ca}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!thread\_function\_unique@{thread\_function\_unique}}
+\index{thread\_function\_unique@{thread\_function\_unique}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{thread\_function\_unique()}{thread\_function\_unique()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_a90c7035b12e90d2407263f548a2095ca} 
+void \texorpdfstring{$\ast$}{*} thread\+\_\+function\+\_\+unique (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+스레드 함수 (unique\+\_\+ptr 사용) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & \doxylink{struct_unique_ptr}{Unique\+Ptr} 인수 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+NULL 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00175}{175}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__uniqueptr_8h_af16a4521096d757aac655c0589dff53f}\index{kernel\_uniqueptr.h@{kernel\_uniqueptr.h}!transfer\_unique\_ptr@{transfer\_unique\_ptr}}
+\index{transfer\_unique\_ptr@{transfer\_unique\_ptr}!kernel\_uniqueptr.h@{kernel\_uniqueptr.h}}
+\doxysubsubsection{\texorpdfstring{transfer\_unique\_ptr()}{transfer\_unique\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__uniqueptr_8h_af16a4521096d757aac655c0589dff53f} 
+\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} transfer\+\_\+unique\+\_\+ptr (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} \texorpdfstring{$\ast$}{*}}]{up}{}\end{DoxyParamCaption})}
+
+
+
+unique\+\_\+ptr 소유권 이전 
+
+
+\begin{DoxyParams}{Parameters}
+{\em up} & 소유권을 이전할 \doxylink{struct_unique_ptr}{Unique\+Ptr} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+새로 생성된 \doxylink{struct_unique_ptr}{Unique\+Ptr} 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00146}{146}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+

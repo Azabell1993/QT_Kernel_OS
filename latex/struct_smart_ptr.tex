@@ -1,0 +1,79 @@
+\doxysection{Smart\+Ptr Struct Reference}
+\hypertarget{struct_smart_ptr}{}\label{struct_smart_ptr}\index{SmartPtr@{SmartPtr}}
+
+
+스마트 포인터 구조체  
+
+
+
+
+{\ttfamily \#include $<$kernel\+\_\+smartptr.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{ptr}}
+\begin{DoxyCompactList}\small\item\em 실제 메모리를 가리킴 \end{DoxyCompactList}\item 
+int \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em 참조 카운트 \end{DoxyCompactList}\item 
+pthread\+\_\+mutex\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}}
+\begin{DoxyCompactList}\small\item\em 뮤텍스 보호 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+스마트 포인터 구조체 
+
+이 구조체는 포인터와 참조 카운트, 뮤텍스를 관리합니다. 
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00044}{44}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}\index{SmartPtr@{SmartPtr}!mutex@{mutex}}
+\index{mutex@{mutex}!SmartPtr@{SmartPtr}}
+\doxysubsubsection{\texorpdfstring{mutex}{mutex}}
+{\footnotesize\ttfamily \label{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c} 
+pthread\+\_\+mutex\+\_\+t\texorpdfstring{$\ast$}{*} Smart\+Ptr\+::mutex}
+
+
+
+뮤텍스 보호 
+
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00047}{47}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+\Hypertarget{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}\index{SmartPtr@{SmartPtr}!ptr@{ptr}}
+\index{ptr@{ptr}!SmartPtr@{SmartPtr}}
+\doxysubsubsection{\texorpdfstring{ptr}{ptr}}
+{\footnotesize\ttfamily \label{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3} 
+void\texorpdfstring{$\ast$}{*} Smart\+Ptr\+::ptr}
+
+
+
+실제 메모리를 가리킴 
+
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00045}{45}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+\Hypertarget{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}\index{SmartPtr@{SmartPtr}!ref\_count@{ref\_count}}
+\index{ref\_count@{ref\_count}!SmartPtr@{SmartPtr}}
+\doxysubsubsection{\texorpdfstring{ref\_count}{ref\_count}}
+{\footnotesize\ttfamily \label{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341} 
+int\texorpdfstring{$\ast$}{*} Smart\+Ptr\+::ref\+\_\+count}
+
+
+
+참조 카운트 
+
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00046}{46}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+\_\+lib/include/\mbox{\hyperlink{kernel__smartptr_8h}{kernel\+\_\+smartptr.\+h}}\end{DoxyCompactItemize}

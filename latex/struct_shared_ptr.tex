@@ -1,0 +1,93 @@
+\doxysection{Shared\+Ptr Struct Reference}
+\hypertarget{struct_shared_ptr}{}\label{struct_shared_ptr}\index{SharedPtr@{SharedPtr}}
+
+
+공유 스마트 포인터  
+
+
+
+
+{\ttfamily \#include $<$kernel\+\_\+uniqueptr.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_shared_ptr_a7dea034bb0b5914ef78b5ef2782605f0}{ptr}}
+\begin{DoxyCompactList}\small\item\em 실제 메모리 \end{DoxyCompactList}\item 
+int \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_shared_ptr_aa75bfd49e2bbe2ef46626ec04e199bf0}{ref\+\_\+count}}
+\begin{DoxyCompactList}\small\item\em 참조 카운트 \end{DoxyCompactList}\item 
+pthread\+\_\+mutex\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_shared_ptr_a24e8caad32c002f3651fa890a48e545d}{mutex}}
+\begin{DoxyCompactList}\small\item\em 뮤텍스 \end{DoxyCompactList}\item 
+void(\texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_shared_ptr_a19abfa597008acf4dfd3a97ce8219791}{deleter}} )(void \texorpdfstring{$\ast$}{*})
+\begin{DoxyCompactList}\small\item\em 소멸자 함수 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+공유 스마트 포인터 
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00047}{47}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_shared_ptr_a19abfa597008acf4dfd3a97ce8219791}\index{SharedPtr@{SharedPtr}!deleter@{deleter}}
+\index{deleter@{deleter}!SharedPtr@{SharedPtr}}
+\doxysubsubsection{\texorpdfstring{deleter}{deleter}}
+{\footnotesize\ttfamily \label{struct_shared_ptr_a19abfa597008acf4dfd3a97ce8219791} 
+void(\texorpdfstring{$\ast$}{*} Shared\+Ptr\+::deleter) (void \texorpdfstring{$\ast$}{*})}
+
+
+
+소멸자 함수 
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00051}{51}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{struct_shared_ptr_a24e8caad32c002f3651fa890a48e545d}\index{SharedPtr@{SharedPtr}!mutex@{mutex}}
+\index{mutex@{mutex}!SharedPtr@{SharedPtr}}
+\doxysubsubsection{\texorpdfstring{mutex}{mutex}}
+{\footnotesize\ttfamily \label{struct_shared_ptr_a24e8caad32c002f3651fa890a48e545d} 
+pthread\+\_\+mutex\+\_\+t\texorpdfstring{$\ast$}{*} Shared\+Ptr\+::mutex}
+
+
+
+뮤텍스 
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00050}{50}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{struct_shared_ptr_a7dea034bb0b5914ef78b5ef2782605f0}\index{SharedPtr@{SharedPtr}!ptr@{ptr}}
+\index{ptr@{ptr}!SharedPtr@{SharedPtr}}
+\doxysubsubsection{\texorpdfstring{ptr}{ptr}}
+{\footnotesize\ttfamily \label{struct_shared_ptr_a7dea034bb0b5914ef78b5ef2782605f0} 
+void\texorpdfstring{$\ast$}{*} Shared\+Ptr\+::ptr}
+
+
+
+실제 메모리 
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00048}{48}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{struct_shared_ptr_aa75bfd49e2bbe2ef46626ec04e199bf0}\index{SharedPtr@{SharedPtr}!ref\_count@{ref\_count}}
+\index{ref\_count@{ref\_count}!SharedPtr@{SharedPtr}}
+\doxysubsubsection{\texorpdfstring{ref\_count}{ref\_count}}
+{\footnotesize\ttfamily \label{struct_shared_ptr_aa75bfd49e2bbe2ef46626ec04e199bf0} 
+int\texorpdfstring{$\ast$}{*} Shared\+Ptr\+::ref\+\_\+count}
+
+
+
+참조 카운트 
+
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00049}{49}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+\_\+lib/include/\mbox{\hyperlink{kernel__uniqueptr_8h}{kernel\+\_\+uniqueptr.\+h}}\end{DoxyCompactItemize}

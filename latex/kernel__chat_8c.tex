@@ -1,0 +1,638 @@
+\doxysection{C\+\_\+lib/src/kernel\+\_\+chat.c File Reference}
+\hypertarget{kernel__chat_8c}{}\label{kernel__chat_8c}\index{C\_lib/src/kernel\_chat.c@{C\_lib/src/kernel\_chat.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include "{}kernel\+\_\+smartptr.\+h"{}}\newline
+{\ttfamily \#include "{}kernel\+\_\+uniqueptr.\+h"{}}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_client_info}{Client\+Info}}
+\begin{DoxyCompactList}\small\item\em 클라이언트 정보를 담는 구조체 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{kernel__chat_8c_ae9a2dfaddc7885a43c4dfdd24c8a8c55}{DEFAULT\+\_\+\+TCP\+\_\+\+PORT}}~5100
+\item 
+\#define \mbox{\hyperlink{kernel__chat_8c_a0a8f91f93d75a07f0ae45077db45b3eb}{MAX\+\_\+\+CLIENTS}}~10
+\begin{DoxyCompactList}\small\item\em main 함수 \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{kernel__chat_8c_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\+\_\+\+SIZE}}~1024
+\item 
+\#define \mbox{\hyperlink{kernel__chat_8c_a0a8f91f93d75a07f0ae45077db45b3eb}{MAX\+\_\+\+CLIENTS}}~10
+\begin{DoxyCompactList}\small\item\em main 함수 \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{kernel__chat_8c_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\+\_\+\+SIZE}}~1024
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{kernel__chat_8c_ad3e4a12f1a026b2af908e5c63a14049e}{auto\+\_\+daemon\+\_\+mode}} ()
+\begin{DoxyCompactList}\small\item\em 자동 데몬화 모드 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_a0191d71ac8fe75567fce427199c9f479}{manual\+\_\+server\+\_\+mode}} ()
+\begin{DoxyCompactList}\small\item\em 수동 서버 관리 모드 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_af0f746b4f3a8976eebdf2fe3f62fd278}{list\+\_\+users}} ()
+\begin{DoxyCompactList}\small\item\em 네트워크와 클라이언트 간의 채팅 처리 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_a59b050a6b045ada0e3c0e5def2d3e262}{kill\+\_\+user}} (const char \texorpdfstring{$\ast$}{*}username)
+\begin{DoxyCompactList}\small\item\em 클라이언트를 강제로 퇴장시키는 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_a976aab55fed55d6ad22ce34e80da7247}{kill\+\_\+room}} (int room\+\_\+id)
+\begin{DoxyCompactList}\small\item\em 클라이언트를 강제로 퇴장시키는 함수 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} \mbox{\hyperlink{kernel__chat_8c_ac61360dbe29daa4ef0965e19f858bbd6}{create\+\_\+unique\+\_\+ptr}} (size\+\_\+t size, void(\texorpdfstring{$\ast$}{*}deleter)(void \texorpdfstring{$\ast$}{*}))
+\begin{DoxyCompactList}\small\item\em 클라이언트 정보를 스마트 포인터로 관리하는 배열 \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{kernel__chat_8c_a952e4e16f921c382b6d7b46e359ba97c}{create\+\_\+network\+\_\+tcp\+\_\+process}} (int num\+\_\+tcp\+\_\+proc,...)
+\begin{DoxyCompactList}\small\item\em TCP 서버를 생성하고 클라이언트 연결을 처리하는 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_a3fbae3093079ea93ff5b70ebdc3782e5}{broadcast\+\_\+message}} (int sender\+\_\+fd, char \texorpdfstring{$\ast$}{*}message, int room\+\_\+id)
+\begin{DoxyCompactList}\small\item\em 특정 채팅방에 있는 모든 클라이언트에게 메시지를 브로드캐스트하는 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_a6bf4383ffd827293c7ade8c0fc4a6dea}{log\+\_\+chat\+\_\+message}} (const char \texorpdfstring{$\ast$}{*}message)
+\begin{DoxyCompactList}\small\item\em 서버 측에서 발생한 채팅 메시지를 로그로 저장하는 함수 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__chat_8c_ae1b5f4bb3407d493369655b3cbadca20}{client\+\_\+handler}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 클라이언트와의 통신을 처리하는 스레드 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_ab90d6b7a32a39643e497dd5e4195b104}{release\+\_\+client}} (int sock)
+\begin{DoxyCompactList}\small\item\em 클라이언트 정보를 스마트 포인터로 관리하는 배열 \end{DoxyCompactList}\item 
+void \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{kernel__chat_8c_a1c6b0123694e94c369c94ec8c0eb0096}{server\+\_\+input\+\_\+handler}} (void \texorpdfstring{$\ast$}{*}arg)
+\begin{DoxyCompactList}\small\item\em 서버 측에서 사용자 입력을 처리하는 스레드 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_a16ff14c99c5891fbfdb0084f5ccfd2d1}{send\+\_\+server\+\_\+message}} (char \texorpdfstring{$\ast$}{*}message)
+\begin{DoxyCompactList}\small\item\em 서버 메시지를 브로드캐스트하는 함수 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_ad3e4fa8e66d5e926a5b122bc5afd4e45}{add\+\_\+new\+\_\+client}} (int sock, int client\+\_\+id, const char \texorpdfstring{$\ast$}{*}username)
+\begin{DoxyCompactList}\small\item\em 클라이언트 정보를 스마트 포인터로 관리하는 배열 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_a869452f0c0952acd39230fcf0ef89c1e}{daemonize}} ()
+\begin{DoxyCompactList}\small\item\em daemonize 함수 구현 \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{kernel__chat_8c_aadb38dd0c541b901618e30c674e723ae}{logo}} ()
+\item 
+void \mbox{\hyperlink{kernel__chat_8c_accc3bca97be7297ed8e780179d4bd0e0}{kernel\+\_\+chat}} (int num\+\_\+args,...)
+\begin{DoxyCompactList}\small\item\em 네트워크와 클라이언트 간의 채팅 처리 함수 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_smart_ptr}{Smart\+Ptr}} \mbox{\hyperlink{kernel__chat_8c_a7e063a6df6c28be68f168943245e0fb2}{client\+\_\+infos}} \mbox{[}\mbox{\hyperlink{kernel__chat_8h_a0a8f91f93d75a07f0ae45077db45b3eb}{MAX\+\_\+\+CLIENTS}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em 클라이언트 정보를 스마트 포인터로 관리하는 배열 \end{DoxyCompactList}\item 
+pthread\+\_\+mutex\+\_\+t \mbox{\hyperlink{kernel__chat_8c_a54baead9ac1aa7d2d2f886956ac57c1e}{log\+\_\+mutex}} = PTHREAD\+\_\+\+MUTEX\+\_\+\+INITIALIZER
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{kernel__chat_8c_a6b20d41d6252e9871430c242cb1a56e7}\index{kernel\_chat.c@{kernel\_chat.c}!BUFFER\_SIZE@{BUFFER\_SIZE}}
+\index{BUFFER\_SIZE@{BUFFER\_SIZE}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{BUFFER\_SIZE}{BUFFER\_SIZE}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a6b20d41d6252e9871430c242cb1a56e7} 
+\#define BUFFER\+\_\+\+SIZE~1024}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00015}{15}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a6b20d41d6252e9871430c242cb1a56e7}\index{kernel\_chat.c@{kernel\_chat.c}!BUFFER\_SIZE@{BUFFER\_SIZE}}
+\index{BUFFER\_SIZE@{BUFFER\_SIZE}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{BUFFER\_SIZE}{BUFFER\_SIZE}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a6b20d41d6252e9871430c242cb1a56e7} 
+\#define BUFFER\+\_\+\+SIZE~1024}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00015}{15}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_ae9a2dfaddc7885a43c4dfdd24c8a8c55}\index{kernel\_chat.c@{kernel\_chat.c}!DEFAULT\_TCP\_PORT@{DEFAULT\_TCP\_PORT}}
+\index{DEFAULT\_TCP\_PORT@{DEFAULT\_TCP\_PORT}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_TCP\_PORT}{DEFAULT\_TCP\_PORT}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_ae9a2dfaddc7885a43c4dfdd24c8a8c55} 
+\#define DEFAULT\+\_\+\+TCP\+\_\+\+PORT~5100}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00013}{13}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a0a8f91f93d75a07f0ae45077db45b3eb}\index{kernel\_chat.c@{kernel\_chat.c}!MAX\_CLIENTS@{MAX\_CLIENTS}}
+\index{MAX\_CLIENTS@{MAX\_CLIENTS}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{MAX\_CLIENTS}{MAX\_CLIENTS}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a0a8f91f93d75a07f0ae45077db45b3eb} 
+\#define MAX\+\_\+\+CLIENTS~10}
+
+
+
+main 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00014}{14}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a0a8f91f93d75a07f0ae45077db45b3eb}\index{kernel\_chat.c@{kernel\_chat.c}!MAX\_CLIENTS@{MAX\_CLIENTS}}
+\index{MAX\_CLIENTS@{MAX\_CLIENTS}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{MAX\_CLIENTS}{MAX\_CLIENTS}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a0a8f91f93d75a07f0ae45077db45b3eb} 
+\#define MAX\+\_\+\+CLIENTS~10}
+
+
+
+main 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00014}{14}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{kernel__chat_8c_ad3e4fa8e66d5e926a5b122bc5afd4e45}\index{kernel\_chat.c@{kernel\_chat.c}!add\_new\_client@{add\_new\_client}}
+\index{add\_new\_client@{add\_new\_client}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{add\_new\_client()}{add\_new\_client()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_ad3e4fa8e66d5e926a5b122bc5afd4e45} 
+void add\+\_\+new\+\_\+client (\begin{DoxyParamCaption}\item[{int}]{sock}{, }\item[{int}]{client\+\_\+id}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{username}{}\end{DoxyParamCaption})}
+
+
+
+클라이언트 정보를 스마트 포인터로 관리하는 배열 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client\+\_\+infos} & 클라이언트 정보를 담는 스마트 포인터 배열 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00206}{206}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_ad3e4a12f1a026b2af908e5c63a14049e}\index{kernel\_chat.c@{kernel\_chat.c}!auto\_daemon\_mode@{auto\_daemon\_mode}}
+\index{auto\_daemon\_mode@{auto\_daemon\_mode}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{auto\_daemon\_mode()}{auto\_daemon\_mode()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_ad3e4a12f1a026b2af908e5c63a14049e} 
+void auto\+\_\+daemon\+\_\+mode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+자동 데몬화 모드 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00622}{622}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a3fbae3093079ea93ff5b70ebdc3782e5}\index{kernel\_chat.c@{kernel\_chat.c}!broadcast\_message@{broadcast\_message}}
+\index{broadcast\_message@{broadcast\_message}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{broadcast\_message()}{broadcast\_message()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a3fbae3093079ea93ff5b70ebdc3782e5} 
+void broadcast\+\_\+message (\begin{DoxyParamCaption}\item[{int}]{sender\+\_\+fd}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{message}{, }\item[{int}]{room\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+특정 채팅방에 있는 모든 클라이언트에게 메시지를 브로드캐스트하는 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sender\+\_\+fd} & 메시지를 보낸 클라이언트의 파일 디스크립터 \\
+\hline
+{\em message} & 브로드캐스트할 메시지 \\
+\hline
+{\em room\+\_\+id} & 메시지를 보낼 채팅방의 ID\\
+\hline
+{\em sender\+\_\+fd} & 메시지를 보낸 클라이언트의 파일 디스크립터 \\
+\hline
+{\em message} & 브로드캐스트할 메시지 \\
+\hline
+{\em room\+\_\+id} & 메시지를 보낼 채팅방의 ID \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00260}{260}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_ae1b5f4bb3407d493369655b3cbadca20}\index{kernel\_chat.c@{kernel\_chat.c}!client\_handler@{client\_handler}}
+\index{client\_handler@{client\_handler}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{client\_handler()}{client\_handler()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_ae1b5f4bb3407d493369655b3cbadca20} 
+void \texorpdfstring{$\ast$}{*} client\+\_\+handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+클라이언트와의 통신을 처리하는 스레드 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 클라이언트 정보를 담고 있는 스마트 포인터 구조체의 포인터 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void\texorpdfstring{$\ast$}{*} 스레드 종료 시 반환값 (NULL) 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00323}{323}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a952e4e16f921c382b6d7b46e359ba97c}\index{kernel\_chat.c@{kernel\_chat.c}!create\_network\_tcp\_process@{create\_network\_tcp\_process}}
+\index{create\_network\_tcp\_process@{create\_network\_tcp\_process}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{create\_network\_tcp\_process()}{create\_network\_tcp\_process()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a952e4e16f921c382b6d7b46e359ba97c} 
+int create\+\_\+network\+\_\+tcp\+\_\+process (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+tcp\+\_\+proc}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+TCP 서버를 생성하고 클라이언트 연결을 처리하는 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+tcp\+\_\+proc} & 생성할 TCP 프로세스 수 \\
+\hline
+{\em ...} & 서버의 IP 주소와 포트를 인자로 받습니다. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 성공 시 0, 실패 시 -\/1 반환 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00392}{392}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_ac61360dbe29daa4ef0965e19f858bbd6}\index{kernel\_chat.c@{kernel\_chat.c}!create\_unique\_ptr@{create\_unique\_ptr}}
+\index{create\_unique\_ptr@{create\_unique\_ptr}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{create\_unique\_ptr()}{create\_unique\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_ac61360dbe29daa4ef0965e19f858bbd6} 
+\mbox{\hyperlink{struct_unique_ptr}{Unique\+Ptr}} create\+\_\+unique\+\_\+ptr (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size}{, }\item[{void(\texorpdfstring{$\ast$}{*}}]{deleter~}{)(void \texorpdfstring{$\ast$}{*})}\end{DoxyParamCaption})}
+
+
+
+클라이언트 정보를 스마트 포인터로 관리하는 배열 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client\+\_\+infos} & 클라이언트 정보를 담는 스마트 포인터 배열 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+클라이언트 정보를 스마트 포인터로 관리하는 배열
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & 할당할 메모리 크기 \\
+\hline
+{\em deleter} & 소멸자 함수 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+생성된 \doxylink{struct_unique_ptr}{Unique\+Ptr} 구조체 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__uniqueptr_8h_source_l00089}{89}} of file \mbox{\hyperlink{kernel__uniqueptr_8h_source}{kernel\+\_\+uniqueptr.\+h}}.
+
+\Hypertarget{kernel__chat_8c_a869452f0c0952acd39230fcf0ef89c1e}\index{kernel\_chat.c@{kernel\_chat.c}!daemonize@{daemonize}}
+\index{daemonize@{daemonize}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{daemonize()}{daemonize()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a869452f0c0952acd39230fcf0ef89c1e} 
+void daemonize (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+daemonize 함수 구현 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00559}{559}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_accc3bca97be7297ed8e780179d4bd0e0}\index{kernel\_chat.c@{kernel\_chat.c}!kernel\_chat@{kernel\_chat}}
+\index{kernel\_chat@{kernel\_chat}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{kernel\_chat()}{kernel\_chat()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_accc3bca97be7297ed8e780179d4bd0e0} 
+void kernel\+\_\+chat (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+args}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+네트워크와 클라이언트 간의 채팅 처리 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+args} & 가변 인자 개수 (서버 IP와 포트 전달) \\
+\hline
+{\em ...} & 서버 IP 주소와 포트를 가변 인자로 전달 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00707}{707}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a976aab55fed55d6ad22ce34e80da7247}\index{kernel\_chat.c@{kernel\_chat.c}!kill\_room@{kill\_room}}
+\index{kill\_room@{kill\_room}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{kill\_room()}{kill\_room()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a976aab55fed55d6ad22ce34e80da7247} 
+void kill\+\_\+room (\begin{DoxyParamCaption}\item[{int}]{room\+\_\+id}{}\end{DoxyParamCaption})}
+
+
+
+클라이언트를 강제로 퇴장시키는 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em username} & 퇴장시킬 클라이언트의 사용자명\\
+\hline
+{\em username} & 퇴장시킬 클라이언트의 사용자명 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00180}{180}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a59b050a6b045ada0e3c0e5def2d3e262}\index{kernel\_chat.c@{kernel\_chat.c}!kill\_user@{kill\_user}}
+\index{kill\_user@{kill\_user}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{kill\_user()}{kill\_user()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a59b050a6b045ada0e3c0e5def2d3e262} 
+void kill\+\_\+user (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{username}{}\end{DoxyParamCaption})}
+
+
+
+클라이언트를 강제로 퇴장시키는 함수 
+
+클라이언트 정보를 스마트 포인터로 관리하는 배열
+
+
+\begin{DoxyParams}{Parameters}
+{\em username} & 퇴장시킬 클라이언트의 사용자명\\
+\hline
+{\em username} & 퇴장시킬 클라이언트의 사용자명 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em client\+\_\+infos} & 클라이언트 정보를 담는 스마트 포인터 배열 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00239}{239}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_af0f746b4f3a8976eebdf2fe3f62fd278}\index{kernel\_chat.c@{kernel\_chat.c}!list\_users@{list\_users}}
+\index{list\_users@{list\_users}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{list\_users()}{list\_users()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_af0f746b4f3a8976eebdf2fe3f62fd278} 
+void list\+\_\+users (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+네트워크와 클라이언트 간의 채팅 처리 함수 
+
+클라이언트를 강제로 퇴장시키는 함수
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+args} & 가변 인자 개수 (서버 IP와 포트 전달) \\
+\hline
+{\em ...} & 서버 IP 주소와 포트를 가변 인자로 전달\\
+\hline
+\end{DoxyParams}
+고유 포인터 구조체
+
+참조 카운트가 1인 스마트 포인터로, 다른 스마트 포인터와 공유되지 않습니다.
+
+
+\begin{DoxyParams}{Parameters}
+{\em username} & 퇴장시킬 클라이언트의 사용자명 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00152}{152}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a6bf4383ffd827293c7ade8c0fc4a6dea}\index{kernel\_chat.c@{kernel\_chat.c}!log\_chat\_message@{log\_chat\_message}}
+\index{log\_chat\_message@{log\_chat\_message}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{log\_chat\_message()}{log\_chat\_message()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a6bf4383ffd827293c7ade8c0fc4a6dea} 
+void log\+\_\+chat\+\_\+message (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{message}{}\end{DoxyParamCaption})}
+
+
+
+서버 측에서 발생한 채팅 메시지를 로그로 저장하는 함수 
+
+채팅 메시지를 로그 파일에 저장하는 함수
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & 저장할 메시지\\
+\hline
+{\em message} & 저장할 메시지 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00287}{287}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_aadb38dd0c541b901618e30c674e723ae}\index{kernel\_chat.c@{kernel\_chat.c}!logo@{logo}}
+\index{logo@{logo}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{logo()}{logo()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_aadb38dd0c541b901618e30c674e723ae} 
+void logo (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00606}{606}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a0191d71ac8fe75567fce427199c9f479}\index{kernel\_chat.c@{kernel\_chat.c}!manual\_server\_mode@{manual\_server\_mode}}
+\index{manual\_server\_mode@{manual\_server\_mode}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{manual\_server\_mode()}{manual\_server\_mode()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a0191d71ac8fe75567fce427199c9f479} 
+void manual\+\_\+server\+\_\+mode (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+수동 서버 관리 모드 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em void} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00633}{633}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_ab90d6b7a32a39643e497dd5e4195b104}\index{kernel\_chat.c@{kernel\_chat.c}!release\_client@{release\_client}}
+\index{release\_client@{release\_client}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{release\_client()}{release\_client()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_ab90d6b7a32a39643e497dd5e4195b104} 
+void release\+\_\+client (\begin{DoxyParamCaption}\item[{int}]{sock}{}\end{DoxyParamCaption})}
+
+
+
+클라이언트 정보를 스마트 포인터로 관리하는 배열 
+
+
+\begin{DoxyParams}{Parameters}
+{\em client\+\_\+infos} & 클라이언트 정보를 담는 스마트 포인터 배열 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00224}{224}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a16ff14c99c5891fbfdb0084f5ccfd2d1}\index{kernel\_chat.c@{kernel\_chat.c}!send\_server\_message@{send\_server\_message}}
+\index{send\_server\_message@{send\_server\_message}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{send\_server\_message()}{send\_server\_message()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a16ff14c99c5891fbfdb0084f5ccfd2d1} 
+void send\+\_\+server\+\_\+message (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{message}{}\end{DoxyParamCaption})}
+
+
+
+서버 메시지를 브로드캐스트하는 함수 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & 서버에서 브로드캐스트할 메시지 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em message} & 서버에서 브로드캐스트할 메시지 \\
+\hline
+{\em argument} & message 서버에서 브로드캐스트할 메시지 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00541}{541}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a1c6b0123694e94c369c94ec8c0eb0096}\index{kernel\_chat.c@{kernel\_chat.c}!server\_input\_handler@{server\_input\_handler}}
+\index{server\_input\_handler@{server\_input\_handler}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{server\_input\_handler()}{server\_input\_handler()}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a1c6b0123694e94c369c94ec8c0eb0096} 
+void \texorpdfstring{$\ast$}{*} server\+\_\+input\+\_\+handler (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{arg}{}\end{DoxyParamCaption})}
+
+
+
+서버 측에서 사용자 입력을 처리하는 스레드 함수 
+
+표준 입력으로부터 메시지를 받아 서버 메시지로 브로드캐스트합니다.
+
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 미사용 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void\texorpdfstring{$\ast$}{*} 스레드 종료 시 반환값 (NULL)
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em arg} & 미사용 \\
+\hline
+{\em return} & void\texorpdfstring{$\ast$}{*} 스레드 종료 시 반환값 (NULL) \\
+\hline
+{\em argument} & arg 미사용 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void\texorpdfstring{$\ast$}{*} 스레드 종료 시 반환값 (NULL) 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00482}{482}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{kernel__chat_8c_a7e063a6df6c28be68f168943245e0fb2}\index{kernel\_chat.c@{kernel\_chat.c}!client\_infos@{client\_infos}}
+\index{client\_infos@{client\_infos}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{client\_infos}{client\_infos}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a7e063a6df6c28be68f168943245e0fb2} 
+\mbox{\hyperlink{struct_smart_ptr}{Smart\+Ptr}} client\+\_\+infos\mbox{[}\mbox{\hyperlink{kernel__chat_8h_a0a8f91f93d75a07f0ae45077db45b3eb}{MAX\+\_\+\+CLIENTS}}\mbox{]}}
+
+
+
+클라이언트 정보를 스마트 포인터로 관리하는 배열 
+
+서버 메시지를 브로드캐스트하는 함수
+
+\begin{DoxyNote}{Note}
+최대 MAX\+\_\+\+CLIENTS 개의 클라이언트를 관리합니다.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em message} & 서버에서 브로드캐스트할 메시지 \\
+\hline
+{\em argument} & message 서버에서 브로드캐스트할 메시지 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00072}{72}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+
+\Hypertarget{kernel__chat_8c_a54baead9ac1aa7d2d2f886956ac57c1e}\index{kernel\_chat.c@{kernel\_chat.c}!log\_mutex@{log\_mutex}}
+\index{log\_mutex@{log\_mutex}!kernel\_chat.c@{kernel\_chat.c}}
+\doxysubsubsection{\texorpdfstring{log\_mutex}{log\_mutex}}
+{\footnotesize\ttfamily \label{kernel__chat_8c_a54baead9ac1aa7d2d2f886956ac57c1e} 
+pthread\+\_\+mutex\+\_\+t log\+\_\+mutex = PTHREAD\+\_\+\+MUTEX\+\_\+\+INITIALIZER}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__chat_8c_source_l00280}{280}} of file \mbox{\hyperlink{kernel__chat_8c_source}{kernel\+\_\+chat.\+c}}.
+

@@ -1,0 +1,94 @@
+\doxysection{kernel\+\_\+engine.\+h}
+\hypertarget{kernel__engine_8h_source}{}\label{kernel__engine_8h_source}\index{C\_lib/include/kernel\_engine.h@{C\_lib/include/kernel\_engine.h}}
+\mbox{\hyperlink{kernel__engine_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00001}00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00002}00002\ \textcolor{comment}{\ *\ Advanced\ Kernel\ Engine\ Implementation}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00003}00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00004}00004\ \textcolor{comment}{\ *\ Maintainer:\ Azabell1993\ Github\ master}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00005}00005\ \textcolor{comment}{\ *\ Created\ \ \ :\ 2024-\/09-\/04}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00006}00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00007}00007\ \textcolor{comment}{\ *\ Purpose\ \ \ :\ Implements\ advanced\ kernel\ operations,\ including}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00008}00008\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ thread/process\ management,\ error\ handling,\ synchronization}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00009}00009\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ mechanisms,\ and\ data\ structures.}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00010}00010\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00012}00012\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00013}00013\ \textcolor{preprocessor}{\#ifndef\ ENGINE\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00014}\mbox{\hyperlink{kernel__engine_8h_a189e7cd8d6fb4ba4877b143116356c70}{00014}}\ \textcolor{preprocessor}{\#define\ ENGINE\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <pthread.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <semaphore.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ <errno.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00022}00022\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <sys/wait.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00027}00027\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00028}00028\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00029}00029\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00036}00036\ \textcolor{keyword}{static}\ pthread\_mutex\_t\ print\_mutex\ =\ PTHREAD\_MUTEX\_INITIALIZER;}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00044}00044\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}{safe\_kernel\_printf}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00052}\mbox{\hyperlink{struct_node}{00052}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_node}{Node}}\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00053}\mbox{\hyperlink{struct_node_a38b733496e3eff5e0b4fcb11cd9b866a}{00053}}\ \ \ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{struct_node_a38b733496e3eff5e0b4fcb11cd9b866a}{data}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00054}\mbox{\hyperlink{struct_node_af67b110ca1a258b793bf69d306929b22}{00054}}\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_node}{Node}}*\ \mbox{\hyperlink{struct_node_af67b110ca1a258b793bf69d306929b22}{next}};\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00055}\mbox{\hyperlink{kernel__engine_8h_a3b09f37e675bcd48a01bf22155996872}{00055}}\ \}\ \mbox{\hyperlink{kernel__engine_8h_a3b09f37e675bcd48a01bf22155996872}{Node}};}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00063}\mbox{\hyperlink{struct_linked_list}{00063}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_linked_list}{LinkedList}}\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00064}\mbox{\hyperlink{struct_linked_list_a3b496be2ca8046e2a806f6e2eab33d9b}{00064}}\ \ \ \ \ \mbox{\hyperlink{struct_node}{Node}}*\ \mbox{\hyperlink{struct_linked_list_a3b496be2ca8046e2a806f6e2eab33d9b}{head}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00065}\mbox{\hyperlink{struct_linked_list_a6ee7e26362fba74cdec9d4806ded2a21}{00065}}\ \ \ \ \ \mbox{\hyperlink{struct_node}{Node}}*\ \mbox{\hyperlink{struct_linked_list_a6ee7e26362fba74cdec9d4806ded2a21}{tail}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00066}\mbox{\hyperlink{struct_linked_list_ad84541a559b15c98b3171c5d24ad90ef}{00066}}\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_linked_list_ad84541a559b15c98b3171c5d24ad90ef}{size}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00067}\mbox{\hyperlink{kernel__engine_8h_a44ddc92df57836b0340ed4213598da2c}{00067}}\ \}\ \mbox{\hyperlink{kernel__engine_8h_a44ddc92df57836b0340ed4213598da2c}{LinkedList}};}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00074}00074\ \mbox{\hyperlink{struct_linked_list}{LinkedList}}*\ \mbox{\hyperlink{kernel__engine_8h_a76b922ca356d9458485b5da98e5d1d65}{create\_linkedlist}}();}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00075}00075\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00082}00082\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a0ee3efeef2e76cc26bbadf90a2bb9dff}{push}}(\mbox{\hyperlink{struct_linked_list}{LinkedList}}*\ list,\ \textcolor{keywordtype}{void}*\ data);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00090}00090\ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{kernel__engine_8h_a4bc21bd3ad748e46faeade4f4e561209}{pop}}(\mbox{\hyperlink{struct_linked_list}{LinkedList}}*\ list);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00099}00099\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{kernel__engine_8h_a1e85b6a1e963ff44d9462fbd1ed82c2f}{is\_empty}}(\mbox{\hyperlink{struct_linked_list}{LinkedList}}*\ list);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00106}00106\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_aed35db54a83e994b6fedf291a43832a3}{destroy\_linkedlist}}(\mbox{\hyperlink{struct_linked_list}{LinkedList}}*\ list);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00114}00114\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a3c16fd109668254b00f005ac10d3e774}{create\_threads}}(\textcolor{keywordtype}{int}\ num\_threads,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00121}00121\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a5bacaa97e76d782c895fda4100b5e794}{create\_single\_process}}(\textcolor{keywordtype}{void}\ (*func)());}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00129}00129\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a2b81ab04158940dafe15c6cb3c4d1b42}{create\_multi\_processes}}(\textcolor{keywordtype}{int}\ num\_processes,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00137}00137\ sem\_t*\ \mbox{\hyperlink{kernel__engine_8h_a0414b195dea921839f54fc9498c1daac}{init\_semaphore}}(\textcolor{keywordtype}{int}\ value);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00144}00144\ pthread\_mutex\_t*\ \mbox{\hyperlink{kernel__engine_8h_ac6e8e5e774f25243fa8d6ed380b83dd7}{init\_mutex}}();}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00152}00152\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a749bc796682217e8a6f96067925f8ca1}{kernel\_errMsg}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00160}00160\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a1748e88bd6a055c4f8aa09f69ef8c4da}{kernel\_errExit}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00169}00169\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a6d6f9d866f09fc1da90d209338a540dd}{kernel\_errExitEN}}(\textcolor{keywordtype}{int}\ errnum,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00177}00177\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a52c0be10d50f477f2c893d6f069607ed}{kernel\_fatal}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00178}00178\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00185}00185\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_aa90abfdd6cf6ec84db278ef862025dc5}{kernel\_usageErr}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...)\ \_\_attribute\_\_\ ((\_\_noreturn\_\_));}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00186}00186\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00193}00193\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a0b8de9352ae88c83f838d85f910ee969}{kernel\_cmdLineErr}}(const\ \textcolor{keywordtype}{char}\ *format,\ ...)\ \_\_attribute\_\_\ ((\_\_noreturn\_\_));}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00201}00201\ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{kernel__engine_8h_a1f65de0c9e791e4683d03d23f24f6084}{semaphore\_thread}}(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00209}00209\ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{kernel__engine_8h_aa1e95d0ce42e7449a80b6d463da773f4}{mutex\_thread}}(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00210}00210\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00218}00218\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__engine_8h_a0b071d96626d37f35486e931a0da9fd8}{run\_multithreading}}(\textcolor{keywordtype}{int}\ num\_threads,\ \textcolor{keywordtype}{int}\ use\_semaphore,\ ...);}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00219}00219\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00220}00220\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00221}00221\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00222}00222\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{kernel__engine_8h_source_l00224}00224\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ ENGINE\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,101 @@
+\doxysection{kernel\+\_\+lib.\+c}
+\hypertarget{kernel__lib_8c_source}{}\label{kernel__lib_8c_source}\index{C\_lib/src/kernel\_lib.c@{C\_lib/src/kernel\_lib.c}}
+\mbox{\hyperlink{kernel__lib_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00001}00001\ \textcolor{comment}{//\ kernel\_lib.c}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00002}00002\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00003}00003\ \textcolor{comment}{\ *\ Kernel\ Lib\ Basic\ Code}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00005}00005\ \textcolor{comment}{\ *\ Maintainer:\ Park\ Jiwoo}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00006}00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00007}00007\ \textcolor{comment}{\ *\ Copyright\ (C)\ 2024\ Park-\/Jiwoo}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00008}00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00009}00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00014}00014\ \textcolor{comment}{//\ 최대\ 프로세스\ 수\ 정의}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00015}\mbox{\hyperlink{kernel__lib_8c_a92fd8bb5807bf6abb640686f51e5df3e}{00015}}\ \textcolor{preprocessor}{\#define\ MAX\_PROCESSES\ 10}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00017}\mbox{\hyperlink{struct_process}{00017}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00018}00018\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00019}\mbox{\hyperlink{struct_process_aaa00fbe7447a1049eb331c1832fc9fc9}{00019}}\ \ \ \ \ \textcolor{keywordtype}{char}\ name[256];}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00020}\mbox{\hyperlink{struct_process_a759aee68999f03c707275e4332383d6c}{00020}}\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_process_a759aee68999f03c707275e4332383d6c}{running}};\ \textcolor{comment}{//\ C에서\ bool\ 대신\ int\ 사용\ (0:\ false,\ 1:\ true)}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00021}00021\ \}\ \mbox{\hyperlink{struct_process}{Process}};}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00023}00023\ \textcolor{keyword}{static}\ \mbox{\hyperlink{struct_process}{Process}}\ process\_table[\mbox{\hyperlink{kernel__lib_8c_a92fd8bb5807bf6abb640686f51e5df3e}{MAX\_PROCESSES}}];}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00024}00024\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ process\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00026}00026\ \textcolor{comment}{//\ Qt에서\ 구현된\ 함수\ 포인터를\ 사용해\ 출력}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00027}00027\ \textcolor{keyword}{static}\ void\ (*qt\_print\_function)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str)\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00029}00029\ \textcolor{comment}{//\ 새로운\ az\_printf\ 함수\ 구현}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00030}\mbox{\hyperlink{kernel__lib_8h_a2a98d2bc4656680bdd5a3f30279f54d2}{00030}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\_printf}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...)}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00031}00031\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00032}00032\ \ \ \ \ \textcolor{keywordflow}{if}\ (qt\_print\_function)}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00033}00033\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00034}00034\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ buffer[1024];}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00035}00035\ \ \ \ \ \ \ \ \ va\_list\ args;}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00036}00036\ \ \ \ \ \ \ \ \ va\_start(args,\ format);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00037}00037\ \ \ \ \ \ \ \ \ vsnprintf(buffer,\ \textcolor{keyword}{sizeof}(buffer),\ format,\ args);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00038}00038\ \ \ \ \ \ \ \ \ va\_end(args);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00039}00039\ \ \ \ \ \ \ \ \ qt\_print\_function(buffer);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00040}00040\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00041}00041\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00043}00043\ \textcolor{comment}{//\ Qt에서\ 구현된\ 함수\ 포인터를\ 사용해\ 출력}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00044}\mbox{\hyperlink{kernel__lib_8h_a2750af7c6a66f4e06d4c281cb1323b1a}{00044}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__lib_8c_a2750af7c6a66f4e06d4c281cb1323b1a}{register\_print\_function}}(\textcolor{keywordtype}{void}\ (*print\_function)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str))}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00045}00045\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00046}00046\ \ \ \ \ qt\_print\_function\ =\ print\_function;}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00047}00047\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00049}00049\ \textcolor{comment}{//\ cmd창의\ printf\ 함수\ 구현}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00050}\mbox{\hyperlink{kernel__lib_8h_ad3a364d16cebb064b6ae4a27a15d9eb5}{00050}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__lib_8c_a36f08e2b8fd7a3daac26538eca0bb1be}{kernel\_create\_process}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *process\_name)}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00051}00051\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00052}00052\ \ \ \ \ \textcolor{keywordflow}{if}\ (process\_count\ >=\ \mbox{\hyperlink{kernel__lib_8c_a92fd8bb5807bf6abb640686f51e5df3e}{MAX\_PROCESSES}})}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00053}00053\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00054}00054\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\_printf}}(\textcolor{stringliteral}{"{}\(\backslash\)nError:\ Process\ table\ is\ full."{}});}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00055}00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;\ \textcolor{comment}{//\ false}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00056}00056\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00058}00058\ \ \ \ \ \textcolor{comment}{//\ 새로운\ 프로세스\ 생성}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00059}00059\ \ \ \ \ \mbox{\hyperlink{struct_process}{Process}}\ new\_process;}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00060}00060\ \ \ \ \ strncpy(new\_process.\mbox{\hyperlink{struct_process_aaa00fbe7447a1049eb331c1832fc9fc9}{name}},\ process\_name,\ \textcolor{keyword}{sizeof}(new\_process.\mbox{\hyperlink{struct_process_aaa00fbe7447a1049eb331c1832fc9fc9}{name}})\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00061}00061\ \ \ \ \ new\_process.\mbox{\hyperlink{struct_process_aaa00fbe7447a1049eb331c1832fc9fc9}{name}}[\textcolor{keyword}{sizeof}(new\_process.\mbox{\hyperlink{struct_process_aaa00fbe7447a1049eb331c1832fc9fc9}{name}})\ -\/\ 1]\ =\ \textcolor{charliteral}{'\(\backslash\)0'};}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00062}00062\ \ \ \ \ new\_process.\mbox{\hyperlink{struct_process_a759aee68999f03c707275e4332383d6c}{running}}\ =\ 1;\ \textcolor{comment}{//\ true}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00064}00064\ \ \ \ \ \textcolor{comment}{//\ 프로세스\ 테이블에\ 추가}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00065}00065\ \ \ \ \ process\_table[process\_count++]\ =\ new\_process;}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00067}00067\ \ \ \ \ \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\_printf}}(\textcolor{stringliteral}{"{}\(\backslash\)nProcess\ created:\ \%s"{}},\ process\_name);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00068}00068\ \ \ \ \ \textcolor{keywordflow}{return}\ 1;\ \textcolor{comment}{//\ true}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00069}00069\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00071}00071\ \textcolor{comment}{//\ 프로세스\ 목록\ 출력}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00072}\mbox{\hyperlink{kernel__lib_8h_aecd973eb9c2e22f46bcc65de738391e6}{00072}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__lib_8c_aecd973eb9c2e22f46bcc65de738391e6}{kernel\_list\_processes}}()}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00073}00073\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00074}00074\ \ \ \ \ \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\_printf}}(\textcolor{stringliteral}{"{}\(\backslash\)nProcess\ List:\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00075}00075\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ process\_count;\ i++)}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00076}00076\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00077}00077\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\_printf}}(\textcolor{stringliteral}{"{}\ -\/\ \%s\ (\%s)\(\backslash\)n"{}},\ process\_table[i].name,\ process\_table[i].running\ ?\ \textcolor{stringliteral}{"{}Running"{}}\ :\ \textcolor{stringliteral}{"{}Stopped"{}});}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00078}00078\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00079}00079\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00081}00081\ \textcolor{comment}{//\ 프로세스\ 종료}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00082}\mbox{\hyperlink{kernel__lib_8h_a1f774e766282320fb4a5eb3c882f53be}{00082}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__lib_8c_abaffa08d3c62a100a4c4dc35d3c18662}{kernel\_kill\_process}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *process\_name)}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00083}00083\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00084}00084\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ process\_count;\ i++)}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00085}00085\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (strcmp(process\_table[i].name,\ process\_name)\ ==\ 0)}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00087}00087\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ process\_table[i].\mbox{\hyperlink{struct_process_a759aee68999f03c707275e4332383d6c}{running}}\ =\ 0;\ \textcolor{comment}{//\ false}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\_printf}}(\textcolor{stringliteral}{"{}\(\backslash\)nProcess\ killed:\ \%s"{}},\ process\_name);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1;\ \textcolor{comment}{//\ true}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00091}00091\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00092}00092\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00093}00093\ \ \ \ \ \mbox{\hyperlink{kernel__lib_8c_a2a98d2bc4656680bdd5a3f30279f54d2}{az\_printf}}(\textcolor{stringliteral}{"{}\(\backslash\)nError:\ Process\ not\ found:\ \%s"{}},\ process\_name);}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00094}00094\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;\ \textcolor{comment}{//\ false}}
+\DoxyCodeLine{\Hypertarget{kernel__lib_8c_source_l00095}00095\ \}}
+
+\end{DoxyCode}

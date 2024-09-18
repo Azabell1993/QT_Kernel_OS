@@ -1,0 +1,151 @@
+\doxysection{kernel\+\_\+smartptr.\+h}
+\hypertarget{kernel__smartptr_8h_source}{}\label{kernel__smartptr_8h_source}\index{C\_lib/include/kernel\_smartptr.h@{C\_lib/include/kernel\_smartptr.h}}
+\mbox{\hyperlink{kernel__smartptr_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00001}00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00002}00002\ \textcolor{preprocessor}{\#ifndef\ KERNEL\_SMARTPTR\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00003}\mbox{\hyperlink{kernel__smartptr_8h_a04c9ceec51404102c26cd52e8a3572d4}{00003}}\ \textcolor{preprocessor}{\#define\ KERNEL\_SMARTPTR\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00005}00005\ \textcolor{comment}{//\ 기존\ 코드}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <pthread.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00010}00010\ \textcolor{preprocessor}{\#include\ <netdb.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00011}00011\ \textcolor{preprocessor}{\#include\ <arpa/inet.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <netinet/in.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <errno.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00016}00016\ \textcolor{preprocessor}{\#include\ <semaphore.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00017}00017\ \textcolor{preprocessor}{\#include\ <sys/wait.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00018}00018\ \textcolor{preprocessor}{\#include\ <fcntl.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00019}00019\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00020}00020\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00021}00021\ \textcolor{preprocessor}{\#include\ <dlfcn.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00023}00023\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{kernel__engine_8h}{kernel\_engine.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00024}00024\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ename_8c_8inc}{../src/ename.c.inc}}"{}}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00026}\mbox{\hyperlink{kernel__smartptr_8h_a7735206bdfad487588bba2126b806ab7}{00026}}\ \textcolor{preprocessor}{\#define\ NUM\_THREADS\ 3}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00027}\mbox{\hyperlink{kernel__smartptr_8h_a220f38b26fa99d4d91b574f42d991516}{00027}}\ \textcolor{preprocessor}{\#define\ MAX\_STRING\_SIZE\ 100}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00029}\mbox{\hyperlink{kernel__smartptr_8h_ab5db67fb203207aaac3a0d94dcce7eb6}{00029}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ \mbox{\hyperlink{struct_smart_ptr}{SmartPtr}};}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00030}\mbox{\hyperlink{kernel__smartptr_8h_aa7d0c3a1401caf171b07d386da298a83}{00030}}\ \textcolor{preprocessor}{\#define\ CREATE\_SMART\_PTR(type,\ ...)\ create\_smart\_ptr(sizeof(type),\ \_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00032}00032\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ retain(\mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ *sp);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00033}00033\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ release(\mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ *sp);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00034}00034\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}*\ thread\_function(\textcolor{keywordtype}{void}*\ arg);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00036}00036\ \textcolor{comment}{//\ static\ pthread\_mutex\_t\ print\_mutex\ =\ PTHREAD\_MUTEX\_INITIALIZER;}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00044}\mbox{\hyperlink{struct_smart_ptr}{00044}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00045}\mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{00045}}\ \ \ \ \ \textcolor{keywordtype}{void}\ *\mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{ptr}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00046}\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{00046}}\ \ \ \ \ \textcolor{keywordtype}{int}\ *\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00047}\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{00047}}\ \ \ \ \ pthread\_mutex\_t\ *\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}};\ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00048}00048\ \}\ \mbox{\hyperlink{kernel__smartptr_8h_ab5db67fb203207aaac3a0d94dcce7eb6}{SmartPtr}};}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00053}\mbox{\hyperlink{struct_network_info}{00053}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_network_info}{NetworkInfo}}\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00054}\mbox{\hyperlink{struct_network_info_aa2daf356770cf9cb4c8cc08b14b1a0fb}{00054}}\ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{struct_network_info_aa2daf356770cf9cb4c8cc08b14b1a0fb}{ip}}[INET\_ADDRSTRLEN];\ \ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00055}\mbox{\hyperlink{struct_network_info_a676dfedc06636503983d8746d3ea1fed}{00055}}\ \ \ \ \ sa\_family\_t\ \mbox{\hyperlink{struct_network_info_a676dfedc06636503983d8746d3ea1fed}{family}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00056}\mbox{\hyperlink{kernel__smartptr_8h_aed8b0e33190e6865ba59206b9912d9d6}{00056}}\ \}\ \mbox{\hyperlink{kernel__smartptr_8h_aed8b0e33190e6865ba59206b9912d9d6}{NetworkInfo}};}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00063}\mbox{\hyperlink{kernel__smartptr_8h_afa2e9f86e9e1003c6a58abd2bbb5bc14}{00063}}\ \mbox{\hyperlink{struct_network_info}{NetworkInfo}}\ \mbox{\hyperlink{kernel__smartptr_8h_afa2e9f86e9e1003c6a58abd2bbb5bc14}{get\_local\_network\_info}}()\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00064}00064\ \ \ \ \ \textcolor{keyword}{struct\ }addrinfo\ hints,\ *res;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00065}00065\ \ \ \ \ \mbox{\hyperlink{struct_network_info}{NetworkInfo}}\ net\_info;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00067}00067\ \ \ \ \ memset(\&hints,\ 0,\ \textcolor{keyword}{sizeof}(hints));}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00068}00068\ \ \ \ \ hints.ai\_family\ =\ AF\_INET;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00069}00069\ \ \ \ \ hints.ai\_socktype\ =\ SOCK\_STREAM;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00070}00070\ \ \ \ \ hints.ai\_flags\ =\ AI\_PASSIVE;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00072}00072\ \ \ \ \ \textcolor{keywordtype}{char}\ hostname[256];}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00073}00073\ \ \ \ \ gethostname(hostname,\ \textcolor{keyword}{sizeof}(hostname));}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00074}00074\ \ \ \ \ \textcolor{keywordflow}{if}\ (getaddrinfo(hostname,\ NULL,\ \&hints,\ \&res)\ !=\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00075}00075\ \ \ \ \ \ \ \ \ perror(\textcolor{stringliteral}{"{}getaddrinfo\ 실패"{}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00076}00076\ \ \ \ \ \ \ \ \ exit(EXIT\_FAILURE);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00077}00077\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00079}00079\ \ \ \ \ \textcolor{keyword}{struct\ }sockaddr\_in\ *ipv4\ =\ (\textcolor{keyword}{struct\ }sockaddr\_in\ *)res-\/>ai\_addr;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00080}00080\ \ \ \ \ inet\_ntop(AF\_INET,\ \&(ipv4-\/>sin\_addr),\ net\_info.\mbox{\hyperlink{struct_network_info_aa2daf356770cf9cb4c8cc08b14b1a0fb}{ip}},\ INET\_ADDRSTRLEN);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00081}00081\ \ \ \ \ net\_info.\mbox{\hyperlink{struct_network_info_a676dfedc06636503983d8746d3ea1fed}{family}}\ =\ res-\/>ai\_family;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00083}00083\ \ \ \ \ freeaddrinfo(res);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00084}00084\ \ \ \ \ \textcolor{keywordflow}{return}\ net\_info;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00085}00085\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00094}\mbox{\hyperlink{kernel__smartptr_8h_ae99435bb4eb679a3bb14ec5cd4b66ffc}{00094}}\ \mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ \mbox{\hyperlink{kernel__smartptr_8h_ae99435bb4eb679a3bb14ec5cd4b66ffc}{create\_smart\_ptr}}(\textcolor{keywordtype}{size\_t}\ size,\ ...)\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00095}00095\ \ \ \ \ (void)size;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00096}00096\ \ \ \ \ \mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ sp;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00097}00097\ \ \ \ \ sp.\mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{ptr}}\ =\ malloc(size);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00098}00098\ \ \ \ \ sp.\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}}\ =\ (\textcolor{keywordtype}{int}\ *)malloc(\textcolor{keyword}{sizeof}(\textcolor{keywordtype}{int}));}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00099}00099\ \ \ \ \ *(sp.\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}})\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00100}00100\ \ \ \ \ sp.\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}}\ =\ (pthread\_mutex\_t\ *)malloc(\textcolor{keyword}{sizeof}(pthread\_mutex\_t));}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00101}00101\ \ \ \ \ pthread\_mutex\_init(sp.\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}},\ NULL);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00103}00103\ \ \ \ \ va\_list\ args;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00104}00104\ \ \ \ \ va\_start(args,\ size);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00106}00106\ \ \ \ \ \textcolor{keywordflow}{if}\ (size\ ==\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{int}))\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ value\ =\ va\_arg(args,\ \textcolor{keywordtype}{int});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00108}00108\ \ \ \ \ \ \ \ \ *(\textcolor{keywordtype}{int}\ *)sp.\mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{ptr}}\ =\ value;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00109}00109\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (size\ ==\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{char})\ *\ \mbox{\hyperlink{kernel__smartptr_8h_a220f38b26fa99d4d91b574f42d991516}{MAX\_STRING\_SIZE}})\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00110}00110\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *str\ =\ va\_arg(args,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00111}00111\ \ \ \ \ \ \ \ \ strncpy((\textcolor{keywordtype}{char}\ *)sp.\mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{ptr}},\ str,\ \mbox{\hyperlink{kernel__smartptr_8h_a220f38b26fa99d4d91b574f42d991516}{MAX\_STRING\_SIZE}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00112}00112\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00114}00114\ \ \ \ \ va\_end(args);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00115}00115\ \ \ \ \ \textcolor{keywordflow}{return}\ sp;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00116}00116\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00123}00123\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ retain(\mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ *sp)\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00124}00124\ \ \ \ \ pthread\_mutex\_lock(sp-\/>\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00125}00125\ \ \ \ \ (*(sp-\/>\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}}))++;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00126}00126\ \ \ \ \ pthread\_mutex\_unlock(sp-\/>\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00127}00127\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00128}00128\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00134}00134\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ release(\mbox{\hyperlink{struct_smart_ptr}{SmartPtr}}\ *sp)\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00135}00135\ \ \ \ \ \textcolor{keywordtype}{int}\ should\_free\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00136}00136\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00137}00137\ \ \ \ \ pthread\_mutex\_lock(sp-\/>\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00138}00138\ \ \ \ \ (*(sp-\/>\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}}))-\/-\/;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00139}00139\ \ \ \ \ \mbox{\hyperlink{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}{safe\_kernel\_printf}}(\textcolor{stringliteral}{"{}Smart\ pointer\ released\ (ref\_count:\ \%d)\(\backslash\)n"{}},\ *(sp-\/>\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}}));}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00141}00141\ \ \ \ \ \textcolor{keywordflow}{if}\ (*(sp-\/>\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00142}00142\ \ \ \ \ \ \ \ \ should\_free\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00143}00143\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}{safe\_kernel\_printf}}(\textcolor{stringliteral}{"{}Reference\ count\ is\ 0,\ freeing\ memory...\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00144}00144\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00146}00146\ \ \ \ \ pthread\_mutex\_unlock(sp-\/>\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00148}00148\ \ \ \ \ \textcolor{keywordflow}{if}\ (should\_free)\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00149}00149\ \ \ \ \ \ \ \ \ free(sp-\/>\mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{ptr}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00150}00150\ \ \ \ \ \ \ \ \ sp-\/>\mbox{\hyperlink{struct_smart_ptr_afa5aac6520f0d05d01d7ac99e5ec78e3}{ptr}}\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00151}00151\ \ \ \ \ \ \ \ \ free(sp-\/>\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00152}00152\ \ \ \ \ \ \ \ \ sp-\/>\mbox{\hyperlink{struct_smart_ptr_af65db2a8867a48af1dde827164fd6341}{ref\_count}}\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00154}00154\ \ \ \ \ \ \ \ \ pthread\_mutex\_destroy(sp-\/>\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00155}00155\ \ \ \ \ \ \ \ \ free(sp-\/>\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00156}00156\ \ \ \ \ \ \ \ \ sp-\/>\mbox{\hyperlink{struct_smart_ptr_a1d16d059e43b883557fb92bd08f7b82c}{mutex}}\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00158}00158\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}{safe\_kernel\_printf}}(\textcolor{stringliteral}{"{}Memory\ has\ been\ freed\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00159}00159\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00160}00160\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00168}00168\ \textcolor{keywordtype}{void}*\ thread\_function(\textcolor{keywordtype}{void}*\ arg)\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00169}00169\ \ \ \ \ \textcolor{keywordtype}{int}\ thread\_num\ =\ *((\textcolor{keywordtype}{int}*)arg);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00171}00171\ \ \ \ \ \mbox{\hyperlink{struct_network_info}{NetworkInfo}}\ net\_info\ =\ \mbox{\hyperlink{kernel__smartptr_8h_afa2e9f86e9e1003c6a58abd2bbb5bc14}{get\_local\_network\_info}}();}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00173}00173\ \ \ \ \ \mbox{\hyperlink{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}{safe\_kernel\_printf}}(\textcolor{stringliteral}{"{}Thread\ \%d:\ 시작\ -\/\ 로컬\ IP\ 주소:\ \%s\(\backslash\)n"{}},\ thread\_num,\ net\_info.\mbox{\hyperlink{struct_network_info_aa2daf356770cf9cb4c8cc08b14b1a0fb}{ip}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00174}00174\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00175}00175\ \ \ \ \ sleep(1);}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00176}00176\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00177}00177\ \ \ \ \ \mbox{\hyperlink{kernel__engine_8h_a7c8ee439ee4e61c628d5343ab34d91da}{safe\_kernel\_printf}}(\textcolor{stringliteral}{"{}Thread\ \%d:\ 종료\ -\/\ 주소\ 패밀리:\ \%d\(\backslash\)n"{}},\ thread\_num,\ net\_info.\mbox{\hyperlink{struct_network_info_a676dfedc06636503983d8746d3ea1fed}{family}});}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00178}00178\ \ \ \ \ \textcolor{keywordflow}{return}\ NULL;}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00179}00179\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00180}00180\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00181}00181\ }
+\DoxyCodeLine{\Hypertarget{kernel__smartptr_8h_source_l00182}00182\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ KERNEL\_SMARTPTR\_H}}
+
+\end{DoxyCode}

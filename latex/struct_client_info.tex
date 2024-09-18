@@ -1,0 +1,92 @@
+\doxysection{Client\+Info Struct Reference}
+\hypertarget{struct_client_info}{}\label{struct_client_info}\index{ClientInfo@{ClientInfo}}
+
+
+클라이언트 정보를 담는 구조체  
+
+
+
+
+{\ttfamily \#include $<$kernel\+\_\+chat.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{struct_client_info_afcdb55ea154b8f5f383c90281918f751}{client\+\_\+fd}}
+\item 
+int \mbox{\hyperlink{struct_client_info_a3375189b046a181d4875ac1fdea96fea}{client\+\_\+id}}
+\item 
+int \mbox{\hyperlink{struct_client_info_a01133148ac3e031d6ea74403f7f54fb2}{room\+\_\+id}}
+\item 
+char \mbox{\hyperlink{struct_client_info_a98894b89e8b36299fcdfd38caca7bf1a}{username}} \mbox{[}\mbox{\hyperlink{kernel__chat_8c_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\+\_\+\+SIZE}}\mbox{]}
+\item 
+pthread\+\_\+mutex\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_client_info_ae79b0929eec0a9a16c99e7e72da7d148}{client\+\_\+mutex}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+클라이언트 정보를 담는 구조체 
+
+각 클라이언트의 소켓 FD, ID, 채팅방 ID, 사용자명을 포함하고 있으며, 뮤텍스를 관리합니다. 
+
+Definition at line \mbox{\hyperlink{kernel__chat_8h_source_l00059}{59}} of file \mbox{\hyperlink{kernel__chat_8h_source}{kernel\+\_\+chat.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_client_info_afcdb55ea154b8f5f383c90281918f751}\index{ClientInfo@{ClientInfo}!client\_fd@{client\_fd}}
+\index{client\_fd@{client\_fd}!ClientInfo@{ClientInfo}}
+\doxysubsubsection{\texorpdfstring{client\_fd}{client\_fd}}
+{\footnotesize\ttfamily \label{struct_client_info_afcdb55ea154b8f5f383c90281918f751} 
+int Client\+Info\+::client\+\_\+fd}
+
+클라이언트의 소켓 파일 디스크립터 
+
+Definition at line \mbox{\hyperlink{kernel__chat_8h_source_l00060}{60}} of file \mbox{\hyperlink{kernel__chat_8h_source}{kernel\+\_\+chat.\+h}}.
+
+\Hypertarget{struct_client_info_a3375189b046a181d4875ac1fdea96fea}\index{ClientInfo@{ClientInfo}!client\_id@{client\_id}}
+\index{client\_id@{client\_id}!ClientInfo@{ClientInfo}}
+\doxysubsubsection{\texorpdfstring{client\_id}{client\_id}}
+{\footnotesize\ttfamily \label{struct_client_info_a3375189b046a181d4875ac1fdea96fea} 
+int Client\+Info\+::client\+\_\+id}
+
+클라이언트 ID 
+
+Definition at line \mbox{\hyperlink{kernel__chat_8h_source_l00061}{61}} of file \mbox{\hyperlink{kernel__chat_8h_source}{kernel\+\_\+chat.\+h}}.
+
+\Hypertarget{struct_client_info_ae79b0929eec0a9a16c99e7e72da7d148}\index{ClientInfo@{ClientInfo}!client\_mutex@{client\_mutex}}
+\index{client\_mutex@{client\_mutex}!ClientInfo@{ClientInfo}}
+\doxysubsubsection{\texorpdfstring{client\_mutex}{client\_mutex}}
+{\footnotesize\ttfamily \label{struct_client_info_ae79b0929eec0a9a16c99e7e72da7d148} 
+pthread\+\_\+mutex\+\_\+t \texorpdfstring{$\ast$}{*} Client\+Info\+::client\+\_\+mutex}
+
+클라이언트 별 뮤텍스 
+
+Definition at line \mbox{\hyperlink{kernel__chat_8h_source_l00064}{64}} of file \mbox{\hyperlink{kernel__chat_8h_source}{kernel\+\_\+chat.\+h}}.
+
+\Hypertarget{struct_client_info_a01133148ac3e031d6ea74403f7f54fb2}\index{ClientInfo@{ClientInfo}!room\_id@{room\_id}}
+\index{room\_id@{room\_id}!ClientInfo@{ClientInfo}}
+\doxysubsubsection{\texorpdfstring{room\_id}{room\_id}}
+{\footnotesize\ttfamily \label{struct_client_info_a01133148ac3e031d6ea74403f7f54fb2} 
+int Client\+Info\+::room\+\_\+id}
+
+클라이언트가 참여한 채팅방 ID 
+
+Definition at line \mbox{\hyperlink{kernel__chat_8h_source_l00062}{62}} of file \mbox{\hyperlink{kernel__chat_8h_source}{kernel\+\_\+chat.\+h}}.
+
+\Hypertarget{struct_client_info_a98894b89e8b36299fcdfd38caca7bf1a}\index{ClientInfo@{ClientInfo}!username@{username}}
+\index{username@{username}!ClientInfo@{ClientInfo}}
+\doxysubsubsection{\texorpdfstring{username}{username}}
+{\footnotesize\ttfamily \label{struct_client_info_a98894b89e8b36299fcdfd38caca7bf1a} 
+char Client\+Info\+::username}
+
+클라이언트 사용자명 
+
+Definition at line \mbox{\hyperlink{kernel__chat_8h_source_l00063}{63}} of file \mbox{\hyperlink{kernel__chat_8h_source}{kernel\+\_\+chat.\+h}}.
+
+
+
+The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+\_\+lib/include/\mbox{\hyperlink{kernel__chat_8h}{kernel\+\_\+chat.\+h}}\item 
+C\+\_\+lib/src/\mbox{\hyperlink{kernel__chat_8c}{kernel\+\_\+chat.\+c}}\end{DoxyCompactItemize}

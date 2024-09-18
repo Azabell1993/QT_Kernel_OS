@@ -1,0 +1,53 @@
+\doxysection{kernel\+\_\+pr\+\_\+he.\+h}
+\hypertarget{kernel__pr__he_8h_source}{}\label{kernel__pr__he_8h_source}\index{C\_lib/include\_printf/kernel\_pr\_he.h@{C\_lib/include\_printf/kernel\_pr\_he.h}}
+\mbox{\hyperlink{kernel__pr__he_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00001}00001\ \textcolor{comment}{//\ kernel\_lib\_printf\_functions}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00002}00002\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00003}00003\ \textcolor{comment}{\ *\ Kernel\ Lib\ Printf\ Functions}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00004}00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00005}00005\ \textcolor{comment}{\ *\ Maintainer:\ Park\ Jiwoo}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00006}00006\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00007}00007\ \textcolor{comment}{\ *\ Copyright\ (C)\ 2024\ Park-\/Jiwoo}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00008}00008\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00009}00009\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00010}00010\ \textcolor{preprocessor}{\#ifndef\ STDIO\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00011}00011\ \textcolor{preprocessor}{\#define\ STDIO\_H}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00012}00012\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00013}00013\ \textcolor{preprocessor}{\#include\ <wchar.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00014}00014\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00015}00015\ \textcolor{preprocessor}{\#include\ <unistd.h>}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00016}00016\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00018}00018\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00019}00019\ \{}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00020}00020\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00021}00021\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_a13949e658b58cd9752c5edd66a9c7f05}{kernel\_putchar}}(\textcolor{keywordtype}{char}\ c);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00023}00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_abac95bbd962af5a70aefb79e15004ddf}{az\_putoctal}}(\textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00024}00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_a666b04b76b22bce1e5c748ba0da7d56e}{az\_putunsigned}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00025}00025\ \ \ \ \ \textcolor{keywordtype}{void}\ *\mbox{\hyperlink{kernel__pr__he_8h_a982559dcfcc25cdc99ef106b676cf187}{az\_memalloc}}(\textcolor{keywordtype}{size\_t}\ size);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00026}00026\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__pr__he_8h_ab52f83891b587dfea5656469ee7524eb}{az\_isdigit}}(\textcolor{keywordtype}{int}\ c);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00027}00027\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__pr__he_8h_ae184e406be9a58bafae024c0c282dc92}{az\_isalpha}}(\textcolor{keywordtype}{int}\ c);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00028}00028\ \ \ \ \ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{kernel__pr__he_8h_a7b5c23afc89a6477425d3303b057fca9}{az\_itoa}}(\textcolor{keywordtype}{int}\ value,\ \textcolor{keywordtype}{int}\ base);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00029}00029\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__pr__he_8h_ac1840b95e247887c2d286c0854d7b75c}{az\_chrpos}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s,\ \textcolor{keywordtype}{int}\ c);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00030}00030\ \ \ \ \ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{kernel__pr__he_8h_aa22ca725e75541958d3911c94d64eccf}{az\_strsub}}(\textcolor{keywordtype}{char}\ \textcolor{keyword}{const}\ *s,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00031}00031\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{kernel__pr__he_8h_a49a09e1132ff86681848f8ee865654ef}{az\_nbrlen}}(\textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00032}00032\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__pr__he_8h_afb8b99bea72bb5c85b457250221f3491}{az\_isprint}}(\textcolor{keywordtype}{int}\ c);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00033}00033\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{kernel__pr__he_8h_a5e248919b9254206d5f877cbf0d69cfa}{az\_strlen}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00034}00034\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_aef87b0b251534801a9f6100249b9ace8}{az\_puthex}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00035}00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_a728e629144ae570e4c2605154c2cbf88}{az\_putnbr}}(\textcolor{keywordtype}{int}\ n);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00036}00036\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__pr__he_8h_ac1840b95e247887c2d286c0854d7b75c}{az\_chrpos}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s,\ \textcolor{keywordtype}{int}\ c);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00037}00037\ \ \ \ \ \textcolor{keywordtype}{void}\ *\mbox{\hyperlink{kernel__pr__he_8h_a504f86b891aa03e2c77a4e6b5c69f845}{az\_memset}}(\textcolor{keywordtype}{void}\ *b,\ \textcolor{keywordtype}{int}\ c,\ \textcolor{keywordtype}{size\_t}\ len);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00038}00038\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_ae618fbef69619ccd2b7b3ac0eec4c51e}{az\_bzero}}(\textcolor{keywordtype}{void}\ *s,\ \textcolor{keywordtype}{size\_t}\ n);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00039}00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_a3c1ae5a91af6b594fb6a69bc9e0bc467}{az\_putchar\_fd}}(\textcolor{keywordtype}{char}\ c,\ \textcolor{keywordtype}{int}\ fd);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00040}00040\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{kernel__pr__he_8h_ac4cefc10f29e3af9afbda9644074ca3a}{az\_putstr}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00041}00041\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__pr__he_8h_ad4155827deae98aebbb3697aba068ece}{az\_atoi}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00042}00042\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{kernel__pr__he_8h_abcace6eac32dea5a43122858128e1e0e}{az\_strcmp}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s1,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s2);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00043}00043\ \ \ \ \ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{kernel__pr__he_8h_a71b07d69a9421a7aaf824e995df039c3}{az\_strchr}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s,\ \textcolor{keywordtype}{int}\ c);}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00044}00044\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00045}00045\ \}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00046}00046\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{kernel__pr__he_8h_source_l00047}00047\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

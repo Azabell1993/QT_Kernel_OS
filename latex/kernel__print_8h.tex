@@ -1,0 +1,346 @@
+\doxysection{C\+\_\+lib/include/kernel\+\_\+print.h File Reference}
+\hypertarget{kernel__print_8h}{}\label{kernel__print_8h}\index{C\_lib/include/kernel\_print.h@{C\_lib/include/kernel\_print.h}}
+{\ttfamily \#include "{}kernel\+\_\+pr\+\_\+he.\+h"{}}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$wchar.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{kernel__print_8h_a216982c29ce9d07dc86ff912622a3b99}{KERNEL\+\_\+\+PRINTF\+\_\+H}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{kernel__print_8h_a8f4bb2594982fdd737238c073090930c}{function\+\_\+\+Test}} (int a, int b)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_ac1a291b10667fb6ec7c7cc98c3c8a4cc}{test\+\_\+kernel\+\_\+printf}} ()
+\item 
+int \mbox{\hyperlink{kernel__print_8h_ae91984a761a27ebdcf425b373340251f}{kernel\+\_\+printf}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\item 
+char \mbox{\hyperlink{kernel__print_8h_ac463d1ecee1e1eeb3993cd20d14e89dc}{az\+\_\+getflag}} (char flag)
+\item 
+int \mbox{\hyperlink{kernel__print_8h_abb893d547481090873cb028b2b060cf9}{az\+\_\+default\+\_\+mod}} (char \texorpdfstring{$\ast$}{*}format)
+\item 
+int \mbox{\hyperlink{kernel__print_8h_a3c54ceea672689f670f79427ecdeb4a4}{az\+\_\+skip}} (char \texorpdfstring{$\ast$}{*}format, int i)
+\item 
+int \mbox{\hyperlink{kernel__print_8h_a26c4be4d9720da8184aaabca65cf44b8}{az\+\_\+output}} (char \texorpdfstring{$\ast$}{*}format, char flag, va\+\_\+list ap, int i)
+\item 
+int \mbox{\hyperlink{kernel__print_8h_a7975bb8f37bdd1bb653ff07cb3a644d4}{az\+\_\+getparam}} (char \texorpdfstring{$\ast$}{*}foramt, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a31b964efc14b1bd4bb3a15db3f601f25}{az\+\_\+mod}} (char \texorpdfstring{$\ast$}{*}format)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a8a2184c49be2c1625b1c8d7a9ffa1b8c}{az\+\_\+fill}} (int fillcnt, char c)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a228f34ea79599519086f3fe7c19c52d2}{az\+\_\+plusflag}} (int d, char flag, int param, char \texorpdfstring{$\ast$}{*}format)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a4482170d3b61aa054e2fbb2a268b359a}{az\+\_\+minusflag}} (int d, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_aa584f845c3aeaeaa1c9731c6e834dbf4}{az\+\_\+spaceflag}} (int d, char flag, int param)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_ab06b4f7bd0aea4e84137f5974485056b}{az\+\_\+zeroflag}} (int d, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_af51b0be221ac3f0e09a1b145dfbcceae}{az\+\_\+o\+\_\+support}} (int o, int param, char flag, char f\+\_\+addon)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_aafea0312af6f2e40486d633da9872e20}{az\+\_\+o\+\_\+support\+\_\+p2}} (char flag, char \texorpdfstring{$\ast$}{*}fmt, char f\+\_\+addon)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_adce82e4733c6fa248d02f6b09d7586bd}{az\+\_\+c\+\_\+support}} (char c, int param, char flag, char f\+\_\+addon)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_ad904b2e480c7f0baefbc0c3e2fb620b2}{az\+\_\+speciftypeini}} (char \texorpdfstring{$\ast$}{*}format, char specif, char flag, va\+\_\+list ap)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_aee38433dc0104e596d6d8f4ea4f61901}{az\+\_\+c}} (va\+\_\+list ap, char \texorpdfstring{$\ast$}{*}format, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a2cf4cc87c785d844faf30432a3de0be6}{az\+\_\+s}} (va\+\_\+list ap, char \texorpdfstring{$\ast$}{*}format, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a3a9135cae9c0a5efc25d5ed209726a86}{az\+\_\+p}} (va\+\_\+list ap)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a8951de1e28ffb882d3484d101edcd448}{az\+\_\+x}} (va\+\_\+list ap, char \texorpdfstring{$\ast$}{*}format, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a85ac88b979b587535737f33a3d7d1d66}{az\+\_\+d}} (va\+\_\+list ap, char \texorpdfstring{$\ast$}{*}format, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a33306128d0707eeb20fad8e6d4a29003}{az\+\_\+i}} (va\+\_\+list ap, char \texorpdfstring{$\ast$}{*}format, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_ae27b462557417cff334acbae246a86f3}{az\+\_\+o}} (va\+\_\+list ap, char \texorpdfstring{$\ast$}{*}format, char flag)
+\item 
+void \mbox{\hyperlink{kernel__print_8h_a647aeb58983cf6d248cf08dc4ecada3b}{az\+\_\+u}} (va\+\_\+list ap, char \texorpdfstring{$\ast$}{*}format, char flag)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{kernel__print_8h_a216982c29ce9d07dc86ff912622a3b99}\index{kernel\_print.h@{kernel\_print.h}!KERNEL\_PRINTF\_H@{KERNEL\_PRINTF\_H}}
+\index{KERNEL\_PRINTF\_H@{KERNEL\_PRINTF\_H}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{KERNEL\_PRINTF\_H}{KERNEL\_PRINTF\_H}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a216982c29ce9d07dc86ff912622a3b99} 
+\#define KERNEL\+\_\+\+PRINTF\+\_\+H}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__print_8h_source_l00013}{13}} of file \mbox{\hyperlink{kernel__print_8h_source}{kernel\+\_\+print.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{kernel__print_8h_aee38433dc0104e596d6d8f4ea4f61901}\index{kernel\_print.h@{kernel\_print.h}!az\_c@{az\_c}}
+\index{az\_c@{az\_c}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_c()}{az\_c()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_aee38433dc0104e596d6d8f4ea4f61901} 
+void az\+\_\+c (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00420}{420}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_adce82e4733c6fa248d02f6b09d7586bd}\index{kernel\_print.h@{kernel\_print.h}!az\_c\_support@{az\_c\_support}}
+\index{az\_c\_support@{az\_c\_support}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_c\_support()}{az\_c\_support()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_adce82e4733c6fa248d02f6b09d7586bd} 
+void az\+\_\+c\+\_\+support (\begin{DoxyParamCaption}\item[{char}]{c}{, }\item[{int}]{param}{, }\item[{char}]{flag}{, }\item[{char}]{f\+\_\+addon}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00318}{318}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a85ac88b979b587535737f33a3d7d1d66}\index{kernel\_print.h@{kernel\_print.h}!az\_d@{az\_d}}
+\index{az\_d@{az\_d}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_d()}{az\_d()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a85ac88b979b587535737f33a3d7d1d66} 
+void az\+\_\+d (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00501}{501}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_abb893d547481090873cb028b2b060cf9}\index{kernel\_print.h@{kernel\_print.h}!az\_default\_mod@{az\_default\_mod}}
+\index{az\_default\_mod@{az\_default\_mod}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_default\_mod()}{az\_default\_mod()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_abb893d547481090873cb028b2b060cf9} 
+int az\+\_\+default\+\_\+mod (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{format}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00070}{70}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a8a2184c49be2c1625b1c8d7a9ffa1b8c}\index{kernel\_print.h@{kernel\_print.h}!az\_fill@{az\_fill}}
+\index{az\_fill@{az\_fill}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_fill()}{az\_fill()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a8a2184c49be2c1625b1c8d7a9ffa1b8c} 
+void az\+\_\+fill (\begin{DoxyParamCaption}\item[{int}]{fillcnt}{, }\item[{char}]{c}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00157}{157}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_ac463d1ecee1e1eeb3993cd20d14e89dc}\index{kernel\_print.h@{kernel\_print.h}!az\_getflag@{az\_getflag}}
+\index{az\_getflag@{az\_getflag}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_getflag()}{az\_getflag()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_ac463d1ecee1e1eeb3993cd20d14e89dc} 
+char az\+\_\+getflag (\begin{DoxyParamCaption}\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00170}{170}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a7975bb8f37bdd1bb653ff07cb3a644d4}\index{kernel\_print.h@{kernel\_print.h}!az\_getparam@{az\_getparam}}
+\index{az\_getparam@{az\_getparam}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_getparam()}{az\_getparam()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a7975bb8f37bdd1bb653ff07cb3a644d4} 
+int az\+\_\+getparam (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{foramt}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00333}{333}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a33306128d0707eeb20fad8e6d4a29003}\index{kernel\_print.h@{kernel\_print.h}!az\_i@{az\_i}}
+\index{az\_i@{az\_i}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_i()}{az\_i()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a33306128d0707eeb20fad8e6d4a29003} 
+void az\+\_\+i (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00536}{536}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a4482170d3b61aa054e2fbb2a268b359a}\index{kernel\_print.h@{kernel\_print.h}!az\_minusflag@{az\_minusflag}}
+\index{az\_minusflag@{az\_minusflag}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_minusflag()}{az\_minusflag()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a4482170d3b61aa054e2fbb2a268b359a} 
+void az\+\_\+minusflag (\begin{DoxyParamCaption}\item[{int}]{d}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00222}{222}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a31b964efc14b1bd4bb3a15db3f601f25}\index{kernel\_print.h@{kernel\_print.h}!az\_mod@{az\_mod}}
+\index{az\_mod@{az\_mod}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_mod()}{az\_mod()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a31b964efc14b1bd4bb3a15db3f601f25} 
+void az\+\_\+mod (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{format}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00098}{98}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_ae27b462557417cff334acbae246a86f3}\index{kernel\_print.h@{kernel\_print.h}!az\_o@{az\_o}}
+\index{az\_o@{az\_o}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_o()}{az\_o()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_ae27b462557417cff334acbae246a86f3} 
+void az\+\_\+o (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00556}{556}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_af51b0be221ac3f0e09a1b145dfbcceae}\index{kernel\_print.h@{kernel\_print.h}!az\_o\_support@{az\_o\_support}}
+\index{az\_o\_support@{az\_o\_support}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_o\_support()}{az\_o\_support()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_af51b0be221ac3f0e09a1b145dfbcceae} 
+void az\+\_\+o\+\_\+support (\begin{DoxyParamCaption}\item[{int}]{o}{, }\item[{int}]{param}{, }\item[{char}]{flag}{, }\item[{char}]{f\+\_\+addon}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00269}{269}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_aafea0312af6f2e40486d633da9872e20}\index{kernel\_print.h@{kernel\_print.h}!az\_o\_support\_p2@{az\_o\_support\_p2}}
+\index{az\_o\_support\_p2@{az\_o\_support\_p2}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_o\_support\_p2()}{az\_o\_support\_p2()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_aafea0312af6f2e40486d633da9872e20} 
+void az\+\_\+o\+\_\+support\+\_\+p2 (\begin{DoxyParamCaption}\item[{char}]{flag}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{fmt}{, }\item[{char}]{f\+\_\+addon}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00292}{292}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a26c4be4d9720da8184aaabca65cf44b8}\index{kernel\_print.h@{kernel\_print.h}!az\_output@{az\_output}}
+\index{az\_output@{az\_output}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_output()}{az\_output()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a26c4be4d9720da8184aaabca65cf44b8} 
+int az\+\_\+output (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{, }\item[{va\+\_\+list}]{ap}{, }\item[{int}]{i}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00257}{257}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a3a9135cae9c0a5efc25d5ed209726a86}\index{kernel\_print.h@{kernel\_print.h}!az\_p@{az\_p}}
+\index{az\_p@{az\_p}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_p()}{az\_p()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a3a9135cae9c0a5efc25d5ed209726a86} 
+void az\+\_\+p (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00473}{473}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a228f34ea79599519086f3fe7c19c52d2}\index{kernel\_print.h@{kernel\_print.h}!az\_plusflag@{az\_plusflag}}
+\index{az\_plusflag@{az\_plusflag}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_plusflag()}{az\_plusflag()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a228f34ea79599519086f3fe7c19c52d2} 
+void az\+\_\+plusflag (\begin{DoxyParamCaption}\item[{int}]{d}{, }\item[{char}]{flag}{, }\item[{int}]{param}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00191}{191}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a2cf4cc87c785d844faf30432a3de0be6}\index{kernel\_print.h@{kernel\_print.h}!az\_s@{az\_s}}
+\index{az\_s@{az\_s}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_s()}{az\_s()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a2cf4cc87c785d844faf30432a3de0be6} 
+void az\+\_\+s (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00444}{444}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a3c54ceea672689f670f79427ecdeb4a4}\index{kernel\_print.h@{kernel\_print.h}!az\_skip@{az\_skip}}
+\index{az\_skip@{az\_skip}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_skip()}{az\_skip()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a3c54ceea672689f670f79427ecdeb4a4} 
+int az\+\_\+skip (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{int}]{i}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00149}{149}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_aa584f845c3aeaeaa1c9731c6e834dbf4}\index{kernel\_print.h@{kernel\_print.h}!az\_spaceflag@{az\_spaceflag}}
+\index{az\_spaceflag@{az\_spaceflag}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_spaceflag()}{az\_spaceflag()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_aa584f845c3aeaeaa1c9731c6e834dbf4} 
+void az\+\_\+spaceflag (\begin{DoxyParamCaption}\item[{int}]{d}{, }\item[{char}]{flag}{, }\item[{int}]{param}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00229}{229}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_ad904b2e480c7f0baefbc0c3e2fb620b2}\index{kernel\_print.h@{kernel\_print.h}!az\_speciftypeini@{az\_speciftypeini}}
+\index{az\_speciftypeini@{az\_speciftypeini}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_speciftypeini()}{az\_speciftypeini()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_ad904b2e480c7f0baefbc0c3e2fb620b2} 
+void az\+\_\+speciftypeini (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{specif}{, }\item[{char}]{flag}{, }\item[{va\+\_\+list}]{ap}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00374}{374}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a647aeb58983cf6d248cf08dc4ecada3b}\index{kernel\_print.h@{kernel\_print.h}!az\_u@{az\_u}}
+\index{az\_u@{az\_u}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_u()}{az\_u()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a647aeb58983cf6d248cf08dc4ecada3b} 
+void az\+\_\+u (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00576}{576}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a8951de1e28ffb882d3484d101edcd448}\index{kernel\_print.h@{kernel\_print.h}!az\_x@{az\_x}}
+\index{az\_x@{az\_x}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_x()}{az\_x()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a8951de1e28ffb882d3484d101edcd448} 
+void az\+\_\+x (\begin{DoxyParamCaption}\item[{va\+\_\+list}]{ap}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00483}{483}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_ab06b4f7bd0aea4e84137f5974485056b}\index{kernel\_print.h@{kernel\_print.h}!az\_zeroflag@{az\_zeroflag}}
+\index{az\_zeroflag@{az\_zeroflag}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{az\_zeroflag()}{az\_zeroflag()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_ab06b4f7bd0aea4e84137f5974485056b} 
+void az\+\_\+zeroflag (\begin{DoxyParamCaption}\item[{int}]{d}{, }\item[{char}]{flag}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00242}{242}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_a8f4bb2594982fdd737238c073090930c}\index{kernel\_print.h@{kernel\_print.h}!function\_Test@{function\_Test}}
+\index{function\_Test@{function\_Test}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{function\_Test()}{function\_Test()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_a8f4bb2594982fdd737238c073090930c} 
+int function\+\_\+\+Test (\begin{DoxyParamCaption}\item[{int}]{a}{, }\item[{int}]{b}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00637}{637}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_ae91984a761a27ebdcf425b373340251f}\index{kernel\_print.h@{kernel\_print.h}!kernel\_printf@{kernel\_printf}}
+\index{kernel\_printf@{kernel\_printf}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{kernel\_printf()}{kernel\_printf()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_ae91984a761a27ebdcf425b373340251f} 
+int kernel\+\_\+printf (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00595}{595}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+
+\Hypertarget{kernel__print_8h_ac1a291b10667fb6ec7c7cc98c3c8a4cc}\index{kernel\_print.h@{kernel\_print.h}!test\_kernel\_printf@{test\_kernel\_printf}}
+\index{test\_kernel\_printf@{test\_kernel\_printf}!kernel\_print.h@{kernel\_print.h}}
+\doxysubsubsection{\texorpdfstring{test\_kernel\_printf()}{test\_kernel\_printf()}}
+{\footnotesize\ttfamily \label{kernel__print_8h_ac1a291b10667fb6ec7c7cc98c3c8a4cc} 
+void test\+\_\+kernel\+\_\+printf (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__printf_8c_source_l00644}{644}} of file \mbox{\hyperlink{kernel__printf_8c_source}{kernel\+\_\+printf.\+c}}.
+

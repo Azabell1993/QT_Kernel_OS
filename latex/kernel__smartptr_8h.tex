@@ -1,0 +1,167 @@
+\doxysection{C\+\_\+lib/include/kernel\+\_\+smartptr.h File Reference}
+\hypertarget{kernel__smartptr_8h}{}\label{kernel__smartptr_8h}\index{C\_lib/include/kernel\_smartptr.h@{C\_lib/include/kernel\_smartptr.h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$netdb.\+h$>$}\newline
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$semaphore.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$dlfcn.\+h$>$}\newline
+{\ttfamily \#include "{}kernel\+\_\+engine.\+h"{}}\newline
+{\ttfamily \#include "{}../src/ename.\+c.\+inc"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_smart_ptr}{Smart\+Ptr}}
+\begin{DoxyCompactList}\small\item\em 스마트 포인터 구조체 \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_network_info}{Network\+Info}}
+\begin{DoxyCompactList}\small\item\em 네트워크 정보를 저장하는 구조체 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{kernel__smartptr_8h_a04c9ceec51404102c26cd52e8a3572d4}{KERNEL\+\_\+\+SMARTPTR\+\_\+H}}
+\item 
+\#define \mbox{\hyperlink{kernel__smartptr_8h_a7735206bdfad487588bba2126b806ab7}{NUM\+\_\+\+THREADS}}~3
+\item 
+\#define \mbox{\hyperlink{kernel__smartptr_8h_a220f38b26fa99d4d91b574f42d991516}{MAX\+\_\+\+STRING\+\_\+\+SIZE}}~100
+\item 
+\#define \mbox{\hyperlink{kernel__smartptr_8h_aa7d0c3a1401caf171b07d386da298a83}{CREATE\+\_\+\+SMART\+\_\+\+PTR}}(type, ...)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct Smart\+Ptr \mbox{\hyperlink{kernel__smartptr_8h_ab5db67fb203207aaac3a0d94dcce7eb6}{Smart\+Ptr}}
+\item 
+typedef struct Network\+Info \mbox{\hyperlink{kernel__smartptr_8h_aed8b0e33190e6865ba59206b9912d9d6}{Network\+Info}}
+\begin{DoxyCompactList}\small\item\em 네트워크 정보를 저장하는 구조체 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_network_info}{Network\+Info}} \mbox{\hyperlink{kernel__smartptr_8h_afa2e9f86e9e1003c6a58abd2bbb5bc14}{get\+\_\+local\+\_\+network\+\_\+info}} ()
+\begin{DoxyCompactList}\small\item\em 로컬 네트워크 정보를 가져오는 함수 \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_smart_ptr}{Smart\+Ptr}} \mbox{\hyperlink{kernel__smartptr_8h_ae99435bb4eb679a3bb14ec5cd4b66ffc}{create\+\_\+smart\+\_\+ptr}} (size\+\_\+t size,...)
+\begin{DoxyCompactList}\small\item\em 스마트 포인터를 생성하는 함수 (가변 인자 사용) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{kernel__smartptr_8h_aa7d0c3a1401caf171b07d386da298a83}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!CREATE\_SMART\_PTR@{CREATE\_SMART\_PTR}}
+\index{CREATE\_SMART\_PTR@{CREATE\_SMART\_PTR}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{CREATE\_SMART\_PTR}{CREATE\_SMART\_PTR}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_aa7d0c3a1401caf171b07d386da298a83} 
+\#define CREATE\+\_\+\+SMART\+\_\+\+PTR(\begin{DoxyParamCaption}\item[{}]{type}{, }\item[{}]{}...{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{kernel__smartptr_8h_ae99435bb4eb679a3bb14ec5cd4b66ffc}{create\_smart\_ptr}}(\textcolor{keyword}{sizeof}(type),\ \_\_VA\_ARGS\_\_)}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00030}{30}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+\Hypertarget{kernel__smartptr_8h_a04c9ceec51404102c26cd52e8a3572d4}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!KERNEL\_SMARTPTR\_H@{KERNEL\_SMARTPTR\_H}}
+\index{KERNEL\_SMARTPTR\_H@{KERNEL\_SMARTPTR\_H}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{KERNEL\_SMARTPTR\_H}{KERNEL\_SMARTPTR\_H}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_a04c9ceec51404102c26cd52e8a3572d4} 
+\#define KERNEL\+\_\+\+SMARTPTR\+\_\+H}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00003}{3}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+\Hypertarget{kernel__smartptr_8h_a220f38b26fa99d4d91b574f42d991516}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!MAX\_STRING\_SIZE@{MAX\_STRING\_SIZE}}
+\index{MAX\_STRING\_SIZE@{MAX\_STRING\_SIZE}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{MAX\_STRING\_SIZE}{MAX\_STRING\_SIZE}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_a220f38b26fa99d4d91b574f42d991516} 
+\#define MAX\+\_\+\+STRING\+\_\+\+SIZE~100}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00027}{27}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+\Hypertarget{kernel__smartptr_8h_a7735206bdfad487588bba2126b806ab7}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!NUM\_THREADS@{NUM\_THREADS}}
+\index{NUM\_THREADS@{NUM\_THREADS}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{NUM\_THREADS}{NUM\_THREADS}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_a7735206bdfad487588bba2126b806ab7} 
+\#define NUM\+\_\+\+THREADS~3}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00026}{26}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{kernel__smartptr_8h_aed8b0e33190e6865ba59206b9912d9d6}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!NetworkInfo@{NetworkInfo}}
+\index{NetworkInfo@{NetworkInfo}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{NetworkInfo}{NetworkInfo}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_aed8b0e33190e6865ba59206b9912d9d6} 
+typedef struct Network\+Info Network\+Info}
+
+
+
+네트워크 정보를 저장하는 구조체 
+
+\Hypertarget{kernel__smartptr_8h_ab5db67fb203207aaac3a0d94dcce7eb6}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!SmartPtr@{SmartPtr}}
+\index{SmartPtr@{SmartPtr}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{SmartPtr}{SmartPtr}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_ab5db67fb203207aaac3a0d94dcce7eb6} 
+typedef struct Smart\+Ptr Smart\+Ptr}
+
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00029}{29}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{kernel__smartptr_8h_ae99435bb4eb679a3bb14ec5cd4b66ffc}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!create\_smart\_ptr@{create\_smart\_ptr}}
+\index{create\_smart\_ptr@{create\_smart\_ptr}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{create\_smart\_ptr()}{create\_smart\_ptr()}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_ae99435bb4eb679a3bb14ec5cd4b66ffc} 
+\mbox{\hyperlink{struct_smart_ptr}{Smart\+Ptr}} create\+\_\+smart\+\_\+ptr (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+
+
+스마트 포인터를 생성하는 함수 (가변 인자 사용) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & 할당할 메모리 크기 \\
+\hline
+{\em ...} & 가변 인자 리스트 (초기값) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{struct_smart_ptr}{Smart\+Ptr} 스마트 포인터 구조체 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00094}{94}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+
+\Hypertarget{kernel__smartptr_8h_afa2e9f86e9e1003c6a58abd2bbb5bc14}\index{kernel\_smartptr.h@{kernel\_smartptr.h}!get\_local\_network\_info@{get\_local\_network\_info}}
+\index{get\_local\_network\_info@{get\_local\_network\_info}!kernel\_smartptr.h@{kernel\_smartptr.h}}
+\doxysubsubsection{\texorpdfstring{get\_local\_network\_info()}{get\_local\_network\_info()}}
+{\footnotesize\ttfamily \label{kernel__smartptr_8h_afa2e9f86e9e1003c6a58abd2bbb5bc14} 
+\mbox{\hyperlink{struct_network_info}{Network\+Info}} get\+\_\+local\+\_\+network\+\_\+info (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+로컬 네트워크 정보를 가져오는 함수 
+
+\begin{DoxyReturn}{Returns}
+\doxylink{struct_network_info}{Network\+Info} 로컬 네트워크 정보가 저장된 구조체 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{kernel__smartptr_8h_source_l00063}{63}} of file \mbox{\hyperlink{kernel__smartptr_8h_source}{kernel\+\_\+smartptr.\+h}}.
+

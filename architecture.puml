@@ -1,4 +1,5 @@
 @startuml
+skinparam dpi 1500  ' 해상도 조정 (DPI 변경)
 
 ' Define packages (directories)
 package "C_lib" {
@@ -49,19 +50,12 @@ package "C_lib" {
         [kernel_printf.c]
     }
 
-    [memo.c]
+    [non_existent_file.txt]
 }
 
-' Define packages (directories) for root files
+' Root files
 package "root" {
     [CMakeLists.txt]
-    [CMakeLists.txt.user]
-    [CMakeLists.txt.user.0f0aaec]
-    [CMakeLists.txt.user.1df1f4f]
-    [CMakeLists.txt.user.2ba5d43]
-    [Doxyfile]
-    [LICENSE]
-    [README.md]
     [bootloader.cpp]
     [bootloader.h]
     [cmdwindow.cpp]
@@ -73,20 +67,63 @@ package "root" {
     [resources.qrc]
     [mac_run.sh]
     [main.cpp]
+    [architecture.puml]
 }
 
 ' Define relationships
 [kernel_asm.c] --> [kernel_asm.h]
 [kernel_lib.c] --> [kernel_lib.h]
-[kernel_printf.c] --> [kernel_print.h]
+[kernel_printf.c] --> [kernel_pr_he.h]
 [kernel_chat.c] --> [kernel_chat.h]
+[kernel_chat.c] --> [kernel_smartptr.h]
 [kernel_engine.c] --> [kernel_engine.h]
+[kernel_engine.c] --> [kernel_print.h]
+[kernel_engine.c] --> [ename.c.inc]
+[kernel_print.h] --> [kernel_pr_he.h]
 [td_kernel_engine.c] --> [kernel_engine.h]
+[td_kernel_engine.c] --> [kernel_smartptr.h]
+[td_kernel_engine.c] --> [kernel_chat.h]
+[td_kernel_engine.c] --> [kernel_print.h]
+[kernel_chat.h] --> [kernel_smartptr.h]
 
 [bootloader.cpp] --> [bootloader.h]
+[bootloader.cpp] --> [mainwindow.h]
 [cmdwindow.cpp] --> [cmdwindow.h]
+[cmdwindow.cpp] --> [kernel_print.h]
+[cmdwindow.cpp] --> [kernel_smartptr.h]
 [mainwindow.cpp] --> [mainwindow.h]
+[mainwindow.cpp] --> [kernel_print.h]
 [processmanager.cpp] --> [processmanager.h]
+[main.cpp] --> [bootloader.h]
+
+[kernel_uniqueptr.h] --> [kernel_print.h]
+[kernel_smartptr.h] --> [ename.c.inc]
+[kernel_smartptr.h] --> [kernel_engine.h]
+[kernel_uniqueptr.h] --> [kernel_print.h]
+[kernel_uniqueptr.h] --> [kernel_engine.h]
+[kernel_uniqueptr.h] --> [ename.c.inc]
+
+[az_atoi.c] --> [kernel_pr_he.h]
+[az_bzero.c] --> [kernel_pr_he.h]
+[az_chrpos.c] --> [kernel_pr_he.h]
+[az_isalpha.c] --> [kernel_pr_he.h]
+[az_isdigit.c] --> [kernel_pr_he.h]
+[az_isprint.c] --> [kernel_pr_he.h]
+[az_itoa.c] --> [kernel_pr_he.h]
+[az_memalloc.c] --> [kernel_pr_he.h]
+[az_memset.c] --> [kernel_pr_he.h]
+[az_nbrlen.c] --> [kernel_pr_he.h]
+[az_putchar.c] --> [kernel_pr_he.h]
+[az_putchar_fd.c] --> [kernel_pr_he.h]
+[az_puthex.c] --> [kernel_pr_he.h]
+[az_putnbr.c] --> [kernel_pr_he.h]
+[az_putoctal.c] --> [kernel_pr_he.h]
+[az_putstr.c] --> [kernel_pr_he.h]
+[az_putunsigned.c] --> [kernel_pr_he.h]
+[az_strchr.c] --> [kernel_pr_he.h]
+[az_strcmp.c] --> [kernel_pr_he.h]
+[az_strlen.c] --> [kernel_pr_he.h]
+[az_strsub.c] --> [kernel_pr_he.h]
 
 ' Build process relationships
 [Makefile] --> [kernel_asm.c]
@@ -100,7 +137,9 @@ package "root" {
 [Makefile] --> [mainwindow.cpp]
 [Makefile] --> [processmanager.cpp]
 
-'CMake and Makefile relationship
+' CMake and Makefile relationship
 [CMakeLists.txt] --> [Makefile]
 
+skinparam maxMessageSize 500  ' 메시지 크기 한도 설정
+scale max 3000 width
 @enduml
