@@ -1,403 +1,381 @@
-# QT_Kernel_OS  
+## QT_Kernel_OS 프로젝트
+###### 2024.09.20 Update
 
-![image](https://github.com/user-attachments/assets/f1d69a48-f0eb-46ca-9c86-0bf5dd1bf5f7)  
+<img width="801" alt="스크린샷 2024-09-20 오후 3 19 54" src="https://github.com/user-attachments/assets/aead8c10-24aa-4fdd-b386-938faf8915e2">
+<img width="799" alt="스크린샷 2024-09-20 오후 3 21 29" src="https://github.com/user-attachments/assets/0b4fd327-4220-4a3c-9c27-7d49efe113bd">
+
+
+**[tree]**
+```
+azabell@azabellui-MacBookPro:~/Desktop/workspace_qt/QT_Kernel_OS$ ls -alc
+total 42168
+drwxr-xr-x   57 azabell  staff     1824  9 20 14:55 .
+drwxr-xr-x    4 azabell  staff      128  9 20 15:00 ..
+-rw-r--r--@   1 azabell  staff    10244  9 20 13:55 .DS_Store
+drwxr-x---    3 azabell  staff       96  8 29 22:10 .cache
+drwxr-x---    4 azabell  staff      128  8 28 18:07 .ccls-cache
+drwxr-xr-x   15 azabell  staff      480  9 20 14:37 .git
+-rw-r--r--    1 azabell  staff       66  8 19 10:29 .gitattributes
+-rw-r--r--    1 azabell  staff       29  8 26 17:18 .gitignore
+drwxr-xr-x    3 azabell  staff       96  9  2 14:11 .vscode
+-rw-r--r--    1 azabell  staff     2841  9 17 23:02 CMakeLists.txt
+-rw-r--r--    1 azabell  staff    13688  9 20 14:55 CMakeLists.txt.user
+-rw-r--r--    1 azabell  staff    21770  8 25 22:14 CMakeLists.txt.user.0f0aaec
+-rw-r--r--    1 azabell  staff    13688  8 25 22:14 CMakeLists.txt.user.1df1f4f
+-rw-r--r--    1 azabell  staff    30707  8 25 22:14 CMakeLists.txt.user.2ba5d43
+drwxr-xr-x   16 azabell  staff      512  9 20 14:58 C_lib
+-rw-r--r--    1 azabell  staff   129159  9 18 23:21 Doxyfile
+-rw-r--r--    1 azabell  staff   129104  9 18 22:57 Doxyfile.bak
+-rw-r--r--    1 azabell  staff     1068  8 25 22:14 LICENSE
+-rw-r--r--    1 azabell  staff    19288  9  8 14:12 README.md
+-rw-r--r--@   1 azabell  staff    99628  9 20 13:55 architecture.png
+-rw-r--r--    1 azabell  staff     3814  9 18 22:57 architecture.puml
+-rw-r--r--@   1 azabell  staff    77198  9 20 13:55 architecture.svg
+-rw-r--r--@   1 azabell  staff     9216  8 30 18:56 asm_.srctrlbm
+-rw-r--r--@   1 azabell  staff  9623552  8 30 18:56 asm_.srctrldb
+-rw-r--r--@   1 azabell  staff     1141  8 30 18:56 asm_.srctrlprj
+-rw-r--r--    1 azabell  staff   964922  8 25 22:14 booting_img.jpg
+-rw-r--r--    1 azabell  staff     4135  8 25 22:14 bootloader.cpp
+-rw-r--r--    1 azabell  staff      450  8 25 22:14 bootloader.h
+drwxr-xr-x@  12 azabell  staff      384  9 18 22:01 build
+-rw-r--r--    1 azabell  staff     4858  8 25 22:14 cmd.png
+-rw-r--r--    1 azabell  staff    56849  9 17 22:57 cmdwindow.cpp
+-rw-r--r--    1 azabell  staff     1379  9 17 21:35 cmdwindow.h
+-rw-r--r--    1 azabell  staff      588  9 17 11:45 cmdwindow.ui
+-rw-r--r--    1 azabell  staff      588  9 17 11:48 cmdwindow.ui.autosave
+drwxr-xr-x  184 azabell  staff     5888  9 20 14:37 docs
+-rw-r--r--@   1 azabell  staff    28035  9 17 22:52 exit.png
+drwxr-xr-x@ 184 azabell  staff     5888  9 18 23:20 html
+drwxr-xr-x   96 azabell  staff     3072  9 18 23:19 latex
+-rwxr-xr-x    1 azabell  staff      689  8 26 17:16 mac_run.sh
+-rw-r--r--    1 azabell  staff      286  8 25 22:14 main.cpp
+-rw-r--r--    1 azabell  staff     8032  9 17 22:53 mainwindow.cpp
+-rw-r--r--    1 azabell  staff      771  8 25 22:14 mainwindow.h
+-rw-r--r--    1 azabell  staff      692  8 25 22:14 mainwindow.ui
+-rwxrwxrwx    1 azabell  staff       27  9 16 23:15 make_architecture_png.sh
+-rw-r--r--    1 azabell  staff    15752  8 25 22:14 mypc.png
+-rw-r--r--    1 azabell  staff     1933  8 25 22:14 processmanager.cpp
+-rw-r--r--    1 azabell  staff      882  8 25 22:14 processmanager.h
+-rw-r--r--@   1 azabell  staff     9216  8 30 19:36 rebuild_kernelos.srctrlbm
+-rw-r--r--@   1 azabell  staff  9656320  8 30 19:36 rebuild_kernelos.srctrldb
+-rw-r--r--@   1 azabell  staff      786  8 30 19:36 rebuild_kernelos.srctrlprj
+-rw-r--r--    1 azabell  staff      283  9 17 22:52 resources.qrc
+-rw-r--r--    1 azabell  staff    33335  8 25 22:14 site_logo.png
+-rw-r--r--    1 azabell  staff     1116  9 17 22:56 smartpointerdialog.cpp
+-rw-r--r--    1 azabell  staff      603  9 17 22:57 smartpointerdialog.h
+-rw-r--r--    1 azabell  staff      930  9 17 22:57 smartpointerdialog.ui
+-rw-r--r--    1 azabell  staff   457579  8 25 22:14 start.png
+-rw-r--r--    1 azabell  staff    34602  8 25 22:14 trashcan.png
+```
+
+```
+azabell@azabellui-MacBookPro:~/Desktop/workspace_qt/QT_Kernel_OS/C_lib$ tree
+.
+├── Makefile
+├── include
+│   ├── kernel_asm.h
+│   ├── kernel_chat.h
+│   ├── kernel_engine.h
+│   ├── kernel_lib.h
+│   ├── kernel_print.h
+│   ├── kernel_smartptr.h
+│   └── kernel_uniqueptr.h
+├── include_printf
+│   ├── az_atoi.arm64.o
+│   ├── az_atoi.c
+│   ├── az_atoi.x86_64.o
+│   ├── az_bzero.arm64.o
+│   ├── az_bzero.c
+│   ├── az_bzero.x86_64.o
+│   ├── az_chrpos.arm64.o
+│   ├── az_chrpos.c
+│   ├── az_chrpos.x86_64.o
+│   ├── az_isalpha.arm64.o
+│   ├── az_isalpha.c
+│   ├── az_isalpha.x86_64.o
+│   ├── az_isdigit.arm64.o
+│   ├── az_isdigit.c
+│   ├── az_isdigit.x86_64.o
+│   ├── az_isprint.arm64.o
+│   ├── az_isprint.c
+│   ├── az_isprint.x86_64.o
+│   ├── az_itoa.arm64.o
+│   ├── az_itoa.c
+│   ├── az_itoa.x86_64.o
+│   ├── az_memalloc.arm64.o
+│   ├── az_memalloc.c
+│   ├── az_memalloc.x86_64.o
+│   ├── az_memset.arm64.o
+│   ├── az_memset.c
+│   ├── az_memset.x86_64.o
+│   ├── az_nbrlen.arm64.o
+│   ├── az_nbrlen.c
+│   ├── az_nbrlen.x86_64.o
+│   ├── az_putchar.arm64.o
+│   ├── az_putchar.c
+│   ├── az_putchar.x86_64.o
+│   ├── az_putchar_fd.arm64.o
+│   ├── az_putchar_fd.c
+│   ├── az_putchar_fd.x86_64.o
+│   ├── az_puthex.arm64.o
+│   ├── az_puthex.c
+│   ├── az_puthex.x86_64.o
+│   ├── az_putnbr.arm64.o
+│   ├── az_putnbr.c
+│   ├── az_putnbr.x86_64.o
+│   ├── az_putoctal.arm64.o
+│   ├── az_putoctal.c
+│   ├── az_putoctal.x86_64.o
+│   ├── az_putstr.arm64.o
+│   ├── az_putstr.c
+│   ├── az_putstr.x86_64.o
+│   ├── az_putunsigned.arm64.o
+│   ├── az_putunsigned.c
+│   ├── az_putunsigned.x86_64.o
+│   ├── az_strchr.arm64.o
+│   ├── az_strchr.c
+│   ├── az_strchr.x86_64.o
+│   ├── az_strcmp.arm64.o
+│   ├── az_strcmp.c
+│   ├── az_strcmp.x86_64.o
+│   ├── az_strlen.arm64.o
+│   ├── az_strlen.c
+│   ├── az_strlen.x86_64.o
+│   ├── az_strsub.arm64.o
+│   ├── az_strsub.c
+│   ├── az_strsub.x86_64.o
+│   └── kernel_pr_he.h
+├── kernel_chat.a
+├── kernel_engine.a
+├── kernel_lib.a
+├── kernel_printf.a
+├── memo.c
+├── non_existent_file.txt
+├── src
+│   ├── ename.c.inc
+│   ├── kernel_asm.arm64.o
+│   ├── kernel_asm.c
+│   ├── kernel_asm.x86_64.o
+│   ├── kernel_chat.arm64.o
+│   ├── kernel_chat.c
+│   ├── kernel_chat.x86_64.o
+│   ├── kernel_engine.arm64.o
+│   ├── kernel_engine.c
+│   ├── kernel_engine.x86_64.o
+│   ├── kernel_lib.arm64.o
+│   ├── kernel_lib.c
+│   ├── kernel_lib.x86_64.o
+│   ├── kernel_printf.arm64.o
+│   ├── kernel_printf.c
+│   ├── kernel_printf.x86_64.o
+│   ├── td_kernel_engine.arm64.o
+│   ├── td_kernel_engine.c
+│   └── td_kernel_engine.x86_64.o
+├── td_kernel_engine.a
+├── td_kernel_engine.exec
+└── test
+
+4 directories, 100 files
+```
+
+**QT_Kernel_OS는 Hanwha Vision VEDA Academy에서 개발된 간단한 커널 OS 프로토타입입니다. 이 프로젝트는 Qt를 사용하여 기본적인 운영 체제 기능을 시뮬레이션하고, 커맨드 라인 명령어 처리와 스마트 포인터 관리 기능을 포함하고 있습니다.**
+
+#### 프로젝트 개요
+1. 버전: 1.2 (2024.09.20)
+2. 주요 기능: 커맨드 라인 명령어 처리, 스마트 포인터 관리, 멀티스레드 및 멀티프로세스 처리, 네트워크 통신 관리
+3. 개발자: 박지우 (Azabell1993)
+
+#### 해당 프로젝트의 docs
+https://azabell1993.github.io/QT_Kernel_OS/files.html
+
+#### 주요 기능
+1. 커맨드 라인 명령어 처리
+> QT_Kernel_OS는 실제 명령어를 처리할 수 있는 커맨드 라인 인터페이스를 제공합니다. 사용자는 다음과 같은 명령어를 사용할 수 있습니다.
+```
+pwd: 현재 작업 디렉터리 출력
+ls: 파일 및 디렉터리 목록 출력
+cd <directory>: 디렉터리 변경
+cp <source> <destination>: 파일 복사
+mv <source> <destination>: 파일 이동
+df -h: 디스크 사용량 확인
+du <directory>: 디렉터리 크기 확인
+printf("message"): 메시지 출력
+history: 이전에 입력한 명령어 기록 출력
+mkdir <directory>: 디렉터리 생성
+rmdir <directory>: 디렉터리 삭제
+clear: 화면 지우기
+ifconfig: 네트워크 인터페이스 정보 출력
+netstat: 네트워크 연결 정보 출력
+help_modal: 새로운 모달 창에서 도움말 표시
+exit: 셸 종료
+shutdown || poweroff: 시스템 종료
+```
+
+#### 2. 스마트 포인터 관리
+QT_Kernel_OS 프로젝트는 스마트 포인터를 관리하기 위한 smartptr.h 라이브러리를 사용합니다. 이 라이브러리는 자동 메모리 관리를 통해 메모리 누수를 방지하고, 동시 접근 제어를 위해 뮤텍스와 참조 카운트 관리 기능을 포함하고 있습니다.
+라이브러리 위치: c_smartpointer
+
+#### 3. 채팅 서버 구현
+이 프로젝트는 스마트 포인터 라이브러리를 활용하여 멀티 클라이언트 채팅 서버를 구현하였습니다. 서버는 다중 사용자의 메시지 브로드캐스트, 채팅방 관리, 사용자 관리 기능을 포함하고 있습니다.
+채팅 서버 위치: smartpointer_multi_chat
+
+#### 4. 멀티스레드 및 멀티프로세스 처리
+프로젝트는 멀티스레드 및 멀티프로세스 환경에서 스마트 포인터를 활용하여 안전한 메모리 관리를 제공합니다. 스레드 간의 동기화, 프로세스 간의 통신, 에러 처리를 위한 다양한 메커니즘이 구현되어 있습니다.
+
+#### 5. 네트워크 통신 관리
+프로젝트는 TCP/IP 네트워크 통신을 시뮬레이션하며, 클라이언트와 서버 간의 안정적인 메시지 전송을 위해 스마트 포인터를 사용한 소켓 통신 관리를 포함하고 있습니다.
+
+#### 6. 핵심 로직
+### 1. kernel_chat.h 파일
+ kernel_chat.h 파일은 채팅 서버와 클라이언트 간의 네트워크 통신을 처리하기 위한 여러 함수를 포함하고 있습니다. 이 파일은 socket, bind, listen 등의 시스템 호출을 통해 TCP 서버를 설정하고 클라이언트 요청을 처리합니다. 주로 스마트 포인터(SmartPtr), 뮤텍스(pthread_mutex_t), 그리고 클라이언트 관리 기능이 포함되어 있습니다.
+
+### 주요 함수 및 설명
+`auto_daemon_mode()`  
+이 함수는 자동으로 서버를 데몬화하여 백그라운드에서 실행되도록 설정합니다.  
+daemonize() 함수를 호출하여 프로세스를 데몬화하고, 서버를 실행하는데 필요한 네트워크 설정을 완료합니다.  
   
-A simple kernel OS prototype built using Qt at Hanwha Vision VEDA Academy.  
-Park Ji-woo, a first-term trainee of Hanwha Vision VEDA Academy.  
-A company called Hanwha Vision in Korea selected 60 students for training at the academy.  
-
-## Version 1.0 (2024.08.16)
-
-This project is a prototype version of a basic operating system kernel simulator created using Qt. The main features include a bootloader screen simulation, command processing, and a simulated kernel process creation.
-
-### Features
-
-- **Bootloader Simulation**: 
-  - The system begins with a bootloader screen that simulates the loading of the kernel.
-  - The boot process is displayed as a progress bar, simulating the loading of the kernel and initialization of subsystems.
-
-- **Process Creation**:
-  - A simple C function `kernel_create_process` is used to simulate the creation of a kernel process.
-  - The success or failure of the process creation is displayed using both `qDebug()` for debugging output and `QMessageBox` for user notification.
-
-### Screenshots
-
-![Bootloader Screen](https://github.com/user-attachments/assets/ce57e7b5-0489-4061-932b-5046c28c175c)  
-*Bootloader screen displaying the kernel loading process.*
-
-![Process Creation Success](https://github.com/user-attachments/assets/eb6f511d-8864-4b54-b794-058a9f7af576)  
-*MessageBox showing successful process creation.*
-
-![Process Creation Failure](https://github.com/user-attachments/assets/6097e3df-3a2e-40a5-b6e7-44c4fed937e8)  
-*MessageBox showing failure in process creation.*  
+`list_users()`  
+현재 접속 중인 클라이언트의 사용자명을 출력하는 함수입니다.  
+client_infos 배열에 저장된 클라이언트 정보를 순회하며, 각 클라이언트의 사용자명과 참여 중인 채팅방 ID를 출력합니다.  
   
-
-### Video Demo
-Watch the full demonstration of the prototype on [YouTube](https://www.youtube.com/watch?v=ARBjsnRBlO8).
-
-### Project Structure
-
-- **os (Main Project Directory)**
-  - **bootloader.cpp**: Implements the bootloader simulation and handles process creation.
-  - **main.cpp**: Entry point of the application, initializing the bootloader.
-  - **C_lib**: Contains the C implementation of the kernel process management.
-    - **kernel_lib.c**: Defines the `kernel_create_process` function.
-    - **kernel_lib.h**: Header file for the C library.
-
-### Detailed Code Description
-
-#### 1. `bootloader.cpp`
-
-This file implements the bootloader UI and logic using Qt. It includes functions to simulate the kernel loading process, handle key events, and initiate the main OS window.
-
-- **Bootloader Constructor**: Initializes the bootloader window with a logo and a booting message.
-- **`simulateBootProcess` Function**: Simulates the kernel loading process with a progress bar.
-- **`startOS` Function**: Calls the `kernel_create_process` C function and displays the result using `QMessageBox`.
-- **`keyPressEvent` Function**: Detects the Enter key press to proceed from the bootloader to the main OS window.
-
-#### 2. `main.cpp`
-
-This file contains the `main` function, which initializes the Qt application and starts the bootloader.
-
-#### 3. `C_lib/kernel_lib.c`
-
-This file provides a basic implementation of the kernel process creation function. The `kernel_create_process` function simulates the creation of a process by printing a message to the console and returning a success status.
-
-- **`kernel_create_process` Function**: Simulates a process creation, always returning `true` to indicate success.
-
-### How to Build
-
-To build this project, ensure you have Qt installed, then follow these steps:
-
-1. Clone the repository.
-2. Navigate to the project directory.
-3. Run `cmake` or open the project in Qt Creator.
-4. Build the project using the appropriate build tool (e.g., `make`, `ninja`).
-
----------------
-
-# QT_Kernel_OS
-QT를 사용하여 `Hanwha Vision VEDA Academy`에서 개발한 간단한 커널 OS 프로토타입입니다.  
-`Hanwha Vision VEDA Academy`(이하 `한화비전 베다 아카데미`) 1기 교육생 박지우.  
+`broadcast_message(int sender_fd, char *message, int room_id)`   
+특정 채팅방에 있는 모든 클라이언트에게 메시지를 브로드캐스트하는 함수입니다.  
+메시지를 보낸 클라이언트를 제외한 모든 클라이언트에게 메시지를 전달합니다.  
+메시지는 브로드캐스트되기 전에 log_chat_message()를 통해 로그로 저장됩니다.  
   
-## 버전 1.0 (2024.08.16)
+`log_chat_message(const char *message)`  
+채팅 메시지를 로그 파일에 저장하는 함수입니다.  
+현재 날짜를 기준으로 로그 파일명을 생성하고, 메시지를 해당 파일에 기록합니다.  
+로그 파일 접근은 뮤텍스를 사용하여 동기화됩니다.  
+  
+`client_handler(void *arg)`  
+각 클라이언트와의 통신을 처리하는 스레드 함수입니다.  
+클라이언트가 연결되면, 사용자명을 받고, 해당 클라이언트의 채팅방을 설정한 후, 클라이언트로부터 메시지를 읽고 브로드캐스트합니다.  
+클라이언트 연결이 종료되면 리소스를 정리하고 스레드를 종료합니다.  
+  
+### 2. kernel_smartptr.h 파일
+ kernel_smartptr.h 파일은 스마트 포인터의 구조체와 이를 관리하는 함수들을 정의하고 있습니다. 스마트 포인터는 메모리 관리와 참조 카운트를 통해 메모리 누수를 방지하고, 동기화를 위해 뮤텍스를 사용합니다.
 
-이 프로젝트는 Qt를 사용하여 만든 기본적인 운영 체제 커널 시뮬레이터의 프로토타입 버전입니다. 주요 기능으로는 부트로더 화면 시뮬레이션, 명령어 처리, 그리고 커널 프로세스 생성을 포함하고 있습니다.
+### 주요 함수 및 설명
+#### SmartPtr 구조체
+이 구조체는 스마트 포인터의 메모리 주소(ptr), 참조 카운트(ref_count), 그리고 뮤텍스(mutex)를 관리합니다.
+이 구조체를 통해 동시 접근이 발생할 수 있는 멀티스레드 환경에서도 안전하게 메모리를 관리할 수 있습니다.
 
-### 주요 기능
+`create_smart_ptr(size_t size, ...)`  
+스마트 포인터를 생성하는 함수입니다.
+메모리 할당과 함께 참조 카운트를 1로 초기화하고, 뮤텍스를 초기화합니다.
+가변 인자를 받아 초기값을 설정할 수 있습니다.
 
-- **부트로더 시뮬레이션**:
-  - 시스템이 커널을 로드하는 부트로더 화면으로 시작됩니다.
-  - 부팅 과정은 진행 상태 표시줄로 표시되며, 커널 로드와 서브시스템 초기화를 시뮬레이션합니다.
+`retain(SmartPtr *sp)`  
+스마트 포인터의 참조 카운트를 증가시키는 함수입니다.
+참조 카운트 변경 시 뮤텍스를 사용하여 동기화합니다.
 
-- **프로세스 생성**:
-  - 간단한 C 함수인 `kernel_create_process`를 사용하여 커널 프로세스 생성을 시뮬레이션합니다.
-  - 프로세스 생성의 성공 여부는 `qDebug()`를 통해 디버깅 출력으로, `QMessageBox`를 통해 사용자에게 시각적으로 표시됩니다.
+`release(SmartPtr *sp)`  
+스마트 포인터의 참조 카운트를 감소시키고, 필요시 메모리를 해제하는 함수입니다.
+참조 카운트가 0이 되면, 메모리를 해제하고 뮤텍스를 파괴합니다.
 
-### 스크린샷
+### 스마트포인터 라이브러리 참조
 
-![Bootloader Screen](https://github.com/user-attachments/assets/ce57e7b5-0489-4061-932b-5046c28c175c)  
-*커널 로드 과정을 표시하는 부트로더 화면.*
+**[c_smartpointer]**  
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Azabell1993&repo=c_smartpointer)](https://github.com/Azabell1993/c_smartpointer)
 
-![Process Creation Success](https://github.com/user-attachments/assets/eb6f511d-8864-4b54-b794-058a9f7af576)  
-*프로세스 생성 성공을 알리는 메시지 박스.*
+<img width="558" alt="스크린샷 2024-09-13 오후 4 23 41" src="https://github.com/user-attachments/assets/dc5e9bd2-22d7-4e85-956b-b58b39b5bf74">
 
-![Process Creation Failure](https://github.com/user-attachments/assets/6097e3df-3a2e-40a5-b6e7-44c4fed937e8)  
-*프로세스 생성 실패를 알리는 메시지 박스.*
+### 3. kernel_uniqueptr.h 파일
+ kernel_uniqueptr.h 파일은 고유 스마트 포인터(UniquePtr)와 공유 스마트 포인터(SharedPtr)를 구현한 파일입니다. 이 파일은 메모리 소유권 이전, 참조 카운트 관리, 메모리 해제 등의 기능을 포함하고 있습니다.
 
+### 주요 함수 및 설명
+`create_unique_ptr(size_t size, void (*deleter)(void*))`  
+고유 스마트 포인터를 생성하는 함수입니다.
+메모리를 할당하고, 지정된 소멸자 함수를 설정합니다.
 
-### 동영상 데모
+`release_unique_ptr(UniquePtr *up)`  
+고유 스마트 포인터의 메모리를 해제하는 함수입니다.
+메모리가 해제되면, 소멸자 함수가 호출됩니다.
 
-프로토타입의 전체 데모를 [YouTube](https://www.youtube.com/watch?v=ARBjsnRBlO8)에서 시청하세요.
+`create_shared_ptr(size_t size, void (*deleter)(void*))`  
+공유 스마트 포인터를 생성하는 함수입니다.
+메모리를 할당하고, 참조 카운트를 1로 초기화하며, 뮤텍스를 설정합니다.
 
-### 프로젝트 구조
+`retain_shared_ptr(SharedPtr *sp)`  
+공유 스마트 포인터의 참조 카운트를 증가시키는 함수입니다.
+참조 카운트가 증가할 때마다 뮤텍스를 사용하여 동기화합니다.
 
-- **os (메인 프로젝트 디렉터리)**
-  - **bootloader.cpp**: 부트로더 시뮬레이션을 구현하고 프로세스 생성을 처리합니다.
-  - **main.cpp**: 애플리케이션의 진입점으로, 부트로더를 초기화합니다.
-  - **C_lib**: 커널 프로세스 관리의 C 구현을 포함합니다.
-    - **kernel_lib.c**: `kernel_create_process` 함수를 정의합니다.
-    - **kernel_lib.h**: C 라이브러리의 헤더 파일.
+`release_shared_ptr(SharedPtr *sp)`  
+공유 스마트 포인터의 참조 카운트를 감소시키고, 필요 시 메모리를 해제하는 함수입니다.
+참조 카운트가 0이 되면, 메모리와 뮤텍스를 해제합니다.
 
-### 코드 설명
+### 4. td_kernel_engine.c 파일
+ td_kernel_engine.c 파일은 고급 커널 엔진을 구현한 코드로, 멀티스레딩, 멀티프로세싱, 스마트 포인터, 동기화 메커니즘, 네트워크 통신 등을 포함한 다양한 시스템 시뮬레이션을 제공합니다.
 
-#### 1. `bootloader.cpp`
+### 주요 함수 및 설명
+`main()`  
+프로그램의 진입점으로, 다양한 커널 기능을 테스트하고 실행합니다.
+멀티스레딩, 멀티프로세싱, 스마트 포인터 테스트, 동기화 메커니즘 테스트 등을 포함합니다.
+네트워크 통신 시뮬레이션은 kernel_chat() 함수를 사용하여 채팅 서버와 클라이언트 간의 통신을 처리합니다.
 
-이 파일은 Qt를 사용하여 부트로더 UI와 로직을 구현합니다. 커널 로딩 과정을 시뮬레이트하고, 키 이벤트를 처리하며, 메인 OS 윈도우를 시작하는 함수들을 포함하고 있습니다.
+`kernel_chat(int num_args, ...)`  
+네트워크 통신을 위한 함수로, TCP 서버를 생성하고 클라이언트 연결을 처리합니다.
+소켓을 생성하고, 서버 IP와 포트를 설정하며, 클라이언트 요청을 처리합니다.
+이 함수는 kernel_chat.h 파일의 채팅 서버 구현을 참고하여 작성되었습니다.
 
-- **부트로더 생성자**: 로고와 부팅 메시지로 부트로더 창을 초기화합니다.
-- **`simulateBootProcess` 함수**: 진행 상태 표시줄로 커널 로딩 과정을 시뮬레이션합니다.
-- **`startOS` 함수**: `kernel_create_process` C 함수를 호출하고 결과를 `QMessageBox`로 표시합니다.
-- **`keyPressEvent` 함수**: 엔터 키를 감지하여 부트로더에서 메인 OS 윈도우로 이동합니다.
+### 채팅서버 참조
 
-#### 2. `main.cpp`
+**[smartpointer_multi_chat]**  
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Azabell1993&repo=smartpointer_multi_chat)](https://github.com/Azabell1993/smartpointer_multi_chat)
 
-이 파일은 `main` 함수를 포함하며, Qt 애플리케이션을 초기화하고 부트로더를 시작합니다.
+#### 채팅 서버 이식 관련
+kernel_chat.h 파일에 정의된 함수들을 사용하여 채팅 서버를 구현할 수 있습니다.
+채팅 서버는 클라이언트와의 통신을 관리하고, 메시지 브로드캐스트, 클라이언트 관리, 로그 기록 등의 기능을 제공합니다.
+이식된 코드에서는 kernel_chat(int num_args, ...) 함수가 네트워크 통신을 처리하며, 서버의 IP 주소와 포트를 인자로 받아 TCP 서버를 설정합니다.
 
-#### 3. `C_lib/kernel_lib.c`
+----------- 
+### 설치 및 빌드 방법
+1. QT_Kernel_OS
+저장소를 클론합니다.
+> git clone https://github.com/Azabell1993/QT_Kernel_OS.git
 
-이 파일은 커널 프로세스 생성 함수의 기본 구현을 제공합니다. `kernel_create_process` 함수는 프로세스를 생성하는 것을 시뮬레이션하며, 콘솔에 메시지를 출력하고 성공 상태를 반환합니다.
-
-- **`kernel_create_process` 함수**: 프로세스 생성을 시뮬레이션하며 항상 `true`를 반환하여 성공을 가정합니다.
-
-### 빌드 방법
-
-이 프로젝트를 빌드하려면 Qt가 설치되어 있어야 하며, 다음 단계를 따르세요:
-
-1. 저장소를 클론합니다.
 2. 프로젝트 디렉토리로 이동합니다.
-3. `cmake`를 실행하거나 Qt Creator에서 프로젝트를 엽니다.
-4. 적절한 빌드 도구(`make`, `ninja` 등)를 사용하여 프로젝트를 빌드합니다.
-
-------------------------------
-
-**English Version:**
-
-## Version 1.1 (2024.08.24)
-
-In this update, several enhancements have been made to the kernel OS prototype, focusing on improving the functionality and formatting of the custom printf implementation, specifically handling integers, floating-point numbers, and character outputs.
-
-### New Features
-
-- **Enhanced `printf` Functionality:**
-  - **Integer Formatting:** Improved handling of integers with various formatting options such as zero-padding, width specification, and handling of arithmetic expressions.
-  - **Floating-Point Precision:** Added support for floating-point numbers with precision control. The `printf` function can now handle complex float formatting such as `%f`, `%.2f`, `%+08.3f`, etc.
-  - **Character Output:** Enhanced the ability to print characters using `%c` and handle various flags and width specifiers.
-
-### Detailed Code Enhancements
-
-#### 1. `CmdWindow::executeKernelPrintf`
-
-The `executeKernelPrintf` function has been updated to correctly process and format various data types, particularly floating-point numbers and integers. The implementation now supports advanced formatting options, including precision for floats and arithmetic operations within format strings.
-
-- **Floating-Point Formatting:** Properly handles precision (`%.2f`, `%+08.3f`) and width for floating-point numbers.
-- **Integer Handling:** Supports formatting with flags like `+`, `-`, `0`, and width specifications. Also, handles arithmetic operations within format strings, making it more versatile for mathematical expressions.
-- **Character Output:** Supports character formatting with proper handling of width and alignment.
-
-#### 2. `CmdWindow::parseArguments`
-
-Enhanced the argument parsing to correctly interpret and handle floating-point numbers, integers (including arithmetic expressions), and characters. This function ensures that the correct data types are passed to the `executeKernelPrintf` function for formatting.
-
-#### 3. `CmdWindow::evaluateSimpleExpression`
-
-This function now supports evaluating simple arithmetic expressions provided within format strings, returning the correct integer or floating-point result. This feature allows for more dynamic and calculated outputs directly from the `printf` format strings.
-
-### Testing and Examples
+> cd QT_Kernel_OS/C_lib
+> make
+make시 마지막에 아래와 같은 내용이 뜬다면 성공적으로 build가 된 것입니다.
+  
 ```
-  // C Static Library
-  #include "kernel_print.h"
-  
-  // Directly hard-coded C functions (kernel_lib.h)
-  extern "C" {
-      bool kernel_create_process(const char *process_name);
-      void kernel_list_processes();
-      bool kernel_kill_process(const char *process_name);
-      void register_print_function(void (*print_function)(const char *str));
-      void az_printf(const char *format, ...);
-      void kernel_putchar(char c);
-  }
-  
-  /** Test **/
-  kernel_printf("\n\n******** Test kernel_printf Function ********\n");
-  kernel_printf("Hello world!\n");
-  kernel_printf("A single character : %c \n", 'T');
-  kernel_printf("An integer : %d \n", 37);
-  kernel_printf("An integer : %d \n", 299);
-  kernel_printf("5-4 = %d\n", 1);
-  
-  int a = 1;
-  int b = 2;
-  
-  kernel_printf("%d + %d = %d\n", a, b, a + b);
-  kernel_printf("%d\t\t\t String.\n", 12345678);
-  kernel_printf("-650\n");
-  kernel_printf("%+d\n", 430);
-  kernel_printf("%+1d\n", 650);
-  kernel_printf("%+10d\n", 499);
-  kernel_printf("% 3d\n", 1230);
-  kernel_printf("%08d\n", 342);
-  kernel_printf("%+03d\n", -430);
-  kernel_printf("%3d\n", -43);
-  kernel_printf("%u\n", 23919293929392);
-  kernel_printf("%+-u\n", 12345);
-  kernel_printf("%+10u\n", 12345);
-  kernel_printf("%-4s\n", "Az");
-  kernel_printf("%o\n", 333);
-  kernel_printf("%-0#+10o\n", 2048);
-  kernel_printf("%X\n", 12345678);
-  kernel_printf("%#+x\n", 12345678);
-  kernel_printf("\n\nfunction call Test\n");
-  kernel_printf("%d + %d = %d", 5, 6, function_Test(5, 6));
-  kernel_printf("\n");
-  
-  /** There are two ways to bring in the static library. The above kernel_printf is from the kernel_printf.h header, and below is from kernel_lib.h. **/
-  /** Since only kernel_printf.h is included in this code file, the below declarations should ideally be in the header file as well. **/
-  /** However, for educational purposes, we are using the extern macro instead of including the header file. **/
-  /** Declaring this removes the warning. **/
-  /*** kernel_putchar ***/
-  kernel_putchar('H');
-  kernel_putchar('E');
-  kernel_putchar('L');
-  kernel_putchar('L');
-  kernel_putchar('O');
-  kernel_putchar('\n');
-  
-  kernel_putchar('V');
-  kernel_putchar('E');
-  kernel_putchar('D');
-  kernel_putchar('A');
-  kernel_putchar('\n');
-  
-  kernel_printf("-\n");
-  kernel_printf(".\n");
-  kernel_printf("/\n");
-  kernel_printf("'()*+,-./\n");
-```
-These tests have shown that the enhanced `printf` functionality can handle a variety of cases, ensuring that the output is correctly formatted according to the specified precision, width, and flags.
-
-### Screenshots
-  
-<img width="807" alt="스크린샷 2024-08-24 오후 9 19 18" src="https://github.com/user-attachments/assets/37a2a11f-b18f-4ae0-9ff9-13c59d76610b">  
-
-*QT Desktop Application*
-    
-<img width="951" alt="스크린샷 2024-08-24 오후 9 21 37" src="https://github.com/user-attachments/assets/0911c744-cbfd-4c3c-8863-faab6df96ce9">  
-
-*C - printf function (prototype)*
-
-
-### Future Improvements
-- Implement actual process management with more detailed simulation.
-- Expand the command set for the simulated OS.
-- Improve the bootloader interface with more realistic elements.
-- Extend `printf` functionality to support even more complex formats, including hexadecimal floats, scientific notation, and more.
-- Implement error handling for unsupported or incorrect format specifiers to make the system more robust.
-
----------------------------------
-
-**Korean Version:**
-
-## 버전 1.1 (2024.08.24)
-
-이번 업데이트에서는 사용자 정의 `printf` 구현의 기능 및 서식 개선에 중점을 두어, 정수, 부동소수점 숫자 및 문자 출력 기능을 향상시켰습니다.
-
-### 새로운 기능
-
-- **향상된 `printf` 기능:**
-  - **정수 서식 처리:** 다양한 서식 옵션(제로 패딩, 너비 지정, 산술 표현식 처리)을 개선하여 정수 출력 기능을 향상시켰습니다.
-  - **부동소수점 정밀도:** 부동소수점 숫자의 정밀도 제어 기능이 추가되었습니다. 이제 `printf` 함수는 `%f`, `%.2f`, `%+08.3f` 등의 복잡한 소수점 형식을 처리할 수 있습니다.
-  - **문자 출력:** `%c`를 사용한 문자 출력 기능을 강화하고, 다양한 플래그 및 너비 지정자를 처리할 수 있습니다.
-
-### 코드 향상 사항
-
-#### 1. `CmdWindow::executeKernelPrintf`
-
-`executeKernelPrintf` 함수는 다양한 데이터 유형, 특히 부동소수점 숫자 및 정수를 올바르게 처리하고 서식화할 수 있도록 업데이트되었습니다. 이번 구현에서는 소수점 정밀도, 정수 서식 처리, 산술 연산 등을 포함한 고급 서식 옵션을 지원합니다.
-
-- **부동소수점 서식:** 소수점 정밀도(`%.2f`, `%+08.3f`) 및 너비를 적절히 처리합니다.
-- **정수 처리:** `+`, `-`, `0`와 같은 플래그 및 너비 지정자를 지원하며, 서식 문자열 내 산술 연산을 처리할 수 있습니다.
-- **문자 출력:** 너비 및 정렬을 적절히 처리하여 문자 서식을 지원합니다.
-
-#### 2. `CmdWindow::parseArguments`
-
-부동소수점 숫자, 정수(산술 표현식 포함), 문자 등을 올바르게 해석하고 처리할 수 있도록 인수 파싱 기능을 향상시켰습니다. 이 함수는 `executeKernelPrintf` 함수에 올바른 데이터 유형을 전달하여 서식화를 보장합니다.
-
-#### 3. `CmdWindow::evaluateSimpleExpression`
-
-이 함수는 이제 서식 문자열 내 제공된 간단한 산술 표현식을 평가하여 올바른 정수 또는 부동소수점 결과를 반환합니다. 이 기능은 `printf` 서식 문자열에서 더욱 동적이고 계산된 출력을 허용합니다.
-
-### 테스트 및 예제
-```
-  // C 정적 라이브러리
-  #include "kernel_print.h"
-  
-  // 직접 하드코딩된 C 함수(kernel_lib.h)
-  extern "C" {
-    bool kernel_create_process(const char *process_name);
-    void kernel_list_processes();
-    bool kernel_kill_process(const char *process_name);
-    void register_print_function(void (*print_function)(const char *str));
-    void az_printf(const char *format, ...);
-    void kernel_putchar(char c);
-  }
-
-  /** test **/
-  kernel_printf("\n\n******** Test kernel_printf Function ********\n");
-  kernel_printf("Hello world!\n");
-  kernel_printf("A single character : %c \n", 'T');
-  kernel_printf("An integer : %d \n", 37);
-  kernel_printf("An integer : %d \n", 299);
-  kernel_printf("5-4 = %d\n", 1);
-
-  int a = 1;
-  int b = 2;
-
-  kernel_printf("%d + %d = %d\n", a, b, a + b);
-  kernel_printf("%d\t\t\t String.\n", 12345678);
-  kernel_printf("-650\n");
-  kernel_printf("%+d\n", 430);
-  kernel_printf("%+1d\n", 650);
-  kernel_printf("%+10d\n", 499);
-  kernel_printf("% 3d\n", 1230);
-  kernel_printf("%08d\n", 342);
-  kernel_printf("%+03d\n", -430);
-  kernel_printf("%3d\n", -43);
-  kernel_printf("%u\n", 23919293929392);
-  kernel_printf("%+-u\n", 12345);
-  kernel_printf("%+10u\n", 12345);
-  kernel_printf("%-4s\n", "Az");
-  kernel_printf("%o\n", 333);
-  kernel_printf("%-0#+10o\n", 2048);
-  kernel_printf("%X\n", 12345678);
-  kernel_printf("%#+x\n", 12345678);
-  kernel_printf("\n\nfunction call Test\n");
-  kernel_printf("%d + %d = %d", 5, 6, function_Test(5, 6));
-  kernel_printf("\n");
-
-  /** 정적 라이브러리를 갖고 오는 방법은 두가지임. 위의 kernel_printf는 kernel_printf.h헤더이며 아래는 kernel_lib.h임. **/
-  /** 따라서 이 코드 파일에서 kernel_printf.h만 했기 때문에 아래도 헤더파일로 선언해야하는데 **/
-  /** 공부목적을 위해서 헤더 파일이 아닌 extern 메크로를 사용함 **/
-  /** 선언을 하니 워닝이 사라짐 **/
-  /*** kernel_putchar ***/
-  kernel_putchar('H');
-  kernel_putchar('E');
-  kernel_putchar('L');
-  kernel_putchar('L');
-  kernel_putchar('O');
-  kernel_putchar('\n');
-
-  kernel_putchar('V');
-  kernel_putchar('E');
-  kernel_putchar('D');
-  kernel_putchar('A');
-  kernel_putchar('\n');
-
-  kernel_printf("-\n");
-  kernel_printf(".\n");
-  kernel_printf("/\n");
-  kernel_printf("'()*+,-./\n");
+clang -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -fcommon -c src/kernel_lib.c -o src/kernel_lib.arm64.o
+Compiling for arm64: src/kernel_printf.c
+clang -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -fcommon -c src/kernel_printf.c -o src/kernel_printf.arm64.o
+Compiling for arm64: src/td_kernel_engine.c
+clang -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -fcommon -c src/td_kernel_engine.c -o src/td_kernel_engine.arm64.o
+Creating static library kernel_lib.a
+libtool -static -o kernel_lib.a src/kernel_asm.x86_64.o src/kernel_chat.x86_64.o src/kernel_engine.x86_64.o src/kernel_lib.x86_64.o src/kernel_printf.x86_64.o src/td_kernel_engine.x86_64.o src/kernel_asm.arm64.o src/kernel_chat.arm64.o src/kernel_engine.arm64.o src/kernel_lib.arm64.o src/kernel_printf.arm64.o src/td_kernel_engine.arm64.o
+/Library/Developer/CommandLineTools/usr/bin/libtool: file: src/kernel_asm.x86_64.o has no symbols
+/Library/Developer/CommandLineTools/usr/bin/libtool: file: src/kernel_asm.arm64.o has no symbols
+ranlib kernel_lib.a
+/Library/Developer/CommandLineTools/usr/bin/ranlib: file: kernel_lib.a(kernel_asm.x86_64.o) has no symbols
+/Library/Developer/CommandLineTools/usr/bin/ranlib: file: kernel_lib.a(kernel_asm.arm64.o) has no symbols
+Creating kernel_engine.a static library
+libtool -static -o kernel_engine.a src/kernel_engine.x86_64.o
+ranlib kernel_engine.a
+Creating kernel_chat.a static library
+libtool -static -o kernel_chat.a src/kernel_chat.x86_64.o
+ranlib kernel_chat.a
+Creating td_kernel_engine.a static library
+libtool -static -o td_kernel_engine.a src/td_kernel_engine.x86_64.o
+ranlib td_kernel_engine.a
+Building td_kernel_engine executable
+clang -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -fcommon -o td_kernel_engine.exec src/td_kernel_engine.c kernel_lib.a kernel_engine.a kernel_printf.a kernel_chat.a td_kernel_engine.a
 ```
 
-이러한 테스트는 향상된 `printf` 기능이 다양한 경우를 처리할 수 있음을 보여주며, 지정된 정밀도, 너비 및 플래그에 따라 출력이 올바르게 서식화됩니다.
+3. td_kernel_engine.exec를 실행하여 확인을 합니다.
+<img width="1792" alt="스크린샷 2024-09-20 오후 2 50 42" src="https://github.com/user-attachments/assets/b9a4e74d-ee1a-44cb-9673-146b535a35b2">
 
-### 스크린샷
+4. QT Creator에 들어가서 작동을 확인합니다.
+<img width="1430" alt="스크린샷 2024-09-20 오후 2 52 25" src="https://github.com/user-attachments/assets/008fa330-5582-4454-ab35-63c8ed91e1d9">
 
-
-<img width="807" alt="스크린샷 2024-08-24 오후 9 19 18" src="https://github.com/user-attachments/assets/37a2a11f-b18f-4ae0-9ff9-13c59d76610b">    
-
-*QT 데스크톱 화면*
-
-
-<img width="951" alt="스크린샷 2024-08-24 오후 9 21 37" src="https://github.com/user-attachments/assets/0911c744-cbfd-4c3c-8863-faab6df96ce9">   
-
-*C언어 printf 자작 파서 링킹 모습(초기 프로토타입)*
+-> 만약, 아래와 같은 메세지가 뜬 다면, QT 어플리케이션이 완전히 종료되지 않아 모두 닫고 재시작을 해야합니다. (포트번호 중복 이슈)
+<img width="888" alt="스크린샷 2024-09-20 오후 2 52 35" src="https://github.com/user-attachments/assets/607da6d8-fa30-4def-bd40-864b49a0ef63">
 
 
-### 향후 개선 사항
-- 실제 프로세스 관리를 구현하여 더욱 자세한 시뮬레이션을 추가할 예정입니다.
-- 시뮬레이션된 OS의 명령어 세트를 확장할 예정입니다.
-- 부트로더 인터페이스를 개선하여 더욱 현실적인 요소를 추가할 계획입니다.
-- `printf` 기능을 확장하여 더 복잡한 서식(16진수 부동소수점, 과학적 표기법 등)을 지원할 예정입니다.
-- 지원되지 않거나 잘못된 서식 지정자에 대한 오류 처리를 구현하여 시스템을 더욱 견고하게 만들 계획입니다.
-
+5. 크로스 컴파일이 가능합니다.
+<img width="1249" alt="스크린샷 2024-09-20 오후 2 51 57" src="https://github.com/user-attachments/assets/2043438b-60ef-4118-be8f-938f32a5f2f7">
 
