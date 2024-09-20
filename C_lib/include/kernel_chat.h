@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <stdarg.h>
+#include <sys/stat.h>
 #include "kernel_smartptr.h"
 #include "kernel_uniqueptr.h"
 #include <fcntl.h>
@@ -752,7 +753,23 @@ void kernel_chat(int num_args, ...) {
     kernel_printf("포트 %d에서 대기 중입니다. 포트 상태를 확인합니다...\n", port);
     system("netstat -an | grep 5100");
 
-    int fd = open("/var/log/chat_server.log", O_RDWR | O_CREAT | O_APPEND, 0600);
+    // /var/log/chatlog 디렉토리가 존재하는지 확인하고, 없으면 생성
+    struct stat st = {0};
+    if (stat("/var/log/chatlog", &st) == -1) {
+        if (mkdir("/var/log/chatlog", 0700) < 0) {
+            perror("/var/log/chatlog 디렉토리 생성 실패");
+            exit(EXIT_FAILURE);
+        }
+        kernel_printf("/var/log/chatlog 디렉토리를 생성했습니다.\n");
+    }
+
+    int fd = open("/var/log/chatlog/chat_server.log", O_RDWR | O_CREAT | O_APPEND, 0600);
+    if (fd < 0) {
+        perror("로그 파일 열기 실패");
+        exit(EXIT_FAILURE);
+    }
+    
+    // int fd = open("/var/log/chat_server.log", O_RDWR | O_CREAT | O_APPEND, 0600);
     dup2(fd, STDOUT_FILENO);
     dup2(fd, STDERR_FILENO);
 

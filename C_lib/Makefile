@@ -4,18 +4,18 @@ UNAME_M := $(shell uname -m)
 
 ifeq ($(UNAME_S), Darwin)      # macOS (both x86_64 and ARM64)
     CC = clang
+    AR = libtool -static -o
     ifeq ($(UNAME_M), arm64)
         ARCH_FLAGS = -arch arm64
     else
         ARCH_FLAGS = -arch x86_64
     endif
-    # macOS에서는 '-Wno-format-truncation'을 지원하지 않으므로 제외
     CFLAGS = -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -fcommon
 else ifeq ($(UNAME_S), Linux)  # Ubuntu (Linux)
     CC = gcc
+    AR = ar rcs
     ARCH_FLAGS =
-    # Linux에서는 '-Wno-format-truncation'을 사용
-    CFLAGS = -std=c11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -Wno-unused-variable -Wno-format-truncation -fcommon
+    CFLAGS = -std=gnu11 -Wall -Wextra -Iinclude -Iinclude_printf -Wformat -Werror -Wno-unused-label -Wno-unused-function -Wno-unused-variable -Wno-format-truncation -fcommon -D_GNU_SOURCE
 else
     $(error Unsupported OS: $(UNAME_S))
 endif
@@ -44,31 +44,31 @@ all: $(STDIO_LIB) $(KERNEL_LIB) $(KERNEL_ENGINE_LIB) $(KERNEL_CHAT_LIB) $(TD_KER
 
 # Rule to create kernel_printf.a
 $(STDIO_LIB): $(STDIO_OBJS_X86_64) $(STDIO_OBJS_ARM64)
-	@echo "Creating universal static library $(STDIO_LIB)"
-	@libtool -static -o $@ $^
+	@echo "Creating static library $(STDIO_LIB)"
+	$(AR) $@ $^
 	ranlib $@
 
 # Rule to create kernel_lib.a
 $(KERNEL_LIB): $(KERNEL_OBJS_X86_64) $(KERNEL_OBJS_ARM64)
-	@echo "Creating universal static library $(KERNEL_LIB)"
-	@libtool -static -o $@ $^
+	@echo "Creating static library $(KERNEL_LIB)"
+	$(AR) $@ $^
 	ranlib $@
 
 # Rule to create kernel_engine.a
 $(KERNEL_ENGINE_LIB): $(KERNEL_SRC_DIR)/kernel_engine.x86_64.o
 	@echo "Creating kernel_engine.a static library"
-	@libtool -static -o $@ $^
+	$(AR) $@ $^
 	ranlib $@
 
 # Rule to create kernel_chat.a
 $(KERNEL_CHAT_LIB): $(KERNEL_SRC_DIR)/kernel_chat.x86_64.o
 	@echo "Creating kernel_chat.a static library"
-	@libtool -static -o $@ $^
+	$(AR) $@ $^
 	ranlib $@
 
 $(TD_KERNEL_ENGINE): $(KERNEL_SRC_DIR)/td_kernel_engine.x86_64.o
 	@echo "Creating td_kernel_engine.a static library"
-	@libtool -static -o $@ $^
+	$(AR) $@ $^
 	ranlib $@
 
 # Compile .c files to .o files for x86_64
