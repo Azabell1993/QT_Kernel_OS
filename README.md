@@ -254,6 +254,17 @@ client_infos 배열에 저장된 클라이언트 정보를 순회하며, 각 클
 클라이언트가 연결되면, 사용자명을 받고, 해당 클라이언트의 채팅방을 설정한 후, 클라이언트로부터 메시지를 읽고 브로드캐스트합니다.  
 클라이언트 연결이 종료되면 리소스를 정리하고 스레드를 종료합니다.  
   
+### 채팅서버 참조
+
+**[smartpointer_multi_chat]**  
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Azabell1993&repo=smartpointer_multi_chat)](https://github.com/Azabell1993/smartpointer_multi_chat)
+
+#### 채팅 서버 이식 관련
+kernel_chat.h 파일에 정의된 함수들을 사용하여 채팅 서버를 구현할 수 있습니다.
+채팅 서버는 클라이언트와의 통신을 관리하고, 메시지 브로드캐스트, 클라이언트 관리, 로그 기록 등의 기능을 제공합니다.
+이식된 코드에서는 kernel_chat(int num_args, ...) 함수가 네트워크 통신을 처리하며, 서버의 IP 주소와 포트를 인자로 받아 TCP 서버를 설정합니다.
+
+  
 ### 2. kernel_smartptr.h 파일
  kernel_smartptr.h 파일은 스마트 포인터의 구조체와 이를 관리하는 함수들을 정의하고 있습니다. 스마트 포인터는 메모리 관리와 참조 카운트를 통해 메모리 누수를 방지하고, 동기화를 위해 뮤텍스를 사용합니다.
 
@@ -320,15 +331,6 @@ client_infos 배열에 저장된 클라이언트 정보를 순회하며, 각 클
 소켓을 생성하고, 서버 IP와 포트를 설정하며, 클라이언트 요청을 처리합니다.
 이 함수는 kernel_chat.h 파일의 채팅 서버 구현을 참고하여 작성되었습니다.
 
-### 채팅서버 참조
-
-**[smartpointer_multi_chat]**  
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=Azabell1993&repo=smartpointer_multi_chat)](https://github.com/Azabell1993/smartpointer_multi_chat)
-
-#### 채팅 서버 이식 관련
-kernel_chat.h 파일에 정의된 함수들을 사용하여 채팅 서버를 구현할 수 있습니다.
-채팅 서버는 클라이언트와의 통신을 관리하고, 메시지 브로드캐스트, 클라이언트 관리, 로그 기록 등의 기능을 제공합니다.
-이식된 코드에서는 kernel_chat(int num_args, ...) 함수가 네트워크 통신을 처리하며, 서버의 IP 주소와 포트를 인자로 받아 TCP 서버를 설정합니다.
 
 ----------- 
 ### 설치 및 빌드 방법
