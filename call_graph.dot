@@ -1,0 +1,105 @@
+digraph ProjectStructure {
+
+    // CmdWindow 관련 함수들
+    "CmdWindow" -> "handleCommand";
+    "CmdWindow" -> "runUnifiedProcess";
+    "CmdWindow" -> "runMultithreadingTest";
+    "CmdWindow" -> "runSemaphoreTest";
+    "CmdWindow" -> "runMutexTest";
+    "CmdWindow" -> "qt_print";
+    "CmdWindow" -> "resetSmartPointer";
+    "CmdWindow" -> "executeKernelPrintf";
+    "CmdWindow" -> "parseArguments";
+    "CmdWindow" -> "evaluateSimpleExpression";
+    "CmdWindow" -> "precedence";
+    "CmdWindow" -> "applyOp";
+    "CmdWindow" -> "runTests";
+
+    // handleCommand 함수의 내부 호출
+    "handleCommand" -> "runUnifiedProcess";
+    "handleCommand" -> "runMultithreadingTest";
+    "handleCommand" -> "runSemaphoreTest";
+    "handleCommand" -> "runMutexTest";
+    "handleCommand" -> "qt_print";
+    "handleCommand" -> "resetSmartPointer";
+    "handleCommand" -> "executeKernelPrintf";
+
+    // runUnifiedProcess 함수의 내부 호출
+    "runUnifiedProcess" -> "create_smart_ptr";
+    "runUnifiedProcess" -> "run_multithreading";
+    "runUnifiedProcess" -> "kernel_printf";
+
+    // runMultithreadingTest 함수의 내부 호출
+    "runMultithreadingTest" -> "run_multithreading";
+    "runMultithreadingTest" -> "kernel_printf";
+    "runMultithreadingTest" -> "qt_print";
+
+    // runSemaphoreTest 함수의 내부 호출
+    "runSemaphoreTest" -> "run_multithreading";
+    "runSemaphoreTest" -> "kernel_printf";
+    "runSemaphoreTest" -> "qt_print";
+
+    // runMutexTest 함수의 내부 호출
+    "runMutexTest" -> "run_multithreading";
+    "runMutexTest" -> "kernel_printf";
+    "runMutexTest" -> "qt_print";
+
+    // kernel_engine.c 관련 함수들
+    "create_threads" -> "pthread_create";
+    "create_single_process" -> "fork";
+    "create_multi_processes" -> "fork";
+    "run_multithreading" -> "pthread_create";
+    "run_multithreading" -> "init_semaphore";
+    "run_multithreading" -> "init_mutex";
+    "run_multithreading" -> "thread_function";
+    "run_multithreading" -> "semaphore_thread";
+    "run_multithreading" -> "mutex_thread";
+
+    // kernel_chat.c 관련 함수들
+    "kernel_chat" -> "create_network_tcp_process";
+    "kernel_chat" -> "broadcast_message";
+    "kernel_chat" -> "log_chat_message";
+    "kernel_chat" -> "release_client";
+    "kernel_chat" -> "send_server_message";
+    "kernel_chat" -> "daemonize";
+    "kernel_chat" -> "auto_daemon_mode";
+    "kernel_chat" -> "manual_server_mode";
+    "create_network_tcp_process" -> "socket";
+    "broadcast_message" -> "send";
+    "release_client" -> "close";
+    "send_server_message" -> "send";
+    "daemonize" -> "fork";
+    "auto_daemon_mode" -> "fork";
+    "manual_server_mode" -> "select";
+
+    // kernel_printf.c 관련 함수들
+    "az_speciftypeini" -> "az_f";
+    "az_speciftypeini" -> "az_printf";
+    "az_f" -> "az_speciftypeini";
+    "az_mod" -> "az_speciftypeini";
+    "az_printf" -> "kernel_putchar";
+
+    // kernel_uniqueptr.h 관련 함수들
+    "create_shared_ptr" -> "malloc";
+    "create_unique_ptr" -> "malloc";
+    "retain_shared_ptr" -> "increment_ref_count";
+    "release_shared_ptr" -> "decrement_ref_count";
+    "release_unique_ptr" -> "decrement_ref_count";
+    "transfer_unique_ptr" -> "release_unique_ptr";
+
+    // kernel_smartptr.h 관련 함수들
+    "create_smart_ptr" -> "malloc";
+    "create_smart_ptr" -> "increment_ref_count";
+    "create_smart_ptr" -> "decrement_ref_count";
+    "release" -> "decrement_ref_count";
+    "retain" -> "increment_ref_count";
+    "resetSmartPointer" -> "release";
+
+    // 추가적인 함수들 및 상호작용
+    "main.cpp" -> "CmdWindow";
+    "cmdwindow.cpp" -> "CmdWindow";
+    "processmanager.cpp" -> "ProcessManager";
+    "bootloader.cpp" -> "Bootloader";
+    "mainwindow.cpp" -> "MainWindow";
+    "smartpointerdialog.cpp" -> "SmartPointerDialog";
+}
