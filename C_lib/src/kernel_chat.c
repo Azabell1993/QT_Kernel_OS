@@ -759,7 +759,7 @@ void kernel_chat(int num_args, ...) {
     }
     kernel_printf("**************************************************\n");
 
-    // 불필요한 변수들을 주석 처리하거나 삭제
+    // 채팅 서버에서 클라이언트를 받는걸 실시간으로 모니터링 하고 싶으면 주석 해제
     // while (1) {
     //     socklen_t client_len = sizeof(client_addr);
     //     client_fd = accept(network_fd, (struct sockaddr *)&client_addr, &client_len);
